@@ -1,3 +1,16 @@
+## gdb基本调试
+```shell
+gdb -tui <程序的路径>
+b <file_name><line>
+run
+next
+step
+info
+list
+print
+```
+
+<++>
 ## gdb 打印string
 ```shell
 p (char*)argc
