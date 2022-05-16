@@ -39,4 +39,12 @@ reverse-next
 # 
 ```
 
-<++>
+## 设置代码显示
+```shell
+set substitute-path from to
+set substitute-path /mnt/d/code/test /var/log/test
+next 
+list
+#这些命令就可以有代码了
+
+```
