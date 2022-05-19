@@ -46,5 +46,10 @@ set substitute-path /mnt/d/code/test /var/log/test
 next 
 list
 #这些命令就可以有代码了
-
+```
+## 程序挂掉bt查看调用栈
+```shell
+frame <n>
+#切换当前栈，无参数时会打印信息当前的函数名，函数的参数值，函数所在的文件，行号，函数执行到的语句
+f <n>#简写
 ```
