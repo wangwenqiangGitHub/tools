@@ -10,4 +10,11 @@
 ```shell
 git log -n 1 -p > what-a-fuck-patch
 ```
+# mac docker ubuntu16.04安装gcc4.9交叉编译环境
+```shell
+apt install gcc-4.9-arm-linux-gnueabi
+apt install g++-4.9-arm-linux-gnueabi 
+apt install make cmake
+
+```
 
