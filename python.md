@@ -14,6 +14,11 @@ python3 -m pip install --upgrade pip
 
 python3 -m venv .venv
 source .venv/bin/activate
+# coc-pyright
+create venv in project: python3 -m venv .venv
+source .venv/bin/activate
+install modules with pip and work with Pyright
+deactivate
 ```
 
 
