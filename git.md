@@ -33,4 +33,15 @@ git checkout c333 -- test.txt
 - commit2 出了问题，我们要一次性删除掉对应的提交
 git revert c222[第二天对应的hash]
 ```
+# git切换远程分支，并且切换到某个版本tag
+```shell
+git checkout -b dev origin/dev
+
+#新建分支并推送至远程分支
+git branch -b test
+git push --set-upstream origin test
+
+#切换到某个版本
+git reset --hard 3efad
+```
 
