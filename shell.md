@@ -39,3 +39,11 @@ cp `pwd`/lib/xxx.so /usr/lib
 
 ldconfig
 ```
+## head命令
+```shell
+head -n 5 test.txt #打印前5行
+head -c 5 test.txt #打印第一个5字节
+```
+
+
+<++>
