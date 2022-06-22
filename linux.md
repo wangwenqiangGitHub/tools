@@ -35,4 +35,10 @@ printf("bind core success! +\n");
 - SCHED_RR 鉴于SCHED_FIFO调度策略的一些缺点，它还是SCHED_FIFO调用的策略。它使用最大运行时间来限制当前进程的运行，
 当运行时间等于大于运行时间的时候，当前线程将被切换并放置于相同优先级队列的最后，-时间片轮转。
 
+# gcc静态编译
+```shell
+-static-libstdc++
+-static-libgcc
+```
+
 
