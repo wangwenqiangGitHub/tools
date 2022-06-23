@@ -51,4 +51,5 @@ void now()
 # wireShake过滤条件
 ```shell
 !tls&&!tcp&&!arp
+!tls && !tcp && !arp&& !ip.src==172.21.71.7&& sll.etype == 0xf900 || udp
 ```
