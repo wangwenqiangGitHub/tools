@@ -23,7 +23,7 @@ printf("bind core success! +\n");
 }
 ```
 # pthread_setschedparam线程的调度策略
-- int pthread_setschedparam(pthread_t target_thread, int policy, const struct sched_param *param)
+- int pthread_setschedparam(pthread_t target_thread, int policy, const struct sched_param \*param)
 	- target_thread是使用pthread_create所获得的线程ID
 	- 线程的三种调度策略：SCHED_OTHER,SCHED_RR和SCHED_FIFO，Policy
 - SCHED_OTHER线程分时调度策略，所有的线程的优先级都是0，线程的调度是通过分时来完成的。
@@ -41,4 +41,7 @@ printf("bind core success! +\n");
 -static-libgcc
 ```
 
+# linux /var/run目录下pid文件
+> linux系统中的\*.pid文件是一个文本文件，其内容只有一行，即某个进程的PID.\*.pid文件的作用是防止进程启动多个副本，只有获得特定pid文件(固定路径和文件名)的
+读写权限(F_WRLCK)的进程才能正常启动并将自身的进程PID写入该文件，其他同一进程的多余进程则自动退出。
 
