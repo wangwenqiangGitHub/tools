@@ -17,4 +17,9 @@ apt install g++-4.9-arm-linux-gnueabi
 apt install make cmake
 
 ```
-
+## 交叉工具链下载地址
+- 官网
+  https://releases.linaro.org/components/toolchain/binaries/
+  https://launchpad.net/gcc-arm-embedded/+download
+- 国内镜像
+https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/
