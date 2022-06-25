@@ -7,3 +7,10 @@
 - 0-9最近使用的文件
 - ^最近插入的位置
 - '上一次跳转的位置
+
+## [zsh终端不显示virtualenv相关信息](https://blog.csdn.net/Zero_S_Qiu/article/details/104217295)
+
+## vim-plug插件回退版本
+```shell
+cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
+```
