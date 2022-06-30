@@ -22,7 +22,7 @@ return NULL;
 printf("bind core success! +\n");
 }
 ```
-# pthread_setschedparam线程的调度策略
+# pthread\_setschedparam线程的调度策略
 - int pthread_setschedparam(pthread_t target_thread, int policy, const struct sched_param \*param)
 	- target_thread是使用pthread_create所获得的线程ID
 	- 线程的三种调度策略：SCHED_OTHER,SCHED_RR和SCHED_FIFO，Policy
@@ -32,7 +32,7 @@ printf("bind core success! +\n");
 运行状态，它将被追加到对应优先级队列的尾部。当所有高优先级的线程终止或者阻塞时，它将被运行。相同优先级的线程，按
 先进先出的规则。一种坏的情况，如果有若干相同优先级的线程等待执行，然后最早执行的线程无终止或者阻塞动作，那么其他
 线程是无法执行的。
-- SCHED_RR 鉴于SCHED_FIFO调度策略的一些缺点，它还是SCHED_FIFO调用的策略。它使用最大运行时间来限制当前进程的运行，
+- SCHED\_RR 鉴于SCHED\_FIFO调度策略的一些缺点，它还是SCHED_FIFO调用的策略。它使用最大运行时间来限制当前进程的运行，
 当运行时间等于大于运行时间的时候，当前线程将被切换并放置于相同优先级队列的最后，-时间片轮转。
 
 # gcc静态编译
@@ -43,7 +43,7 @@ printf("bind core success! +\n");
 
 # linux /var/run目录下pid文件
 > linux系统中的\*.pid文件是一个文本文件，其内容只有一行，即某个进程的PID.\*.pid文件的作用是防止进程启动多个副本，只有获得特定pid文件(固定路径和文件名)的
-读写权限(F_WRLCK)的进程才能正常启动并将自身的进程PID写入该文件，其他同一进程的多余进程则自动退出。
+读写权限(F\_WRLCK)的进程才能正常启动并将自身的进程PID写入该文件，其他同一进程的多余进程则自动退出。
 
 
 # cpp头文件相互引用问题
@@ -78,3 +78,5 @@ route add default gw 192.216.223.1 dev eth0
 用发送方MAC地址识别发送方，用以太类型识别的内容。
 
 
+# 最大缓存数据
+- cat /proc/sys/net/core/rmem\_max
