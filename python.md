@@ -21,4 +21,22 @@ install modules with pip and work with Pyright
 deactivate
 ```
 
+# 工程中需要的包
+```shell
+# 在conda环境中安装pipreqs
+pip install pipreqs
+pipreqs ./ --encoding = utf8
+#安装环境所需要的依赖
+pip install -r requirement.txt
+
+# windows 
+C:\
+D:\
+cd py_ws
+pipreqs .\  
+pip install -r requirement.txt
+#使用代理会比较快
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
 
