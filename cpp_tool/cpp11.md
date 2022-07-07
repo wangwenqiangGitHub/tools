@@ -101,4 +101,11 @@ int main()
 	delete pBase2;
 }
 ```
+# 类型转换运算符
+- static\_cast: 用于良性转换，一般不会导致意外发生，风险很低；
+- const\_cast: 用于const与非const,volatile与非volatile之间的转换;
+- reinterpret\_cast:高度危险的转换，这种转换仅仅是对二进制的重新解释;
+- dynamic\_cast:借助RTTI,用于类型安全的向下转型(Downcasting).
+> static\_cast是在编译期完成类型转换，能更加及时地发现错误. dynamic\_cast是运行期间借助RTTI进行类型转换，这就要类必须要求基类包含虚函数
+dynamic\_cast用于在类的继承层次之间进行类型转换，它既允许向上转型，也允许向下转型。向上转型是无条件的，不会进行任何检测，所以都能成功；向下转型的前提必须是安全的，要借助 RTTI 进行检测，所有只有一部分能成功。
 
