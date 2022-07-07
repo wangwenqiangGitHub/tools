@@ -41,3 +41,11 @@ docker-compose up
 - yaml配置指令
 	- build:指定构建镜像上下文路径
 
+
+# clion 与Dockerfile
+- 通过Edit configuration添加Dockerfile文件，名字，文件
+- 编译Dockerfile
+- cmake配置docker的编译工具链，编译即可
+```shell
+
+```
