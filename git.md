@@ -44,4 +44,22 @@ git push --set-upstream origin test
 #切换到某个版本
 git reset --hard 3efad
 ```
+# git pull script
+```shell
+set -x
+function git_pull_all() {
+	for dir_name in `ls $1`
+	do
+		cur_dir="$1/$dir_name"
+		if [ -d $cur_dir ]
+		then
+			cd $cur_dir
+			git pull
+		fi
+	done
+}
 
+git_pull_all $PWD
+```
+
+<++>
