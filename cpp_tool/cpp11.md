@@ -109,3 +109,9 @@ int main()
 > static\_cast是在编译期完成类型转换，能更加及时地发现错误. dynamic\_cast是运行期间借助RTTI进行类型转换，这就要类必须要求基类包含虚函数
 dynamic\_cast用于在类的继承层次之间进行类型转换，它既允许向上转型，也允许向下转型。向上转型是无条件的，不会进行任何检测，所以都能成功；向下转型的前提必须是安全的，要借助 RTTI 进行检测，所有只有一部分能成功。
 
+## BPMNm Business Process Modeling Notation 业务流程建模与标注，可以用其定义的一些列业务组件，组成业务流程图
+
+
+# c++实现反射
+![参考《c++t如何实现反射机制》](https://zhuanlan.zhihu.com/p/70044481) 
+- 参考reflect.cpp
