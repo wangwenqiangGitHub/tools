@@ -98,3 +98,6 @@ FFmpeg拉RTSP----------|
 <br>这两个协议都是局域网协议，处在公网的SRS是没有办法使用这两个协议，
 ---
 
+# SRS的docker启动
+- [参考](https://github.com/ossrs/dev-docker/tree/aarch64) 
+
