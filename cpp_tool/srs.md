@@ -120,4 +120,15 @@ ffmpeg -re -i ./doc/source.flv -c copy -f flv -y rtmp:://192.216.229.57/live/liv
 ```shell
 ffplay rtmp://192.216.223.154/live/livestream
 ```
+- step4 srs播放器
+- 访问http://localhost:8080 选择srs播放器，填写URL: http://localhost:8080/live/livestream就可以播放
+- step5 GDB调试
+```shell
+# To run docker with --privileged for GDB, or it fail for error Cannot create process: Operation not permitted.
+cd ~/git/srs/trunk &&
+docker run -p 1935:1935 -p 1985:1985 -p 8080:8080 -p 8085:8085 \
+		        --privileged -it --rm -v `pwd`:/srs -w /srs ossrs/srs:aarch64 \
+				    gdb --args ./objs/srs -c conf/console.conf
+```
 
+## rtmp推流 webrtc播放
