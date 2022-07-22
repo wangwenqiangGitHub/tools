@@ -101,3 +101,23 @@ FFmpeg拉RTSP----------|
 # SRS的docker启动
 - [参考](https://github.com/ossrs/dev-docker/tree/aarch64) 
 
+# 小试牛刀
+## rtmp推拉流
+- step1 开启srs服务
+```shell
+cd ~/git/srs/trunk &&
+docker run -p 1935:1935 -p 1985:1985 -p 8080:8080 -p 8085:8085 \
+		        -it --rm -v `pwd`:/srs -w /srs ossrs/srs:aarch64 \
+				    ./objs/srs -c conf/rtc.conf
+```
+- step2 ffmpeg推流
+```shell
+# ip为本机ip
+ifconfig en0
+ffmpeg -re -i ./doc/source.flv -c copy -f flv -y rtmp:://192.216.229.57/live/livestream
+```
+- step3 ffmpeg拉流
+```shell
+ffplay rtmp://192.216.223.154/live/livestream
+```
+
