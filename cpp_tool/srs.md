@@ -132,3 +132,10 @@ docker run -p 1935:1935 -p 1985:1985 -p 8080:8080 -p 8085:8085 \
 ```
 
 ## rtmp推流 webrtc播放
+- 启动srs命令:
+```shell
+docker run --env CANDIDATE=$(ifconfig en0 inet| grep 'inet '|awk '{print $2}') -p 8000:8000/udp -p 1935:1935 -p 1985:1985 -p 8080:8080 -p 8085:8085 \
+     -it --rm -v `pwd`:/srs -w /srs ossrs/srs:aarch64 \
+    ./objs/srs -c conf/rtmp2rtc.conf
+```
+- 注意问题，需要设置CANDIATE为本机地址，出现黑屏问题 [参考](https://github.com/ossrs/srs/issues/2728)最新的版本需要配置文件为rtmp2rtc.conf
