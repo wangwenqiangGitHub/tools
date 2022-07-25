@@ -133,7 +133,6 @@ docker run -p 1935:1935 -p 1985:1985 -p 8080:8080 -p 8085:8085 \
 
 ## rtmp推流 webrtc播放
 
-
 # srs源码分析
 ## 配置文件
 - srs配置文件参照ngx；函数ngx\_conf\_read\_token函数
