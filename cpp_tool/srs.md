@@ -132,3 +132,28 @@ docker run -p 1935:1935 -p 1985:1985 -p 8080:8080 -p 8085:8085 \
 ```
 
 ## rtmp推流 webrtc播放
+
+
+# srs源码分析
+## 配置文件
+- srs配置文件参照ngx；函数ngx\_conf\_read\_token函数
+```cpp
+static int ngx_conf_read_token(ngx_conf_t *cfg)
+{
+	int found = 0; // 用来表示是否找到一个完整的token
+	int need_space; // 用来接下来扫描到的字符需要是空格/水平制表符/回车符/换行符时置为1
+	int sharp_comment=0; // 用来表示当前扫描的字符是否在一个#开头的行注释中
+	
+	
+	// quoted:扫描到转义序列的\时置为1
+	// s_quoted:当扫描到一个单引号时置为1
+	// d_quored:当扫描到一个双引号时置为1
+	int quoted, s_quoted,d_quored;
+	cfg->args; //用来获取解析到的token
+
+
+}
+```
+
+- [参考源码分析](https://github.com/xialixin/srs_code_note/blob/master/doc/srs_note.md)
+
