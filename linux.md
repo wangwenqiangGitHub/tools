@@ -80,3 +80,12 @@ route add default gw 192.216.223.1 dev eth0
 
 # 最大缓存数据
 - cat /proc/sys/net/core/rmem\_max
+
+# apt install proxy set up
+```
+cd /etc/apt/apt.conf.d
+vim 05proxy
+Acquire::http::Proxy "http://0.0.0.0:7890"
+```
+
+<++>
