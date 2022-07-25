@@ -87,5 +87,16 @@ cd /etc/apt/apt.conf.d
 vim 05proxy
 Acquire::http::Proxy "http://0.0.0.0:7890"
 ```
-
-<++>
+# 防火墙
+```shell
+#查看端口开启状态
+sudo ufw status
+#开启某个端口
+sudo ufw allow 80
+#开启防火墙
+sudo ufw enable
+#关闭防火墙
+sudo ufw disable
+#查看端口IP
+netstat -ltn
+```
