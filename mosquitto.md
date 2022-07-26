@@ -17,4 +17,6 @@ mosquitto_sub -h 192.216.223.11 -p 8885 -t "vpub/status"
 mosquitto_pub -t 'buildchange' -m '{"state":"building","resultKey":"IRNG-CORE-GC-JOB1-197","chainName":"BRANCH-IR-1-123"}'
 ```
 
-<++>
+# mosquitto报错问题
+- 1658805743: Client R331213120410000121658805744 disconnected due to malformed packet.
+> 这个问题一般是topic不合法，打印topic看一下
