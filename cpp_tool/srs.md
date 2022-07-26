@@ -156,3 +156,5 @@ static int ngx_conf_read_token(ngx_conf_t *cfg)
 
 - [参考源码分析](https://github.com/xialixin/srs_code_note/blob/master/doc/srs_note.md)
 
+- [奋斗企鹅CopperSun](https://blog.csdn.net/qq_27788177/article/details/116500700)
+
