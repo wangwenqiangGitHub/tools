@@ -108,6 +108,33 @@ int main()
 - dynamic\_cast:借助RTTI,用于类型安全的向下转型(Downcasting).
 > static\_cast是在编译期完成类型转换，能更加及时地发现错误. dynamic\_cast是运行期间借助RTTI进行类型转换，这就要类必须要求基类包含虚函数
 dynamic\_cast用于在类的继承层次之间进行类型转换，它既允许向上转型，也允许向下转型。向上转型是无条件的，不会进行任何检测，所以都能成功；向下转型的前提必须是安全的，要借助 RTTI 进行检测，所有只有一部分能成功。
+> static\_cast:向上转换(把子类指针或引用转换成基类表示)是安全的,向下转换(把基类指针或引用准换成子类表示)是，由于没有动态类型检查，所以是不安全的。
+> dynamic\_cast主要用于类层次间的上行转换和下行转换，还可以用于类之间的交叉转换，类层次间进行上行转换时，dynamic\_cast与static\_cast效果相同。向下转换时dynamic\_cast具有类型检查功能，比static\_cast更加安全。
+```cpp
+class B
+{
+	public:
+    int m_iNum;
+    virtual void foo();
+};
+ 
+class D : public B
+{
+	public:
+    char *m_szName[100];
+};
+ 
+void func(B *pb)
+{
+    D *pd1 = static_cast(pb);
+    D *pd2 = dynamic_cast(pb);
+}
+/***如果pb指向一个D类型的对象，pd1和pd2是一样的，并且对这两个指针执行D类型的任何操作都是安全的；
+但是，如果pb指向的是一个B类型的对象，那么pd1将是一个指向该对象的指针，对它进行D类型的操作将是不安全的（如访问m_szName），
+而pd2将是一个空指针。
+另外要注意：B要有虚函数，否则会编译出错；static_cast则没有这个限制。
+***/
+```
 
 ## BPMNm Business Process Modeling Notation 业务流程建模与标注，可以用其定义的一些列业务组件，组成业务流程图
 
@@ -118,4 +145,3 @@ dynamic\_cast用于在类的继承层次之间进行类型转换，它既允许�
 
 # 模板编程函数
 - std::enable\_if
-
