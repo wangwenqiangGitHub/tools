@@ -11,7 +11,16 @@
 
 srs的核心要解决的问题：**解决流媒体的网关** 
 - 编码方式和封装格式：编码方式主要有:视频编码格式H264,H265,Xvid,音频编码格式:mp3,AAC；封装格式:是TS, AVI,MKV MP4;
-
+# clion编译
+- 主要编译方式采用docker的方式。
+- 修改cmakeList.txt主要是：
+```
+#execute_process(
+#        COMMAND bash -c "cd ${PROJECT_SOURCE_DIR}/../../ && pwd"
+#        OUTPUT_VARIABLE SRS_DIR
+#)
+SET(SRS_DIR /tmp/trunk)
+```
 # mac运行srs
 - lldb调试
 ```shell
