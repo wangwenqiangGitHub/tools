@@ -84,3 +84,67 @@ git stash pop
 
 - 可以多次 stash ，恢复的时候，先用 git stash list查看，然后用 git stash apply stash@{0}或者 git stash pop stash@{0}恢复指定的stas
 > 产生这种现象的原因：1.没有add，也没commit  切换分支修改的内容在另一个分支上也有 （有时候也无法切换分支，原因如切换时会提示会覆盖另一个分支文件的内容，也可强制切换git checkout  branchname -f ，最好不要强制切换，会丢失之前分支的修改内容，可以先stash或commit，再切换） 2.add，但没有commit   切换分支，修改的内容在另一分支上也有（有时和情况1一样无法切换）   3. add并且commit  切换分支，在另一个分支就看不到修改内容了 ;原因：一个本地的git repo只有一个工作区和暂存区，但是有多个分支的提交区，而我们的checkout只是将HEAD指针从一个分支切换到另一个分支。
+
+
+# 在多个git服务器和用户之间进行切换的解决方案
+- 所有的git仓都使用git config --local配置邮箱，用户名
+- 更优雅的方案(参考卖逗搞IT)
+	- 创建一个private的git config:
+	```
+	➜  ~ more ~/.gitconfig-private
+	[user]
+        email = pengxiao@private.com
+        name = Peng Xiao
+	```
+	- 在global的gitconfig里设置当使用私人目录的时候，就加载私人的git config:
+	```
+	➜  ~ more ~/.gitconfig
+	[user]
+        email = pengxiao@company.com
+        name = Peng Xiao
+	[includeIf "gitdir:~/tmp/private/"]
+	path = .gitconfig-private
+	```
+	- 验证:
+	```
+#测试公司仓库 
+	➜  ~ cd tmp/company/github-test
+	➜  github-test git:(master) touch test.txt
+	➜  github-test git:(master) ✗ git add test.txt
+	➜  github-test git:(master) ✗ git commit -m 'first commit'
+	[master a64b46f] first commit
+	 1 file changed, 0 insertions(+), 0 deletions(-)
+	 create mode 100644 test.txt
+	➜  github-test git:(master) git log
+	commit a64b46f0cecac00c2791f169a722b805596eec71 (HEAD -> master)
+	Author: Peng Xiao <pengxiao@company.com>
+	Date:   Fri Jul 2 12:39:33 2021 +0200
+    first commit
+# 测试私有仓库
+	➜  ~ cd tmp/private/gitlab-test
+	➜  gitlab-test git:(main) more .git/config
+	[core]
+	        repositoryformatversion = 0
+	        filemode = true
+	        bare = false
+	        logallrefupdates = true
+	[remote "origin"]
+	        url = git@gitlab.com:zhangsan163/gitlab-test.git
+	        fetch = +refs/heads/*:refs/remotes/origin/*
+	[branch "main"]
+	        remote = origin
+	        merge = refs/heads/main
+	➜  gitlab-test git:(main) touch test.txt
+	➜  gitlab-test git:(main) ✗ git add test.txt
+	➜  gitlab-test git:(main) ✗ git commit -m 'first commit'
+	[main b91a660] first commit
+	 1 file changed, 0 insertions(+), 0 deletions(-)
+	 create mode 100644 test.txt
+	➜  gitlab-test git:(main) git log
+	➜  gitlab-test git:(main)
+	commit b91a6607e20bb07b55e60ffa7478f25e3d621cd8 (HEAD -> main)
+	Author: Peng Xiao <pengxiao@private.com>
+	Date:   Fri Jul 2 12:41:59 2021 +0200
+	    first commit
+	```
+
