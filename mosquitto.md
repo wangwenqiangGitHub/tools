@@ -20,3 +20,6 @@ mosquitto_pub -t 'buildchange' -m '{"state":"building","resultKey":"IRNG-CORE-GC
 # mosquitto报错问题
 - 1658805743: Client R331213120410000121658805744 disconnected due to malformed packet.
 > 这个问题一般是topic不合法，打印topic看一下
+
+# mqtt遗言
+- 遗言只有当程序异常退出才会触发
