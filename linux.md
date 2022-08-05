@@ -85,7 +85,7 @@ route add default gw 192.216.223.1 dev eth0
 ```
 cd /etc/apt/apt.conf.d
 vim 05proxy
-Acquire::http::Proxy "http://0.0.0.0:7890"
+Acquire::http::Proxy "http://0.0.0.0:7890";
 ```
 # 防火墙
 ```shell
