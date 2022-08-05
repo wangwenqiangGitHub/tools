@@ -10,6 +10,7 @@
 # rtmp分析
 - ![RTMP规范简单分析](https://blog.csdn.net/leixiaohua1020/article/details/11694129)
 rtmp传输媒体数据的过程中，发送端首先把媒体数据封装成消息，然后把消息分割成消息块，最后将分割后的消息块通过TCP协议发送出去，接收端在通过TCP协议收到数据后，先把消息块重新组合成消息，然后通过对消息进行封装处理就可以恢复出媒体数据。
+# UDP-RTP协议分析
 
-
-
+# SDL配置
+- SDL(Simple DirectMedia Layer)库的作用是封装了复杂的视音频低层交互工作，简化视音频处理的难度。

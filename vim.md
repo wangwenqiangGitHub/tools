@@ -14,3 +14,7 @@
 ```shell
 cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
 ```
+
+## tmux重要功能补充
+- ctrl+b z 全屏/恢复面板窗口
+
