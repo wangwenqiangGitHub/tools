@@ -43,4 +43,5 @@ ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
 - libswresample 实现了混音和重采样
 - libswscale 实现了色彩转换和缩放功能
 
-
+# FFmpeg解码流程
+![流程](./images/ffmpeg_decode.png)
