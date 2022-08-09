@@ -147,4 +147,30 @@ git stash pop
 	Date:   Fri Jul 2 12:41:59 2021 +0200
 	    first commit
 	```
+# git 搜索
+在commit中搜索字符串:
+```
+git log --grep "update st"
+```
+
+搜索某个动词
+```sh
+git log --grep "fix " --pretty=format:'%h %an %ci %s'|sort|grep --color "fix "
+```
+
+搜索某个人的提交
+```sh
+git log --author "Rob king" --pretty=format:"%an %ci %s"
+```
+
+可以一次指定多个作者
+```sh
+git log --author="Rob Pike" --author="Brad Fitzpatrick" --author="Russ Cox" --author="Robert Griesemer"
+```
+
+显示某个详情
+```sh
+git log -1 141b09726dcfc1fa9f04ee9e08e6fa4af00fa57b
+git show 141b09726dcfc1fa9f04ee9e08e6fa4af00fa57b
+```
 

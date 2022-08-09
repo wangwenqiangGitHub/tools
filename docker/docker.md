@@ -49,3 +49,7 @@ docker-compose up
 ```shell
 
 ```
+# docker 删除命令
+- docker image rm -f xxx
+# Dockerfile中配置docker ssh登录的密码
+- RUN echo 'root:root'|chpasswd

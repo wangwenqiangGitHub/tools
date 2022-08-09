@@ -407,3 +407,7 @@ AAC (Advanced Audio Coding) , 中文名: `高级音频编码`，出现于1997年
 - DTS（Decoding Time Stamp）：即解码时间戳，这个时间戳的意义在于告诉播放器该在什么时候解码这一帧的数据。
 - PTS（Presentation Time Stamp）：即显示时间戳，这个时间戳用来告诉播放器该在什么时候显示这一帧的数据。
 - 采样率(sample rate),采样就是每秒钟从连续信号中提取并组成离散信号的采样个数，它用赫兹(hz)表示，简单来说就是每秒钟在每个声道上采样的个数。sample 是一个声道的一个采样。 frame 是一个时间点的样本集合，举例来说，一个线性的PCM 双声道音频文件每个Frame有2个样本，一个左声道样本，和一个右声道样本。 packet 是一个或多个frame 的集合，一个packet 包含多少个frame，是由声音文件格式决定的。
+
+# 好的srs的tag和issu
+- [ Support Multiple-CPUs(or Threads) to improve concurrency. 支持多线程/多进程/多核。#2188](https://github.com/ossrs/srs/issues/2188)
+- 
