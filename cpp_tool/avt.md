@@ -14,3 +14,23 @@ rtmp传输媒体数据的过程中，发送端首先把媒体数据封装成消�
 
 # SDL配置
 - SDL(Simple DirectMedia Layer)库的作用是封装了复杂的视音频低层交互工作，简化视音频处理的难度。
+# ts流格式介绍
+- ts流最早应用于数字电视领域，视频格式主要是mpeg2，苹果公司的(http live stream)hls流媒体是基于ts，主要的封装格式是h264/mpeg4,音频为aac/mp3.
+- ts格式:ts层，pes层，es层。es层就是音视频数据。pes层是在音视频数据上加了时间戳等对数据帧的说明信息。ts层就是在pes层上加了数据流标识和传输的必要信息。
+- ts header  
+
+| 名称                         | 字节 | 含义                                                                                          |
+| ---                          | ---  | ---                                                                                           |
+| sync\_byte                   | 8b   | 同步字节，固定为0x47                                                                          |
+| tranport\_erro\_indicator    | 1b   | 传输错误指示，通常为0                                                                         |
+| payload_unit_start_indicator | 1b   | 负载单元起始标示符，一个完整的数据包开始时标记为1                                             |
+| transport_priority           | 1b   | 传输优先级，0为低优先级，1为高优先级，通常取0                                                 |
+| pid                          | 13b  | pid值                                                                                         |
+| transport_scrambling_control | 2b   | 传输加扰控制，00表示未加密                                                                    |
+| adaption_filed_control       | 2b   | 是否包含自适应00保留，01无自适应，仅含负载，10自适应，无有效负载； 11同时具有自适应和有效负载 |
+| cibtinuity_counter           | 4b   | 递增计数器，从0-f，起始值不一定取0，但必须是连续的                                            |
+[参考文章](https://blog.csdn.net/yhc223/article/details/43952681)
+
+pts是显示时间戳，dts是解码时间戳，视频数据两种时间戳都需要，音频数据的pts和dts相同，所以只需要pts.有pts和dts两种时间戳是B帧(双向探测帧),I帧和P帧的pts等于dts。如果同一个视频没有B帧，则pts永远和dts相同，从文件中顺序读取视频帧，取出的帧顺序和dts顺序相同。dts算法比较简单，就是直接初始值+增量即可，pts计算比较复杂，需要dts的基础上加偏移量。
+
+

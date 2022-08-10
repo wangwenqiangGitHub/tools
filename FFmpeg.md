@@ -33,6 +33,9 @@ ffmpeg -re -i out.mp4 -c copy -f flv rtmp://server/live/streamName
 # 拉流 保存的格式与拉流的格式一致
 ffmpeg -i rtmp://server/live/streamName -c copy dump.flv
 
+# 配置rtsp
+ffmpeg -re -i 4k.mp4 -vcodec copy -codec copy -f rtsp rtsp://210.37..:554/live/rtsp
+
 ```
 # FFmpeg代码结构
 - libavcodec 提供了一系列编码器的实现

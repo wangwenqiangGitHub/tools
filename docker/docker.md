@@ -51,5 +51,11 @@ docker-compose up
 ```
 # docker 删除命令
 - docker image rm -f xxx
+- 查看所有容器: docker ps -a
+- 查看所有容器id: docker ps -a -q
+- docker stop $(docker ps -a -q) //停止所有容器
+- docker rm $(docker ps -a -q) //删除所有容器
+
+
 # Dockerfile中配置docker ssh登录的密码
 - RUN echo 'root:root'|chpasswd
