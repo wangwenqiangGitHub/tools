@@ -205,3 +205,8 @@ void empty(T &input) {
     std::swap(input, empty);
 }
 ```
+# 对象生命周期
+1. 出生: malloc分配结构体内存，并初始化
+2. 使用: 对于内存使用
+3. 销毁:free释放掉这块内存
+
