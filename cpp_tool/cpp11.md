@@ -5,12 +5,34 @@
 > 参考: 在workfow的世界观里，所有我(task)分配的资源都是属于我(task)的,所以理应都由我来管理，
 并且保证所有资源都会在确定的时刻正确释放，用户只能在我(task)指定的时候使用这些资源，所以不
 存在共享所有权的问题，也不存在让用户猜测某个时刻是否有所有权的问题。
+- shared\_ptr与weak\_ptr
+```cpp
+template<typename _Tp>
+class enable_shared_from_this{
+protected:
+	//...
+public:
+	shared_ptr<_Tp>
+	shared_from_this(){
+		return shared_ptr<_Tp>(this->_M_weak_this);
+	}
+	shared_ptr<const _Tp>
+	shared_from_this()const{
+		return shared_ptr<const _Tp>(this->_M_weak_this);
+	}
+private:
+	mutable weak_ptr<_Tp> _M_weak_this;
+}
+```
+- 成员变量为什么是weak\_ptr类型：因为如果是std::shared\_ptr类型，那么就永远无法析构对象自身。
+- weak\_ptr是为了解决std::shared\_ptr循环引用而生，构造std::weak\_ptr对象只能通过std::shared\_ptr来构造，但是std::weak_\ptr对象的生命周期对相应的std::shared\_ptr的引用计数不产生影响，即不增加或者减少引用计数。
 # 静多态与动多态
 - 动态性按照发生的时间段分为静多态和动多态。其中静多态就是绑定发生在编译期(compile-time),此种绑定是静态绑定
 动态绑定就是绑定发生在运行期，此种绑定称为动态绑定(dynamic-binding);
 
 - 静多态是通过模板和函数重载来实现，可以分为：1.非参数化多态：函数重载，运算符重载；2.参数化多态:模板
 非参数化多态和参数化多态并不冲突，而且相辅相成，他们混合使用灵活性更好
+
 ```cpp
 template<typename T>
 T max(const T& lhs, const T& rhs)
@@ -174,3 +196,12 @@ class Node{
 # fread()函数
 - 可以读取二进制文件，有时用字符的方式不能完整的读取整个文件，但是二进制的方式是可以的。
 
+
+# 清空数组
+```cpp
+template<typename T>
+void empty(T &input) {
+    T empty{};
+    std::swap(input, empty);
+}
+```
