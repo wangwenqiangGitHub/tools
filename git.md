@@ -173,4 +173,14 @@ git log --author="Rob Pike" --author="Brad Fitzpatrick" --author="Russ Cox" --au
 git log -1 141b09726dcfc1fa9f04ee9e08e6fa4af00fa57b
 git show 141b09726dcfc1fa9f04ee9e08e6fa4af00fa57b
 ```
+# git 代理
+```
+[http]
+            proxy = socks5://127.0.0.1:7890
+[https]
+            proxy = socks5://127.0.0.1:7890
+
+```
+
+<++>
 

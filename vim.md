@@ -18,3 +18,9 @@ cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
 ## tmux重要功能补充
 - ctrl+b z 全屏/恢复面板窗口
 
+## 查看vim的安装路径
+```shell
+type vim
+# vim的自己编译安装的路径在/usr/local/bin/vim8
+```
+
