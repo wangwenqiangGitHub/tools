@@ -182,5 +182,11 @@ git show 141b09726dcfc1fa9f04ee9e08e6fa4af00fa57b
 
 ```
 
-<++>
-
+# git 拉取错误
+> bower error status code of git: 128
+> fatal: unable to connect to github.com:
+> github.com[0: 你的IP]: errno=Operation timed out
+> 原因：
+> 需要用https才能读到数据
+> 解决方法：输入命令
+> git config --global url."https://".insteadOf git://
