@@ -210,3 +210,18 @@ void empty(T &input) {
 2. 使用: 对于内存使用
 3. 销毁:free释放掉这块内存
 
+# ZLMediaKit在跨线程共享RTP/RTMP包时，是通过批量线程切换的方式进行的，也是通过智能指针共享数据：
+- 批量切换线程，指的是，如果1000个播放器在同一个线程中，但是推流器在其他线程中，那么只会切换一次线程。一次线程切换时间间隔为合并写时间长度，默认关闭合并写，也就是每帧画面切换一次线程然后再分发，如果合并写时间为300毫秒，那么每300毫秒才会触发一次线程切换。
+- 通过上述表达，ZLMediaKit能极致压制硬件和内核性能，目前测试结果发现，性能瓶颈已经不在应用层，而是在内核层面，因为每次写socket，都要把数据写入socket缓存，这个存在内存拷贝，这个是目前无法避免的，当客户端很多时，这个内存写入量是非常夸张的，已经触发了内存写速度瓶颈。
+```
+for(auto& ptr:_dispatcher_map){
+	auto& second=pr.second;
+	pr.first->async([second,in,is_key](){
+			second->write(in,is_key);
+			},false);
+}
+```
+# ZLMediaKit中使用shared\_ptr和weak\_ptr
+- weak\_ptr是为了防止shared\_ptr循环引用 
+- 传递参数的时候，shared\_ptr就要变为weak\_ptr，主要原因是一是不想延长变量的生命周期，有可能导致资源不掉; 一个允许销毁 一个不允许
+
