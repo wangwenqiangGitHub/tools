@@ -23,4 +23,18 @@ cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
 type vim
 # vim的自己编译安装的路径在/usr/local/bin/vim8
 ```
+## 更新vim9
+```
+sudo add-apt-repository ppa:jonathonf/vim-daily
+sudo apt update
 
+```
+
+# coc依赖nodejs
+```
+sudo npm install -g n
+sudo n stable
+#关于错误创建文件夹/usr/local/n 无权限问题。手动创建可以解决
+```
+
+<++>
