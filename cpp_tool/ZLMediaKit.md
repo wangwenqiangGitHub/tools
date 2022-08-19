@@ -89,17 +89,39 @@ find()
 findAsync()
 ```
 ## rtsp MediaSource中最重要的两个元素;RTP是实时传输协议，传输层，Real-time Transport Protocol是用于Internet上针对多媒体数据流的一种传输协议。RTP协议详细说明了互联网上传输的音频和视频的标准数据包格式。SDP包中描述了一个Session中包含哪些媒体数据。
+## rtsp中最重要的两个元素
 - sdp(session description protocol)
 ```
 m line到下一个m line之间就是一个track;
 ```
-- sdp里面传输sps pps; 但是rtp中不传输 -- 摄像头中有这个
-- sdp里面不传输sps, pps，但是rtp中传输 ---- webrtc
-- sdp和rtp中都传输sps pps; --- ZLMediaKit 
-- acc
-
+> sdp里面传输sps pps; 但是rtp中不传输 -- 摄像头中有这个
+> sdp里面不传输sps, pps，但是rtp中传输 ---- webrtc
+> sdp和rtp中都传输sps pps; --- ZLMediaKit 
+> acc adts头
 - rtp是视频文件的；
+## rtmp中最重要的两个元素
+- metadata(一些描述信息，包括音视频codec id宽高，采样率等信息)
+- config frame(sps和pps,aac adts头)
+- rtmp packet(h264/acc等)
+## ts MediaSource 
+- ts中可以存放媒体的原数据
 
+媒体中最重要的两个概念
+- track (轨道， 描述音视频codec信息，还有其他的元数据，包括sps, pps, aac, config)
+- Frame(帧数据，h264/h265/aac/G711)
+
+# 假设一个场景
+- 一个主播推流，但是有10000个用户同时观看。
+- 主播推rtp, rtmp的包，这种情况下需要分发多少次。----10000次
+- 假设服务器是64核，这10000个用户可能随机分布在64核上，线程切换，这个包要给分布在64核上的10000个用户。
+- 实现线程安全有两种方式，一种是互斥锁，一种是线程切换；如果使用互斥锁，一是性能问题，二是死锁。----线程切换
+- A线程产生数据，B线程去消费这个线程。每个用户都消费这个数据，10000个用户这要是分布在64核上，每个包切换一次线程，那就需要切换10000次线程，
+- 因为有64核，所以换一个思路就是切换64次，RingBuffer::\_dispatcher\_map中通过:
+```
+under_map<EventPoller::ptr, typename RingReaderDispatcher::ptr, HashOfPtr> _dispatcher_map;
+// 操作 数据，function就是一个任务
+async([])
+```
 
 # 高质量博客
 ![框架](../images/ZLMediaKit_muti_thread.png)

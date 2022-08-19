@@ -23,3 +23,4 @@ mosquitto_pub -t 'buildchange' -m '{"state":"building","resultKey":"IRNG-CORE-GC
 
 # mqtt遗言
 - 遗言只有当程序异常退出才会触发
+- 通过tcpdump抓包可以看出，建立连接过程。
