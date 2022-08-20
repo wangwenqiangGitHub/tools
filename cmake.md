@@ -38,3 +38,11 @@ ADD_DEFINITIONS("-g -O0")
 - Makefile
 makefile的规则是第一个不以.开头的targe就是默认的target.
 
+- librtsp库
+```
+git clone --depth=1 https://gitee.com/micrors/sico/librtsp
+
+make distclean
+```
+
+<++>
