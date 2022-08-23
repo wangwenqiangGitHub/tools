@@ -53,3 +53,10 @@ int main(){
 	- 签名->验证数据是否被篡改，验证数据的所有者
 ## 对称加密
 
+- 实现
+```
+证书：https://blog.csdn.net/huang714/article/details/104748829
+	：https://blog.csdn.net/zz420521/article/details/81226113
+```
+
+<++>
