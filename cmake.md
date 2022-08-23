@@ -44,5 +44,13 @@ git clone --depth=1 https://gitee.com/micrors/sico/librtsp
 
 make distclean
 ```
+# 静态编译
+```
+set(CMAKE_EXE_LINKER_FLAGS "-static")
+```
 
-<++>
+| 标准库链接方式 | 选项                                | 优点                                                | 缺点                                           |
+| ---            | ---                                 | ---                                                 | ---                                            |
+| 全静态         | -static  -pthread -lrt -ldl         | 不会发生在应用程序在不同Linux版本上的标准库兼容问题 | 生成的文件比较大，应用程序受限，不能调用动态库 |
+| 全动态         | -pthread -lrt -ldl                  | 文件小                                              | 不兼容问题                                     |
+| 全静态         | -static-libgcc   -pthread -lrt -ldl | 灵活性大                                            | 比较难识别哪些库容易发生不兼容问题             |
