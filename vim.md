@@ -37,4 +37,8 @@ sudo n stable
 #关于错误创建文件夹/usr/local/n 无权限问题。手动创建可以解决
 ```
 
-<++>
+# language server安装
+```
+npm i -g bash-language-server
+```
+
