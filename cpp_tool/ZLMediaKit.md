@@ -20,6 +20,7 @@ cd /opt/homebrew/Cellar/openssl@1.1/1.1.1q/lib
 ln -s /opt/homebrew/Cellar/openssl@1.1/1.1.1q/lib/pkgconfig/libcrypto.pc /opt/homebrew/lib/pkgconfig
 ./configure --enable-openssl
 # libsrtp
+wget https://codeload.github.com/cisco/libsrtp/tar.gz/refs/tags/v2.3.0
 mkdir build && cd build && cmake - cmake -DENABLE_OPENSSL=1 .. && make && sudo make
 # ZLMediaKit开启webrtc
 cmake -DENABLE_WEBRTC=true ..
