@@ -78,4 +78,32 @@ runcmd:
 - runcmd 可以指定容器 首次启动 时运行的命令
 - yaml 配置文件可以参照:
 > https://cloudinit.readthedocs.io/en/latest/topics/examples.html?highlight=lock-passwd#including-users-and-groups
+## 停止容器后设置容器参数
+```
+# 先停止 multipassd 服务
+sudo launchctl unload /Library/LaunchDaemons/com.canonical.multipassd.plist
+# 修改配置文件
+sudo su
+vim /var/root/Library/Application\ Support/multipassd/qemu/multipassd-vm-instances.json
+# 再启动 multipassd
+sudo launchctl load /Library/LaunchDaemons/com.canonical.multipassd.plist
+# 格式
+{
+    "primary": {
+        "deleted": false,
+        "disk_space": "10737418240",// 10G
+        "mac_addr": "52:54:00:5d:ed:45",
+        "mem_size": "4294967296",//4096M
+        "metadata": {
+        },
+        "mounts": [
+        ],
+        "num_cores": 2,
+        "ssh_username": "ubuntu",
+        "state": 0
+    }
+}
+
+
+```
 
