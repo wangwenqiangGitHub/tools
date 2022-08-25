@@ -24,3 +24,21 @@ mosquitto_pub -t 'buildchange' -m '{"state":"building","resultKey":"IRNG-CORE-GC
 # mqtt遗言
 - 遗言只有当程序异常退出才会触发
 - 通过tcpdump抓包可以看出，建立连接过程。
+# ipv6部分
+```
+ping6 fe80::2ee:3ff:fed6:3884
+tcpdump -i eth0 host  fe80::2ee:3ff:fed6:3884 -X
+#url
+domain 类型
+tcp://iot.eclipse.org:1883
+
+ipv4 类型
+tcp://192.168.10.1:1883
+ssl://192.168.10.1:1884
+
+ipv6 类型
+tcp://[fe80::20c:29ff:fe9a:a07e]:1883
+ssl://[fe80::20c:29ff:fe9a:a07e]:1884
+```
+
+![ipv6-test](./images/mqtt_ipv6.jpg)
