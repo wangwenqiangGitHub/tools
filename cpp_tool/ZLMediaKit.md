@@ -21,7 +21,7 @@ ln -s /opt/homebrew/Cellar/openssl@1.1/1.1.1q/lib/pkgconfig/libcrypto.pc /opt/ho
 ./configure --enable-openssl
 # libsrtp
 wget https://codeload.github.com/cisco/libsrtp/tar.gz/refs/tags/v2.3.0
-mkdir build && cd build && cmake - cmake -DENABLE_OPENSSL=1 .. && make && sudo make
+mkdir build && cd build && cmake -DENABLE_OPENSSL=1 .. && make && sudo make
 # ZLMediaKit开启webrtc
 cmake -DENABLE_WEBRTC=true ..
 # 浏览器打开网页输入本机ip。默认端口是80
@@ -126,3 +126,26 @@ async([])
 
 # 高质量博客
 ![框架](../images/ZLMediaKit_muti_thread.png)
+
+# webrtc部分参考easy\_webrtc\_server
+- libsrtp库安装
+```
+mkdir build && cd build && cmake -DENABLE_OPENSSL=1 -DCMAKE_INSTALL_PREFIX=/mnt/d/github_ws/github_ws/xiachu/libsrtp/build .. && make -j8
+```
+- boost库安装
+```
+sudo apt install boost-dev
+```
+- muduo库安装
+```
+./build.sh
+```
+- 运行程序
+```
+# 开启webrtc服务
+./rtp_src_example 127.0.0.1
+# ffmplay推桌面流
+ffmpeg -f gdigrab -i desktop -framerate 25 -s 640x480 -pix_fmt yuv420p  -vcodec libx264 -profile baseline -tune zerolatency  -g 25 -f rtp rtp://127.0.0.1:56000
+# 打开easy_webrtc_server/webrtchtml/index.html既可以观看流
+```
+
