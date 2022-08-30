@@ -225,3 +225,6 @@ for(auto& ptr:_dispatcher_map){
 - weak\_ptr是为了防止shared\_ptr循环引用 
 - 传递参数的时候，shared\_ptr就要变为weak\_ptr，主要原因是一是不想延长变量的生命周期，有可能导致资源不掉; 一个允许销毁 一个不允许
 
+# 子类重写父类的虚函数
+- 父类的虚函数是private，子类中可以重写成public并且之后可以被外面访问
+- 父类的虚函数是public，子类中可以重写成private并且之后就不可以被外面访问
