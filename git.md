@@ -190,3 +190,18 @@ git show 141b09726dcfc1fa9f04ee9e08e6fa4af00fa57b
 > 需要用https才能读到数据
 > 解决方法：输入命令
 > git config --global url."https://".insteadOf git://
+
+
+# git同步fork的代码
+```
+cd .vim/vim-init
+git remote -v
+git remote add upstream https://github.com/skywind3000/vim-init.git
+git remote -v
+git fetch upstream
+git checkout master
+git branch -a
+git merge upstream/master
+# 如果有冲突需要解决冲突
+git push origin master
+```
