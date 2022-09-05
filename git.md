@@ -205,3 +205,6 @@ git merge upstream/master
 # 如果有冲突需要解决冲突
 git push origin master
 ```
+
+# .gitignore文件自动生成
+- https://www.toptal.com/developers/gitignore
