@@ -113,3 +113,8 @@ UNIX提供了另外两个函数-readv()和writev(),它们只需要一次系统�
 
 # 五元组
 - 源IP地址，源端口，目的ip地址，目的端口，和传输层协议这五个量组成一个集合
+
+# 查看DNS
+- nslookup hcos
+# 查看IP
+- route -n
