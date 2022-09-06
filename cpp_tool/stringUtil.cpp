@@ -41,3 +41,48 @@ void save_file()
 	out << "\n\n" ;
 	out.close();
 }
+#include <algorithm>
+
+void stringFind(std::string& request)
+{
+	std::string id;
+	std::string puzzle;
+	auto colon = std::find(request.begin(), request.end(), ':');
+	if (colon != request.end())
+	{
+		id.assign(request.begin(), colon);
+		puzzle.assign(colon+1, request.end());
+		printf("%s \n%s \n",id.c_str(),puzzle.c_str());
+	}
+	else{
+		printf("hhhhh\n");
+	}
+}
+
+// std::string::const_iterator 对应着cbegin() cend()
+void stringFind2(std::string& request)
+{
+	std::string test="testtwee:1234847378";
+	printf("%s\n", test.c_str());
+	std::string::const_iterator c = std::find(test.cbegin(), test.cend(), ':');
+	std::string id;
+	std::string pp;
+	if(c != test.end())
+	{
+		id.assign(test.cbegin(), c);
+		pp.assign(c+1, test.cend());
+	}
+	printf("%s \n%s \n",id.c_str(),pp.c_str());
+}
+
+// find world
+void findN(const char* begin, const char* end)
+{
+	const char* start = begin;
+	const char* space = std::find(start,end,' ');
+	if(space != end)
+	{
+		// 跳过一个char
+		start = space + 1;
+	}
+}
