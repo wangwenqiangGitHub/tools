@@ -208,3 +208,10 @@ git push origin master
 
 # .gitignore文件自动生成
 - https://www.toptal.com/developers/gitignore
+# git撤销git add
+```
+git reset <file>  或  git reset 取消所有更改即可。
+在旧版本的 Git 中，以上两个命令分别是 
+git reset HEAD <file> 和 git reset HEAD。Git 1.8.2 做了更新。
+```
+
