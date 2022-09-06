@@ -42,3 +42,13 @@ ssl://[fe80::20c:29ff:fe9a:a07e]:1884
 ```
 
 ![ipv6-test](./images/mqtt_ipv6.jpg)
+
+# mqtt消息过滤
+```
+tcpdump -i eth0 tcp port 1883 -A | grep register/up
+```
+- tcpdump 参数
+	- -A Print each packet (minus its link level header) in ASCII. Handy for capturing web pages.
+	　　　　 以ASCII码方式显示每一个数据包(不会显示数据包中链路层头部信息). 在抓取包含网页数据的数据包时, 可方便查看数据　
+	- -c tcpdump在接收到count个数据后退出
+
