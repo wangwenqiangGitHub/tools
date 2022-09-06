@@ -61,7 +61,7 @@ multipass stop ubuntu2204
 # 删除实例(删除后，还会存在)
 multipass delete ubuntu2204
 # 释放实例(彻底删除)
-multipass purge ubuntu2204
+multipass delete --purge ubuntu2204
 ```
 
 ## 容器配置自动化
@@ -104,6 +104,23 @@ sudo launchctl load /Library/LaunchDaemons/com.canonical.multipassd.plist
     }
 }
 
-
+# 重新设置硬盘大小
+```
+# https://github.com/canonical/multipass/issues/29
+How to increase the image size in ubuntu:
+sudo apt-get install qemu-utils
+find the location of your multipass by find . -type d -name multipassd. for me it was in: /var/snap/multipass/common/data/multipassd/vault/instances.
+cd /var/snap/multipass/common/data/multipassd/vault/instances/instance-name
+stop the vs by multipass stop instance-name
+resize the image by sudo qemu-img resize ubuntu-20.04-server-cloudimg-amd64.img +20G
+start the instance again by multipass start instance-name
+# mac
+Here is an example of what I did on a macOS 11.1 host:
+first make sure the multipass VM is shut down, then open a local terminal
+brew install qemu install the qemu CLI tools
+sudo su - become root
+cd '/var/root/Library/Application Support/multipassd/vault/instances/primary' move into directory where the virtual disk files are stored
+qemu-img resize ubuntu-20.04-server-cloudimg-amd64.img +10G (I only needed 10 more gigs, but you can use however much you want)
+Then start up the multipass VM. A df -h will show you that the root filesystem has auto-expanded to consume the newly allocated space.
 ```
 
