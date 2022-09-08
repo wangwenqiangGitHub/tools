@@ -86,3 +86,21 @@ void findN(const char* begin, const char* end)
 		start = space + 1;
 	}
 }
+
+// test需要为const, 才可以用std::string::const_iterator
+// 要不返回的是std::string::iterator
+int main()
+{
+	const std::string test="testtwee:1234847378";
+	printf("%s\n", test.c_str());
+	std::string::const_iterator c = std::find(test.begin(), test.end(), ':');
+	std::string id;
+	std::string pp;
+	if(c != test.end())
+	{
+		id.assign(test.begin(), c);
+		pp.assign(c+1, test.end());
+	}
+	printf("%s \n%s \n",id.c_str(),pp.c_str());
+}
+
