@@ -118,3 +118,18 @@ UNIX提供了另外两个函数-readv()和writev(),它们只需要一次系统�
 - nslookup hcos
 # 查看IP
 - route -n
+
+# linux内核编译问题
+- 不应该在mnt路径下编译内核代码
+```
+make mrproper时make[1]:***Documentation/Kbuild:是一个目录；停止；
+
+make[1]: *** Documentation/Kbuild:是一个目录。停止。
+Makefile:1759: recipe for target ‘_clean_Documentation’ failedmake: *** [_clean_Documentation] Error 2
+
+的报错。
+
+我这里在编译源码是通过VMware提供的VMware tools 借助主机与虚拟机文件共享实现的。这个似乎就会导致这个报错，我之前有尝试切换系统版本与linux源码的版本，都没有效果。但是将源码改为在linux虚拟机中操作，而非主机虚拟机共享的方式，就解决了该问题。
+
+自己在网上搜索的时候，其实并没有找到类似的情况，特此记录，以供后来者参考。
+```
