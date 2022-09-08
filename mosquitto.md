@@ -24,6 +24,7 @@ mosquitto_pub -t 'buildchange' -m '{"state":"building","resultKey":"IRNG-CORE-GC
 # mqtt遗言
 - 遗言只有当程序异常退出才会触发
 - 通过tcpdump抓包可以看出，建立连接过程。
+- 遗言测试不能通过抓包去看，需要一个客户端在程序ctr+c结束掉后去订阅
 # ipv6部分
 ```
 ping6 fe80::2ee:3ff:fed6:3884
