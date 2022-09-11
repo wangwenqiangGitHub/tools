@@ -42,3 +42,5 @@ sudo n stable
 npm i -g bash-language-server
 ```
 
+# bear工具
+- bear -- make -j4
