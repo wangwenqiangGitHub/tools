@@ -44,3 +44,10 @@ npm i -g bash-language-server
 
 # bear工具
 - bear -- make -j4
+
+# coc配置
+```
+# 查看coc的配置文件
+:h g:coc_config_home
+```
+
