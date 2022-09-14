@@ -19,3 +19,5 @@
 	- 定义: 变量名=变量值
 	- 使用: ${变量名}/${变量名}
 
+# 参考书
+- [跟我一起学Makefile](https://seisman.github.io/how-to-write-makefile/index.html#)
