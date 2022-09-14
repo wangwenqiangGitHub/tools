@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -87,6 +88,15 @@ void findN(const char* begin, const char* end)
 	}
 }
 
+bool isIpv6(const std::string& buf)
+{
+	if(buf[0] == '[')
+		return true;
+	else
+	{
+		return false;
+	}
+}
 // test需要为const, 才可以用std::string::const_iterator
 // 要不返回的是std::string::iterator
 int main()
@@ -102,5 +112,9 @@ int main()
 		pp.assign(c+1, test.end());
 	}
 	printf("%s \n%s \n",id.c_str(),pp.c_str());
+	std::string ip="[fe80::20c:29ff:fefa:3790]";
+	if(isIpv6(ip))
+		printf("is isIpv6\n");
+	return 0;
 }
 
