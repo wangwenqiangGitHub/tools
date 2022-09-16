@@ -31,3 +31,14 @@ processors=2 # Makes the WSL 2 VM use two virtual processors
 ```
 # 注意下载LxRunOffline的路径，下载最新的，要不wsl转移貌似会出问题
 - [下载](https://ddosolitary-builds.sourceforge.io/LxRunOffline/)
+
+# LxRunOffline 基础命令
+```
+# 查看所有wsl
+LxRunOffline l
+# 查看安装的路径
+LxRunOffline di -n Ubuntu
+lxrunoffline ur -n <wsl名称>
+```
+
+<++>
