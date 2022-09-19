@@ -11,6 +11,7 @@ multipass list
 ## 安装实例
 ```shell
 multipass launch --name ubuntu22 22.04
+multipass launch --name ubuntu22 22.04 -c 4 -m 4G -d 20G
 ```
 
 ## 实现虚拟机与主机文件共享
