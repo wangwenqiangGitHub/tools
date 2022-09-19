@@ -38,5 +38,10 @@ pip install -r requirement.txt
 #使用代理会比较快
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
-
-
+# 便携式http server
+```shell
+python -m http.server  # 默认启动在 0.0.0.0:8000
+python -m http.server 9000
+python -m http.server --bind 127.0.0.1
+python -m http.server --directory /tmp/
+```
