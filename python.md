@@ -45,3 +45,15 @@ python -m http.server 9000
 python -m http.server --bind 127.0.0.1
 python -m http.server --directory /tmp/
 ```
+
+# python中的(){}[]
+- ()元组数据类型，元组是一中不可变序列，创建方法简单，大多数时候可以用小括号括起来
+```
+tup=(1,2,3)
+```
+- []表示list列表，可变序列
+- {}字典
+```
+dic={'json':'boy','lili':'girl'}
+```
+
