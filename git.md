@@ -214,4 +214,5 @@ git reset <file>  或  git reset 取消所有更改即可。
 在旧版本的 Git 中，以上两个命令分别是 
 git reset HEAD <file> 和 git reset HEAD。Git 1.8.2 做了更新。
 ```
-
+# git 查看本地修改文件做了哪些改动
+- git diff .
