@@ -53,3 +53,7 @@ tcpdump -i eth0 tcp port 1883 -A | grep register/up
 	　　　　 以ASCII码方式显示每一个数据包(不会显示数据包中链路层头部信息). 在抓取包含网页数据的数据包时, 可方便查看数据　
 	- -c tcpdump在接收到count个数据后退出
 
+# MQTT中QOS问题
+- OQS=0表示只管发给服务器
+- QOS=1表示服务器收到了要确认
+- QOS=2表示消费者那边把这个数据消费了要确认
