@@ -50,4 +50,22 @@ npm i -g bash-language-server
 # 查看coc的配置文件
 :h g:coc_config_home
 ```
+# vim 配置文本注释
+```vimscript
+function! <SID>snip_cpp()
+	let l:filename = expand("%:t")
+	let l:text = []
+	let l:text += ['/**********************************************************************']
+	let l:text += [' * @file' . ' ' . l:filename .'']
+	let l:text += [' * @brief' . '']
+	let l:text += [' * @author' . ' ' . 'wwq']
+	let l:text += [' * @date' . ' ' . strftime("%Y/%m/%d")]
+	let l:text += [' * copyright' . ' ' . 'Copyright (c) 2022 Gohigh V2X Division']
+	let l:text += [' * Last Modified: ' . strftime('%Y/%m/%d %H:%M:%S') ]
+	let l:text += ['**********************************************************************/']
+	call append(0, l:text)
+endfunc
+noremap <space>ee :call <SID>snip_cpp()<cr>
+```
 
+<++>
