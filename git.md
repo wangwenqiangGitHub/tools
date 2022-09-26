@@ -216,3 +216,7 @@ git reset HEAD <file> 和 git reset HEAD。Git 1.8.2 做了更新。
 ```
 # git 查看本地修改文件做了哪些改动
 - git diff .
+# git 提交空消息，保持上一次提交的commit
+```shell
+git commit --allow-empty-message --allow-empty -m ""
+```
