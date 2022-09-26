@@ -57,3 +57,12 @@ tup=(1,2,3)
 dic={'json':'boy','lili':'girl'}
 ```
 
+# ftp服务器
+```shell
+pip install pyftpdlib
+# 开启
+python -m pyftpdlib
+# ftp://127.0.0.1:2121
+# 参数 -i 指定ip -p 指定端口 -w 写权限 -d 指定目录 -u 指定用户登录 -P 设置登录密码
+
+```
