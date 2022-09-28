@@ -29,4 +29,4 @@ struct __msgqueue
 ```
 # issue跟踪
 - [workflow移植到嵌入式平台-qnx](https://github.com/sogou/workflow/issues/478)
-
+- [workflow嵌入式观察者](https://github.com/sogou/workflow/issues/750)
