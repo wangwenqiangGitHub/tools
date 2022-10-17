@@ -19,6 +19,11 @@ multipass launch --name ubuntu22 22.04 -c 4 -m 4G -d 20G
 ```shell
 //挂在共享 D:\workspace目录下的文件共享给虚拟机
 multipass mount D:\workspace ubuntu22
+# https://www.shuzhiduo.com/A/Ae5RKnaMdQ/
+# 重启
+multipass restart ubuntu2204
+# 宿主机卸载虚拟机
+multipass unmount ubuntu2204
 ```
 - windows下，还需先执行一步骤
 > 在windows上，挂载默认是禁用的，因为任何对localhost(127.0.0.1)具有TCP访问权限的人都可以使用Mutipass,并且通过扩展，可以访问整个文件系统。
