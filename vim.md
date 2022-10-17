@@ -67,5 +67,6 @@ function! <SID>snip_cpp()
 endfunc
 noremap <space>ee :call <SID>snip_cpp()<cr>
 ```
+# switch nvim
+- switch to nvim: https://neovim.io/doc/user/nvim.html#nvim-from-vim
 
-<++>
