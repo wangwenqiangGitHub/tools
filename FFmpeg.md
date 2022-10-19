@@ -48,3 +48,6 @@ ffmpeg -re -i 4k.mp4 -vcodec copy -codec copy -f rtsp rtsp://210.37..:554/live/r
 
 # FFmpeg解码流程
 ![流程](./images/ffmpeg_decode.png)
+
+# ffmpeg编译静态文件
+- ![参考](https://www.freesion.com/article/35281423798/) 
