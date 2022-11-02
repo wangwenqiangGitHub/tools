@@ -65,6 +65,13 @@ printf("bind core success! +\n");
 
 # 路由
 route add default gw 192.216.223.1 dev eth0
+- 增加一个路由
+route add -net 172.20.36.0 netmask 255.255.255.0 gw 172.20.65.254 eth0
+- 追踪路由 到ip的路由
+tracert 192.216.223.1  #windows
+traceroute 192.216.223.1 # linux 
+
+
 
 - 路由是三层；交换机是二层
 - 二层网络是通过mac地址。发送arp包; 三层网络是根据ip.路由寻址发包了;
