@@ -70,3 +70,4 @@ noremap <space>ee :call <SID>snip_cpp()<cr>
 # switch nvim
 - switch to nvim: https://neovim.io/doc/user/nvim.html#nvim-from-vim
 
+## vim 跳转出现问题，当有多个command\_json文件
