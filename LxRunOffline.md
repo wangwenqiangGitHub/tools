@@ -10,7 +10,15 @@ wsl --shutdown
 lxrunoffline i -n <WSL名称> -d <安装路径> -f <压缩包路径>.tar.gz
 #类似但不等同于wsl --import <WSL名称> <安装路径> <压缩包路径>.tar。LxRunOf­fline 会读取备份时生成的配置文件并写入配置，前提是同目录且同名。否则你需要加入-c参数指定配置文件。
 ```
+# 将备份的wsl文件安装到新的机器
+```
+D:\tools\LxRunOffline-v3.5.0-33-gbdc6d7d-msvc\LxRunOffline.exe i -n Ubuntu-20.04 -d D:\wsl -f D:\tools\wsl_Ubuntu_patch_new.tar.gz
 
+# 进入linux ubuntu2004
+id -u kingwq
+# 一般uid为1000
+lxrunoffline su -n <WSL名称> -v 1000(UID)
+```
 # 一些由于特殊字符引起的文件不能删除问题
 
 ```bat
