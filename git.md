@@ -7,6 +7,7 @@ git commit --amend --no-edit
 
 # 想要修改提交信息
 git commit --amend
+# 删除提交的commit-Id
 ```
 # git时光机 git查看历史操作及记录
 ```shell
