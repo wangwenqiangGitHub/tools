@@ -21,3 +21,18 @@
 
 # 参考书
 - [跟我一起学Makefile](https://seisman.github.io/how-to-write-makefile/index.html#)
+# 条件判断 相等
+- ifeq() endif
+- strip是去掉空字符语句
+
+# PHONY伪目标
+- 伪目标是这样一个目标:它不代表有一个真正的文件，在执行make时可以指定这个目标来执行所在规则定义的命令,有时也可以将一个伪目标称为标签
+- 如果我们有一个clean文件夹,并且makefile中有一条命令
+```makefile
+clean:
+    rm *.o temp
+```
+我们希望输入"make clean"后，执行rm这条命令,但是当目录中存在一个和指定目标重名的文件时，这时输入clean文件，结果就不执行rm命令了，所以需要一个PHONY来指定一个伪目标。
+- 这种做法的好处有，提高了make的执行效率，因此将clean定义成伪目标后，make的执行程序不会试图寻找clean的隐含规则。PHONY可以确保源文件(\*\.c \*\.h)修改后，对应的目标文件会被重构
+
+
