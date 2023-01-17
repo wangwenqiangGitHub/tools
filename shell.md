@@ -58,3 +58,9 @@ head -c 5 test.txt #打印第一个5字节
 -G 判断对象是否存在，并且属于当前用户组
 -nt 判断file1是否比file2新  [ "/data/file1" -nt "/data/file2" ]
 -ot 判断file1是否比file2旧  [ "/data/file1" -ot "/data/file2" ]
+
+# 文件黑洞
+- 2\>/dev/null 将文件描述符2(标准错误)重定向操作到文件黑洞中
+    - 0-stdin 标准输入
+    - 1-stdout 标准输出
+    - 2-stderr 标准错误
