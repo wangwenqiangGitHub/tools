@@ -12,3 +12,7 @@ fsutil.exe file setCaseSensitiveInfo <path> enable
 # 关闭
 fsutil.exe file setCaseSensitiveInfo <path> disable
 ```
+# powershell 使用代理
+```
+$env:HTTP_PROXY="http://127.0.0.1:1080"
+```
