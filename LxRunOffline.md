@@ -52,4 +52,10 @@ lxrunoffline ur -n <wsl名称>
 - 首先在设置---应用----(搜索linux)会找到最新更新的子系统，卸载掉就可以了
 
 
+# 将wsl2的某个镜像设为wsl1
+```
+wsl -l -v
+wsl --set-version  Ubuntu-18.04 1
+```
+
 
