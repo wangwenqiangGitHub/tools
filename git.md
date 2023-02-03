@@ -221,3 +221,7 @@ git reset HEAD <file> 和 git reset HEAD。Git 1.8.2 做了更新。
 ```shell
 git commit --allow-empty-message --allow-empty -m ""
 ```
+# ssh免密登录
+```
+ssh-genkey -o
+```
