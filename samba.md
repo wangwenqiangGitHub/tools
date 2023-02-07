@@ -1,4 +1,5 @@
 # samba基本使用
+
 ```shell
 sudo apt-get install samba
 sudo touch /etc/samba/smbpasswd

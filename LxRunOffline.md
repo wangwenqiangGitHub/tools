@@ -10,7 +10,9 @@ wsl --shutdown
 lxrunoffline i -n <WSL名称> -d <安装路径> -f <压缩包路径>.tar.gz
 #类似但不等同于wsl --import <WSL名称> <安装路径> <压缩包路径>.tar。LxRunOf­fline 会读取备份时生成的配置文件并写入配置，前提是同目录且同名。否则你需要加入-c参数指定配置文件。
 ```
+
 # 将备份的wsl文件安装到新的机器
+
 ```
 D:\tools\LxRunOffline-v3.5.0-33-gbdc6d7d-msvc\LxRunOffline.exe i -n Ubuntu-20.04 -d D:\wsl -f D:\tools\wsl_Ubuntu_patch_new.tar.gz
 
@@ -19,6 +21,7 @@ id -u kingwq
 # 一般uid为1000
 lxrunoffline su -n <WSL名称> -v 1000(UID)
 ```
+
 # 一些由于特殊字符引起的文件不能删除问题
 
 ```bat
@@ -28,8 +31,10 @@ RD /S /Q \\?\%1
 ```
 
 # 关于LxRunOffLine我提出的问题并解决的
-- [采用LxRunOffline工具导出wsl2后](https://github.com/DDoSolitary/LxRunOffline/issues/187) 
+
+- [采用LxRunOffline工具导出wsl2后](https://github.com/DDoSolitary/LxRunOffline/issues/187)
 - 迁移到其他盘后，需要修改.wslconfig文件
+
 ```
 #I find the cause ; have to modify C:\Users\戴尔.wslconfig file;
 [wsl2]
@@ -37,10 +42,13 @@ RD /S /Q \\?\%1
 memory=4GB # Limits VM memory in WSL 2 to 4 GB
 processors=2 # Makes the WSL 2 VM use two virtual processors
 ```
+
 # 注意下载LxRunOffline的路径，下载最新的，要不wsl转移貌似会出问题
+
 - [下载](https://ddosolitary-builds.sourceforge.io/LxRunOffline/)
 
 # LxRunOffline 基础命令
+
 ```
 # 查看所有wsl
 LxRunOffline l
@@ -48,14 +56,14 @@ LxRunOffline l
 LxRunOffline di -n Ubuntu
 lxrunoffline ur -n <wsl名称>
 ```
+
 # wsl出现wsl --update后显示未注册，问题解决
+
 - 首先在设置---应用----(搜索linux)会找到最新更新的子系统，卸载掉就可以了
 
-
 # 将wsl2的某个镜像设为wsl1
+
 ```
 wsl -l -v
 wsl --set-version  Ubuntu-18.04 1
 ```
-
-

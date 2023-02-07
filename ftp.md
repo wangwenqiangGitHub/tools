@@ -1,12 +1,17 @@
 # ftp采用curl
+
 - https://curl.se/libcurl/c/example.html
 
 # WSL安装ftp服务器并配置frp内网穿透
+
 - 1 安装ftp
+
 ```
 sudo apt install vsftpd
 ```
+
 - 2 ftp服务器设置
+
 ```
 vim /etc/vsftpd.conf
 
@@ -55,6 +60,7 @@ tcp_wrappers=YES
 ```
 
 - 新建/etc/vsftp\_allowed\_users文件，向里面添加用户
+
 ```
 sudo vim /etc/vsftp_allowed_users
 
@@ -63,10 +69,13 @@ your_ftp_user
 ```
 
 - 3 重启ftp服务
+
 ```
 sudo service vsftpd restart
 ```
+
 - 4 连接FTP服务器
+
 ```
 #命令行输入ftp命令,进入ftp交互
 ftp
@@ -77,7 +86,9 @@ ftp> open ip port
 #查看服务器文件
 ftp> ls
 ```
+
 # 5 frp内网穿透
+
 ```
 sudo vim /etc/frp/frpc.ini
 
@@ -91,6 +102,7 @@ use_compression = true
 ```
 
 # 6 参考以前的贴子配置frp.并在外网测试
+
 ```
 远程访问ftp
 ftp
@@ -101,6 +113,7 @@ ftp> get remote_file local_file#测试下载文件
 ```
 
 # 7.ipad下使用ISH访问ftp服务器
+
 ```
 #ISH中没有ftp命令， 可以安装lftp
 apk add lftp
@@ -114,8 +127,5 @@ lftp> set ftp:passive-mode 1
 #查看远程服务器文件
 lftp> ls
 ```
-注：
-username：ftp用户名
-password：ftp用户密码
-ip：ftp服务器IP地址
-port：ftp服务器端口号
+
+注： username：ftp用户名 password：ftp用户密码 ip：ftp服务器IP地址 port：ftp服务器端口号

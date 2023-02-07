@@ -1,4 +1,5 @@
 # 消息队列
+
 ```
 struct __msgqueue
 {
@@ -27,6 +28,8 @@ struct __msgqueue
 	pthread_cond_t put_cond;
 };
 ```
+
 # issue跟踪
+
 - [workflow移植到嵌入式平台-qnx](https://github.com/sogou/workflow/issues/478)
 - [workflow嵌入式观察者](https://github.com/sogou/workflow/issues/750)

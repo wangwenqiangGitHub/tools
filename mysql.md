@@ -1,10 +1,11 @@
 # 安装mysql
-sudo apt install mysql-server
-- archlinux
-sudo pacman -Si mysql
 
+sudo apt install mysql-server
+
+- archlinux sudo pacman -Si mysql
 
 - 初始化mysql
+
 ```sh
 sudo mysqld --initialize --user=mysql --basedir=/usr --datadir=/tmp/mysql
 #输出:
@@ -18,35 +19,43 @@ sudo mysqld --initialize --user=mysql --basedir=/usr --datadir=/tmp/mysql
 ```
 
 - 库安装
+
 ```sh
-  wget https://github.com/unicode-org/icu/releases/download/release-71-1/icu4c-71_1-src.tgz
-  cd icu/source && make && sudo make install
-  sudo ln -s /usr/local/lib/libicuuc.so.71 /usr/lib/libicuuc.so.71
-  sudo ln -s /usr/local/lib/libicui18n.so.71  /usr/lib/libicui18n.so.71
-  sudo ln -s /usr/local/lib/libicudata.so.71  /usr/lib/libicudata.so.71
+wget https://github.com/unicode-org/icu/releases/download/release-71-1/icu4c-71_1-src.tgz
+cd icu/source && make && sudo make install
+sudo ln -s /usr/local/lib/libicuuc.so.71 /usr/lib/libicuuc.so.71
+sudo ln -s /usr/local/lib/libicui18n.so.71  /usr/lib/libicui18n.so.71
+sudo ln -s /usr/local/lib/libicudata.so.71  /usr/lib/libicudata.so.71
 ```
+
 - 开机启动
+
 ```
 sudo systemctl enable mysqld.service
 ```
 
 - 启动mysql服务
+
 ```
 sudo systemctl start mysqld.service
 ```
 
 - 查看mysql状态
+
 ```
 systemctl status mysqld.service
 ```
 
 - 连接数据库
+
 ```
 mysql -uroot -p
 ```
 
 # 刚安装mysql问题MySQL 的 ERROR 1698 (28000): Access denied for user 'root'@'localhost'
+
 - [会通过系统用户认证](https://blog.csdn.net/jlu16/article/details/82809937)
+
 ```
 # 方法1
 $ sudo mysql -u root # I had to use "sudo" since is new installation
@@ -69,7 +78,9 @@ mysql> exit;
 
 $ service mysql restart
 ```
+
 - 使用的命令:
+
 ```
 # 使用这个命令进入mysql
 sudo mysql -u root # I had to use "sudo" since is new installation
@@ -80,6 +91,7 @@ sudo mysql -u root # I had to use "sudo" since is new installation
 ```
 
 <++>
-# mysql学习文档
-[参考文档](https://github.com/BoobooWei/booboo_mysql/blob/master/01-MySQL%E5%92%8CMariaDB%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%8B%E7%BB%8D.md)
 
+# mysql学习文档
+
+[参考文档](https://github.com/BoobooWei/booboo_mysql/blob/master/01-MySQL%E5%92%8CMariaDB%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BB%8B%E7%BB%8D.md)

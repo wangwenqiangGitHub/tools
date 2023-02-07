@@ -1,16 +1,19 @@
 # frp所在的github地址
+
 ```
 https://github.com/fatedier/frp
 ```
 
 # 下载
+
 ```shell
 wget https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_linux_amd64.tar.gz
 ```
 
 # 安装(服务器和客户端都要安装)
-安装前需要有一台具备公网IP的机器或云服务器，我用的是腾讯云服务器。
-具有公网IP的机器（云服务器等）安装服务端frps，需要内网穿透的机器安装客户端frpc。
+
+安装前需要有一台具备公网IP的机器或云服务器，我用的是腾讯云服务器。 具有公网IP的机器（云服务器等）安装服务端frps，需要内网穿透的机器安装客户端frpc。
+
 ```
 #解压缩
 tar -vxzf frp_0.38.0_linux_amd64.tar.gz
@@ -32,6 +35,7 @@ sudo systemctl enable frps
 ```
 
 # 客户端frpc.ini配置文件
+
 ```
 [common]
 server_addr = xx.xx.xx.xx       #公网服务器ip
@@ -80,12 +84,14 @@ local_port = 3389
 remote_port = 23389
 use_compression = true
 ```
+
 ```
 #客户端是本机电脑或者同一局域网内的电脑都可以，启动frp：
 sudo systemctl restart frpc
 ```
 
 # 服务器端frps.ini文件
+
 ```
 [common]
 bind_port = xxxx#服务端端口号，和客户端的server_port一致
@@ -102,6 +108,7 @@ sudo systemctl restart frps
 ```
 
 # 6 访问
+
 ```
 #win10远程登陆，手机或平板下载RD Client软件，windows直接使用远程桌面
 登陆：服务器IP:13389
@@ -120,13 +127,15 @@ sudo apt install xrdp
 ```
 
 # 7.附：win10平台下安装方法
+
 win10下配置frp与ubuntu类似，配置方法都是一样的，只需下载对应的windows版本安装。配置完成后可以双击exe执行，也可以在win10中创建启动脚本来自动启动：
+
 ```
 'start_frpc.vbs
 '请根据实际情况修改路径
 CreateObject("WScript.Shell").Run """D:\Program Files\frp_0.38.0_windows_amd64\frpc.exe""" & "-c" & """D:\Program Files\frp_0.38.0_windows_amd64\frpc.ini""",0
 ```
-将上述内容用记事本另存为start\_frpc.vbs文件。
-启动方法：
-1.双击就可启动frpc，可在资源管理器中看到frpc.exe已启动;
-2.或将其放到开机启动文件夹中C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup，开机后会自启动。同时按住“win+r”，输入shell:startup就会自动打开启动文件夹。
+
+将上述内容用记事本另存为start\_frpc.vbs文件。 启动方法： 1.双击就可启动frpc，可在资源管理器中看到frpc.exe已启动;
+2.或将其放到开机启动文件夹中C:\ProgramData\Microsoft\Windows\Start
+Menu\Programs\Startup，开机后会自启动。同时按住“win+r”，输入shell:startup就会自动打开启动文件夹。

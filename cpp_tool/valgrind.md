@@ -1,4 +1,5 @@
 # valgrind编译
+
 ```shell
 wget http://valgrind.org/downloads/valgrind-3.12.0.tar.bz2
 wget https://sourceware.org/pub/valgrind/valgrind-3.19.0.tar.bz2 
@@ -12,6 +13,7 @@ maka -j9 && make install
 ```
 
 # copy文件
+
 ```shell
 # valgrind运行的依赖放在这个文件夹下
 cd /mnt/d/github_ws/github_ws/valgrind-3.19.0/OUT/libexec \
@@ -19,17 +21,19 @@ cd /mnt/d/github_ws/github_ws/valgrind-3.19.0/OUT/libexec \
 ```
 
 # 运行
+
 ```shell
 export VALGRIND_LIB=/system/etc
 
 valgrind --leak-check=full  --log-file=reportleak /system/bin/app
-
-
 ```
 
 # 运行中报错问题及解决
+
 - valgrind: failed to start tool 'memcheck' for platform 'arm-linux': No such file or directory'
-> 未找到memcheck-arm-linux工具根据命令:valgrind -d -v 
+
+> 未找到memcheck-arm-linux工具根据命令:valgrind -d -v
+
 ```
 --15615:1:debuglog DebugLog system started by Stage 1, level 1 logging requested
 --15615:1:launcher no tool requested, defaulting to 'memcheck'
@@ -38,15 +42,22 @@ valgrind --leak-check=full  --log-file=reportleak /system/bin/app
 valgrind: failed to start tool 'memcheck' for platform 'arm-linux': No such file or directory'
 # 解决方法是步骤2 copy文件  和 步骤3 运行
 ```
+
 - 找不到default.supp 文件
+
 ```
 cd /system/etc && touch default.supp
 ```
+
 # valgrind打印消息含义
+
 - HEAP SUMMARY表示程序在堆上分配的内存
-- total heap usage: 8,739 allocs, 8,520 frees, 1### 51,653 bytes allocated; allocs边是程序分配内存次数,frees表示程序释放了0次，bytes allocated表示分配了4字节的内存。
--  276 (92 direct, 184 indirect) bytes in 1 blocks are definitely lost in loss record 79 of 82； 程序发生内存泄漏的位置
+- total heap usage: 8,739 allocs, 8,520 frees, 1### 51,653 bytes allocated;
+  allocs边是程序分配内存次数,frees表示程序释放了0次，bytes allocated表示分配了4字节的内存。
+- 276 (92 direct, 184 indirect) bytes in 1 blocks are definitely lost in loss record 79 of 82；
+  程序发生内存泄漏的位置
 - 对于没有发生内存泄漏的程序
+
 ```cpp
 #include <string>
 int main()
@@ -87,7 +98,9 @@ int main()
 ==31438== For counts of detected and suppressed errors, rerun with: -v
 ==31438== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)'
 ```
-> 实际上这段代码没有出现内存泄漏,但是从HEAP SUMMARY中可以看出，程序分配了两次内存，但是确只释放一次内存；出现这个问题的原因在于c++在分配内存时，为了提高效率，使用了自己的内存池，当程序终止时，内存池的内存才会被操作系统收回，所以Valgrind会将这部分内存报告为reachable的，需要注意，reachable的内存并不代表内存泄漏
+
+> 实际上这段代码没有出现内存泄漏,但是从HEAP
+> SUMMARY中可以看出，程序分配了两次内存，但是确只释放一次内存；出现这个问题的原因在于c++在分配内存时，为了提高效率，使用了自己的内存池，当程序终止时，内存池的内存才会被操作系统收回，所以Valgrind会将这部分内存报告为reachable的，需要注意，reachable的内存并不代表内存泄漏
 
 ```cpp
 /* author :hjjdebug
@@ -125,21 +138,31 @@ int main()
 	return 0;
 }
 ```
+
 # 指针几种泄漏情况
+
 - "definitely lost" 确认丢失
+
 > 程序中存在内存泄露，应尽快修复。当程序结束时如果一块动态分配的内存没有被释放且通过程序内的指针变量均无法访问这块内存则会报这个错误。
+
 - "indirectly lost"：间接丢失
+
 > 当使用了含有指针成员的类或结构时可能会报这个错误。这类错误无需直接修复，他们总是与"definitely lost"一起出现，只要修复"definitely lost"即可。例子可参考我的例程。
 
 - "possibly lost"：可能丢失。
-> 大多数情况下应视为与"definitely lost"一样需要尽快修复，除非你的程序让一个指针指向一块动态分配的内存（但不是这块内存起始地址），然后通过运算得到这块内存起始地址，再释放它。例子可参考我的例程。当程序结束时如果一块动态分配的内存没有被释放且通过程序内的指针变量均无法访问这块内存的起始地址，但可以访问其中的某一部分数据，则会报这个错误。
+
+> 大多数情况下应视为与"definitely
+> lost"一样需要尽快修复，除非你的程序让一个指针指向一块动态分配的内存（但不是这块内存起始地址），然后通过运算得到这块内存起始地址，再释放它。例子可参考我的例程。当程序结束时如果一块动态分配的内存没有被释放且通过程序内的指针变量均无法访问这块内存的起始地址，但可以访问其中的某一部分数据，则会报这个错误。
+
 - "still reachable"：可以访问
+
 > 未丢失但也未释放。如果程序是正常结束的，那么它可能不会造成程序崩溃，但长时间运行有可能耗尽系统资源，因此笔者建议修复它。如果程序是崩溃（如访问非法的地址而崩溃）而非正常结束的，则应当暂时忽略它，先修复导致程序崩溃的错误，然后重新检测。
 
 - "suppressed"：已被解决
+
 > 出现了内存泄露但系统自动处理了。可以无视这类错误。这类错误我没能用例程触发，看官方的解释也不太清楚是操作系统处理的还是valgrind
 
 # 参考文章
-- [编译](https://blog.csdn.net/dengcanjun6/article/details/54958359) 
-- [valgrind打印消息含义](http://senlinzhan.github.io/2017/12/31/valgrind/) 
 
+- [编译](https://blog.csdn.net/dengcanjun6/article/details/54958359)
+- [valgrind打印消息含义](http://senlinzhan.github.io/2017/12/31/valgrind/)
