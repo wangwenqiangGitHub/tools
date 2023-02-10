@@ -256,3 +256,9 @@ git commit --allow-empty-message --allow-empty -m ""
 ```
 ssh-genkey -o
 ```
+
+# 将远程分支与本地分支关联
+
+```
+git branch --set-upstream-to=origin/develop develop
+```
