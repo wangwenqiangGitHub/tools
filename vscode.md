@@ -15,6 +15,4 @@ alt-o
 分屏 ctrl+\
 合并分屏 ctrl+alt+\
 合并所有分屏 ctrl+shift+alt+\
-三列编辑器布局 shift+alt+3
-切换分屏 ctrl+1/2/3
-
+三列编辑器布局 shift+alt+3 切换分屏 ctrl+1/2/3
