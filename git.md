@@ -262,3 +262,14 @@ ssh-genkey -o
 ```
 git branch --set-upstream-to=origin/develop develop
 ```
+
+# git中出现^M问题
+
+```
+#删除 :
+    %s/^M$//g
+# 或者配置git:
+    git config --global core.whitespace cr-at-eol
+```
+
+<++>
