@@ -64,3 +64,12 @@ head -c 5 test.txt #打印第一个5字节
   - 0-stdin 标准输入
   - 1-stdout 标准输出
   - 2-stderr 标准错误
+
+# sed命令
+
+- 找到以abc开头的，并替换整行
+
+```shell
+# /c表示替换整行
+sed -i '/^abc/ccloud_server_ip = update.skyeye.360safe.com' test.txt
+```
