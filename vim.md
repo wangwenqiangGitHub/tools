@@ -84,3 +84,38 @@ noremap <space>ee :call <SID>snip_cpp()<cr>
 - switch to nvim: https://neovim.io/doc/user/nvim.html#nvim-from-vim
 
 ## vim 跳转出现问题，当有多个command\_json文件
+
+# vim 自带命令编辑文件
+```shell
+:find *.cpp
+: grep xxx -r dir/file
+:copen
+```
+
+# vim中显示文件路径
+
+```
+1 ctrl+g
+```
+# vim command
+
+- vim中快速获取当前文件的路径
+```
+`dirname %`
+#或者采用
+%:h
+```
+- QuickFix窗口
+```shell
+# 调出QuickFix窗口
+:cw
+#
+:cn找每一个匹配的行，或者编译中的错误
+:cp 前一个
+```
+# vimgrep 
+```
+:vimgrep /main/gj **\*.c
+
+```
+
