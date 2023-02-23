@@ -56,3 +56,11 @@ runqemu qemux86-64
 # 编译Yocto环境
 
 - 需要在vmware下构建系统,目录选择linux的目录(~),不要选择mount下的linux中的共享目录，有问题,可能是windows的共享目录不支持文件大小区分。
+
+# Yocto流程
+
+```
+开始---解析配方文件----do_fetch(获取源码)---do_unpack(解压源码)---do_patch(给源码打patch)---do_configure(配置源码编译选项)---do_compile(编译源码)---do_install(成果安装)---do_package(成果打包)---do_rootfs(生成镜像文件)---do_image(生成镜像)---开始
+```
+
+<++>
