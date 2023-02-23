@@ -73,3 +73,27 @@ head -c 5 test.txt #打印第一个5字节
 # /c表示替换整行
 sed -i '/^abc/ccloud_server_ip = update.skyeye.360safe.com' test.txt
 ```
+
+# 使用iptables配置NAT
+``` 
+场景：Server A 运行着一个服务s1，只开放的本地地址连接，开放的端口号是6543。即Server A的服务s1监听的端口是127.0.0.1：6543。本地客户端Client想连接到服务s1去，这时可以修改s1的配置文件，让其监听所有的地址。也可以使用iptables配置NAT，使得可以访问6543的端口。
+
+解决方案1：在Server A中执行iptables -t nat -A PREROUTING -p tcp --dport 1233 -j DNAT --to-destination 127.0.0.1:6543，让连接到Server A的1233的端口转发到本地的6543端口上去，完成了NAT的映射。
+
+模拟：
+step1： Server A执行 nc -l -p 6543 监听本地的6543端口
+step2： Server A执行 iptables -t nat -A PREROUTING -p tcp --dport 1233 -j DNAT --to-destination 127.0.0.1:6543 进行地址映射
+step3： 在Clinet 所在的机器访问Server A的1233端口，假设Server A的公网IP是22.23.34.1，nc 22.23.34.1 1233
+step4: 在Client建立连接后，输入几个字符，在Server A监听的6543端口上有显示即可。
+
+解决方案2：
+
+iptables -t nat -A PREROUTING -p tcp --dport 5000 -j REDIRECT --to-ports 6543
+使用REDIRECT的action，直接将Server A的5000端口数据转发到本地的6543端口中去。
+
+上述提到的两个解决方案，在本地验证是通过不了的。即Server A和Client 都是同一台机器，因为使用lo网卡的时候，是没有PREROUTING这个阶段的，如果一定要在本地进行NAT的验证。可以使用此命令：iptables -t nat -I OUTPUT -p tcp -o lo --dport 1232 -j REDIRECT --to-ports 6543 。此命令是设置了，lo网卡的数据包的目的端口是1232的时候，转发到6543端口去。使用的是OUTPUT，因此从外部访问Server A的1232端口的话，不会转发的6543端口去，一定要是本地访问本地的时候才行。
+后记
+
+使用上述的NAT功能前，一定要先开启linux nat转发的功能：echo 1 > /proc/sys/net/ipv4/ip_forward ，重启后失效，如果需要重启后还开启，需要写到/etc/rc.local中去
+上述提到的场景，可扩展为Server A的1233端口，转发到Server B（假设地址是8.8.8.8）的6543端口中去，Server A的角色是一个跳板，只要修改一下命令：把iptables -t nat -A PREROUTING -p tcp --dport 1233 -j DNAT --to-destination 127.0.0.1:6543 改成 iptables -t nat -A PREROUTING -p tcp --dport 1233 -j DNAT --to-destination 8.8.8.8:6543
+```
