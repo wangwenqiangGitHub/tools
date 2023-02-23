@@ -255,3 +255,13 @@ for(auto& ptr:_dispatcher_map){
 
 - 父类的虚函数是private，子类中可以重写成public并且之后可以被外面访问
 - 父类的虚函数是public，子类中可以重写成private并且之后就不可以被外面访问
+
+# C语言问题
+- 关于C语言内存
+```
+#1.最好采用封装的函数一样的封装接口，比如需要通过一个函数获取一个目标值，一般的接口是
+void func(char* src, char* des, int len);
+使用的时定义一个数组，将数组的长度，地址传入，然后通过memcopy将数据写入，或者strcp()
+# 参考一些c语言函数封装的接口
+```
+
