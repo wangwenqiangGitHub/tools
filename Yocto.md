@@ -48,6 +48,7 @@ bitbake core-image-minimal
 - 运行
 
 ```
+cd ~/poky/build/tmp/deploy/images/qemux86-64
 runqemu qemux86-64
 ```
 
