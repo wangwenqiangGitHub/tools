@@ -74,7 +74,7 @@ head -c 5 test.txt #打印第一个5字节
 sed -i '/^abc/ccloud_server_ip = update.skyeye.360safe.com' test.txt
 ```
 
-# 使用iptables配置NAT
+# 使用iptables配置NAT-(网络地址转换)
 ``` 
 场景：Server A 运行着一个服务s1，只开放的本地地址连接，开放的端口号是6543。即Server A的服务s1监听的端口是127.0.0.1：6543。本地客户端Client想连接到服务s1去，这时可以修改s1的配置文件，让其监听所有的地址。也可以使用iptables配置NAT，使得可以访问6543的端口。
 
@@ -96,4 +96,16 @@ iptables -t nat -A PREROUTING -p tcp --dport 5000 -j REDIRECT --to-ports 6543
 
 使用上述的NAT功能前，一定要先开启linux nat转发的功能：echo 1 > /proc/sys/net/ipv4/ip_forward ，重启后失效，如果需要重启后还开启，需要写到/etc/rc.local中去
 上述提到的场景，可扩展为Server A的1233端口，转发到Server B（假设地址是8.8.8.8）的6543端口中去，Server A的角色是一个跳板，只要修改一下命令：把iptables -t nat -A PREROUTING -p tcp --dport 1233 -j DNAT --to-destination 127.0.0.1:6543 改成 iptables -t nat -A PREROUTING -p tcp --dport 1233 -j DNAT --to-destination 8.8.8.8:6543
+
+场景使用: 目的地址变换
+上位机------>板卡1------------->板卡2
+通过iptables命令在板卡1上配置目的地址变换，实现上位机通过板卡1控制板卡2
+
+```
+
+```shell
+#相关命令
+iptables -t nat -L
+vim /etc/iptables/iptables.rules
+iptables -t nat -A PREROUTING -p tcp --dport 8080 -j DNAT --to-destination 192.168.12.1234
 ```
