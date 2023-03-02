@@ -1,6 +1,25 @@
 # 代码补全suggest默认快捷键修改为
 
-shift-tab
+alt-i
+
+# 上次打开的文件
+
+```
+View: Quick Open Least Recently Used Editor
+alt-e
+```
+
+# 切换面板可见性
+
+```
+alt-j
+alt-shift-j
+alt-b
+alt-shift-b
+alt-m
+```
+
+<++>
 
 # c++源文件与头文件切换
 
