@@ -37,7 +37,9 @@ alt-o
 三列编辑器布局 shift+alt+3 切换分屏 ctrl+1/2/3
 
 # 文件操作插件
+
 - Dyno File Utils
 
 # vscode解决terminal打开默认时shell，需要手动切换为bash问题
+
 - settings 中 Terminal\>Integrade\>Default Profile:linx选择bash

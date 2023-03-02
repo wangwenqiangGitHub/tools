@@ -75,7 +75,8 @@ sed -i '/^abc/ccloud_server_ip = update.skyeye.360safe.com' test.txt
 ```
 
 # 使用iptables配置NAT-(网络地址转换)
-``` 
+
+```
 场景：Server A 运行着一个服务s1，只开放的本地地址连接，开放的端口号是6543。即Server A的服务s1监听的端口是127.0.0.1：6543。本地客户端Client想连接到服务s1去，这时可以修改s1的配置文件，让其监听所有的地址。也可以使用iptables配置NAT，使得可以访问6543的端口。
 
 解决方案1：在Server A中执行iptables -t nat -A PREROUTING -p tcp --dport 1233 -j DNAT --to-destination 127.0.0.1:6543，让连接到Server A的1233的端口转发到本地的6543端口上去，完成了NAT的映射。
@@ -100,7 +101,6 @@ iptables -t nat -A PREROUTING -p tcp --dport 5000 -j REDIRECT --to-ports 6543
 场景使用: 目的地址变换
 上位机------>板卡1------------->板卡2
 通过iptables命令在板卡1上配置目的地址变换，实现上位机通过板卡1控制板卡2
-
 ```
 
 ```shell

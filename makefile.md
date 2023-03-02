@@ -45,23 +45,24 @@ clean:
   \*\.h)修改后，对应的目标文件会被重构
 
 - local-make学习
-    - 基础:定义了当前模块的相对路径
-    ```
-    LOCAL_PATH:=$(call my-dir):
-    ```
-    - 清空环境变量
-    ```
-      include$(CLEAR_VARS)
-    ```
-    - 编译所生成的目标文件格式
-    - 项目中引用系统的库:
-    ```
-    # 将系统库文件名添加到Android.mk
-      LOCAL_SHARED_LIBRARIES += libxxxx:
-    ```
-    - 引入第三方库文件:
-    ```
-    LOCAL_LDFLAGS:=-L/Path -lxxx
-    ```
+  - 基础:定义了当前模块的相对路径
+  ```
+  LOCAL_PATH:=$(call my-dir):
+  ```
+  - 清空环境变量
+  ```
+  include$(CLEAR_VARS)
+  ```
+  - 编译所生成的目标文件格式
+  - 项目中引用系统的库:
+  ```
+  # 将系统库文件名添加到Android.mk
+    LOCAL_SHARED_LIBRARIES += libxxxx:
+  ```
+  - 引入第三方库文件:
+  ```
+  LOCAL_LDFLAGS:=-L/Path -lxxx
+  ```
 
-- sysroot设置后,就去sysroot目录搜索pthread, rypto, ssl, m,tinyalsa,stdc++库，而不是去默认的/usr/lib,/usr/lib, LD\_LIBRARY\_PATH
+- sysroot设置后,就去sysroot目录搜索pthread, rypto, ssl, m,tinyalsa,stdc++库，而不是去默认的/usr/lib,/usr/lib,
+  LD\_LIBRARY\_PATH
