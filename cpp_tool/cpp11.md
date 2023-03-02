@@ -264,4 +264,19 @@ void func(char* src, char* des, int len);
 使用的时定义一个数组，将数组的长度，地址传入，然后通过memcopy将数据写入，或者strcp()
 # 参考一些c语言函数封装的接口
 ```
+# C语言与C++相互都有工程
+
+```c
+//需要对C的头文件中加上
+#ifdef __cpluscplus
+extern "C" {
+#endif
+}
+int func();
+
+#ifdef __cpluscplus
+}
+#endif
+// 传参的时候是const char*还是char*，需要注意类型转换
+```
 
