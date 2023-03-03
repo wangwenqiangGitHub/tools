@@ -12,14 +12,28 @@ alt-e
 # 切换面板可见性
 
 ```
+#vscode中的默认配置 ctrl，如果采用默认配置需要vim.handleKeys取消掉
 alt-j
 alt-shift-j
 alt-b
 alt-shift-b
 alt-m
 ```
-
-<++>
+```
+#setting.json
+"vim.handleKeys": {
+    "<C-a>": false,
+        "<C-f>": false,
+        "<C-i>": true,
+        "<C-o>": true,
+        "<C-r>": true,
+        "<C-s>": false,
+        "<C-v>": true,
+        "<C-w>": true,
+        "<C-j>": false,
+        "<C-b>": false
+}
+```
 
 # c++源文件与头文件切换
 
