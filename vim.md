@@ -124,3 +124,15 @@ noremap <space>ee :call <SID>snip_cpp()<cr>
 ```
 :vimgrep /main/gj **\*.c
 ```
+
+# vim 快速移动技巧
+
+```
+The test a ...........  vim text
+# 复制test 到vim之间的内容
+/test回车，y/vim就可以选中
+/test回车，d/vim就可以删除
+/test回车，c/vim就可以改变
+change命令很适合修改代码， cc表示删除本行并开始重写。删除本行同时执行insert模式
+```
+
