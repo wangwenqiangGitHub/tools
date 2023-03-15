@@ -272,4 +272,10 @@ git branch --set-upstream-to=origin/develop develop
     git config --global core.whitespace cr-at-eol
 ```
 
-<++>
+#  git submodule 
+
+- 克隆含有子模块的项目:
+```
+git submodule update --init
+```
+- git 拉取远程引用的子代码仓库的更新 git submodule update --remote
