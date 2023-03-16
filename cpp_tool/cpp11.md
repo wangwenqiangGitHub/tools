@@ -259,7 +259,8 @@ for(auto& ptr:_dispatcher_map){
 # 封装-继承-多态
 
 - 封装: 主要是使代码模块化
-- 继承: 继承的目是实现代码重用, 派生的目的，实现代码扩充，三种继承的方式public, protected, private; 父类的private 数据和方法，子类无法使用, protected的数据方法子类可以使用，但是其他类不能调用protected的数据及函数方法
+- 继承: 继承的目是实现代码重用, 派生的目的，实现代码扩充，三种继承的方式public, protected, private; 父类的private 数据和方法，子类无法使用,
+  protected的数据方法子类可以使用，但是其他类不能调用protected的数据及函数方法
 - 多态: c语言中抽象的接口，一个接口，多种方法，程序在运行时才决定调用的函数，c++多态性是通过虚函数来实现的;
 
 # C语言问题
@@ -298,5 +299,4 @@ int func();
 # 想好要只读元素 for(const auto& x : rannge)
 for(auto& it : ve)
 {}
-
 ```

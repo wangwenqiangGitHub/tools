@@ -17,6 +17,7 @@ nrm use tencent
 # Electron 脚手架使用
 
 - 安装
+
 ```shell
 pnpm create @quick-start/electron
 p add -D sass scss
@@ -25,4 +26,3 @@ p add -D sass scss
 # electron主要分为哪些知识
 
 - electron 需要js node 等，主要涉及的概念就是主进程，渲染进程
-

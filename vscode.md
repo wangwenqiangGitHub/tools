@@ -19,6 +19,7 @@ alt-b
 alt-shift-b
 alt-m
 ```
+
 ```
 #setting.json
 "vim.handleKeys": {

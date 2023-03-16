@@ -135,4 +135,3 @@ The test a ...........  vim text
 /test回车，c/vim就可以改变
 change命令很适合修改代码， cc表示删除本行并开始重写。删除本行同时执行insert模式
 ```
-
