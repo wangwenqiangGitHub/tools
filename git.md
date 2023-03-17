@@ -281,3 +281,9 @@ git submodule update --init
 ```
 
 - git 拉取远程引用的子代码仓库的更新 git submodule update --remote
+
+# vim中git查看修改记录
+
+```
+G blame
+```
