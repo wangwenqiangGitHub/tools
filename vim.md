@@ -135,3 +135,16 @@ The test a ...........  vim text
 /test回车，c/vim就可以改变
 change命令很适合修改代码， cc表示删除本行并开始重写。删除本行同时执行insert模式
 ```
+
+# wsl vim与windows共享系统剪切板
+
+```shell
+sudo apt install vim-gtk
+```
+- 讲paste.exe粘贴到定义的路径
+```vimrc
+set clipboard+=unnamed
+vmap <leader>y :!/mnt/c/Windows/System32/clip.exe <cr>u
+map <leader>p :read !/mnt/c/Windows/System32/paste.exe <cr>i<bs><esc>l
+map! <leader>p <esc>:read !/mnt/c/Windows/System32/paste.exe <cr>i<bs><esc>l
+```
