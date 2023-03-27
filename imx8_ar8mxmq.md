@@ -95,5 +95,11 @@ export CLANGCXX="aarch64-poky-linux-clang++  -mcpu=cortex-a53+crc+crypto -fstack
 export CLANGCPP="aarch64-poky-linux-clang -E  -mcpu=cortex-a53+crc+crypto -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security -mlittle-endian --sysroot=$SDKTARGETSYSROOT"
 export CLANG_TIDY_EXE="aarch64-poky-linux-clang-tidy  -mcpu=cortex-a53+crc+crypto -fstack-protector-strong  -D_FORTIFY_SOURCE=2 -Wformat -Wformat-security -Werror=format-security -mlittle-endian --sysroot=$SDKTARGETSYSROOT"
 ```
-
-<++>
+# oecore-x86\_64-aarch64-toolchain-nodistro.0.sh文件
+```
+#默认安装路径/usr/local/oecore-x86_64，可以使用-d指定安装目录安装在/opt目录下
+./oecore-x86_64-aarch64-toolchain-nodistro.0.sh -d /opt
+#最新版本的imx交叉编译链设置
+source /opt/environment-setup-cortexa7hf-neon-vfpv4-pokymllib32-linux-gnueabi
+source /opt/environment-setup-aarch64-poky-linux
+```
