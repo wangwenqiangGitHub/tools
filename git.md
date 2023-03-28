@@ -291,40 +291,49 @@ G blame
 # vim stash操作
 
 - 暂存当前的工作区的文件
+
 ```
 git stash
 ```
 
 - 查看所有暂存的stash列表
+
 ```
-git stash list 
+git stash list
 ```
 
 - 查看指定暂存文件的内容
+
 ```
 git stash show stash@{no}
 ```
 
 - 恢复最新的暂存文件
+
 ```
 git stash pop
 ```
 
 - 恢复指定的暂存文件
+
 ```
 git stash apply stash@{no}
 ```
 
 - 删除指定的暂存文件
+
 ```
 git stash drop stash@{no}
 ```
 
 - 删除所有暂存文件
+
 ```
 git stash clear
 ```
+
 - 查看帮助
+
 ```
 git stash  --help
 ```

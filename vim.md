@@ -141,7 +141,9 @@ change命令很适合修改代码， cc表示删除本行并开始重写。删�
 ```shell
 sudo apt install vim-gtk
 ```
+
 - 讲paste.exe粘贴到定义的路径
+
 ```vimrc
 set clipboard+=unnamed
 vmap <leader>y :!/mnt/c/Windows/System32/clip.exe <cr>u

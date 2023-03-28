@@ -166,6 +166,7 @@ pkg-config --cflags libavcodec
 dpkg -S libavcodec-dev
 #cmake 可以直接 find_package(PkgConfig)
 ```
+
 # linux设置用户名密码
 
 ```shell

@@ -1,6 +1,7 @@
 # [nlohmann-json](库https://github.com/nlohmann/json)
 
 - 简单使用发送一个json数据，技巧两个大括号变中括号
+
 ```
 {
     "class": "A",
