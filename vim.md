@@ -150,3 +150,14 @@ vmap <leader>y :!/mnt/c/Windows/System32/clip.exe <cr>u
 map <leader>p :read !/mnt/c/Windows/System32/paste.exe <cr>i<bs><esc>l
 map! <leader>p <esc>:read !/mnt/c/Windows/System32/paste.exe <cr>i<bs><esc>l
 ```
+# vim替换技巧
+- 删除行尾1元素
+```
+s/.\{1\}$//
+```
+- 多行前添加字符
+```
+s/\(\w.*\)/data[10] = "\1";
+```
+
+<++>
