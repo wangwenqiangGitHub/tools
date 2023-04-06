@@ -166,3 +166,16 @@ s/\(\w.*\)/data[10] = "\1";
 # 清空寄存器
 
 - q寄存器q
+
+# coc snippets配置
+
+- coc的配置文件路径
+```
+~/.vim/coc-settings.json
+```
+- 配置自己的c.snippets需要设置coc-settings.json文件
+```
+	"snippets.extends": {
+		"cpp":["app"]
+	},
+```
