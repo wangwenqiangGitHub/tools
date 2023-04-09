@@ -171,4 +171,6 @@ dpkg -S libavcodec-dev
 
 ```shell
 passwd yonghuming
+# 新机
+sudo passwd root
 ```
