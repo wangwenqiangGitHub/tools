@@ -105,3 +105,13 @@ export CLANG_TIDY_EXE="aarch64-poky-linux-clang-tidy  -mcpu=cortex-a53+crc+crypt
 source /opt/environment-setup-cortexa7hf-neon-vfpv4-pokymllib32-linux-gnueabi
 source /opt/environment-setup-aarch64-poky-linux
 ```
+# 文件备份
+```
+/mnt/d/code/bak/imx8
+```
+
+# 编译警告
+
+- armv7程序移植到armv8程序主要问题:
+    - 0x86这种数据需要修改为显示类型变换(char)0x86
+    - ofstream运算符重载，需要将类型变为str()
