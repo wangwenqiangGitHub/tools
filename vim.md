@@ -150,15 +150,21 @@ vmap <leader>y :!/mnt/c/Windows/System32/clip.exe <cr>u
 map <leader>p :read !/mnt/c/Windows/System32/paste.exe <cr>i<bs><esc>l
 map! <leader>p <esc>:read !/mnt/c/Windows/System32/paste.exe <cr>i<bs><esc>l
 ```
+
 # vim替换技巧
+
 - 删除行尾1元素
+
 ```
 s/.\{1\}$//
 ```
+
 - 多行前添加字符
+
 ```
 s/\(\w.*\)/data[10] = "\1";
 ```
+
 # CTRL-R命令
 
 - CTRL-Ra将粘贴a寄存器的内容
@@ -170,12 +176,15 @@ s/\(\w.*\)/data[10] = "\1";
 # coc snippets配置
 
 - coc的配置文件路径
+
 ```
 ~/.vim/coc-settings.json
 ```
+
 - 配置自己的c.snippets需要设置coc-settings.json文件
+
 ```
-	"snippets.extends": {
-		"cpp":["app"]
-	},
+"snippets.extends": {
+	"cpp":["app"]
+},
 ```
