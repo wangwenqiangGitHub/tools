@@ -205,4 +205,57 @@ tcp        0      0 172.20.65.70:20300      172.20.28.47:63161      ESTABLISHED 
     - 主动关闭的一方发出FIN包,被动关闭的一方响应ACK包，此时，被动关闭的一方就进入了CLOSE\_WAIT状态。如果一切正常，稍后被动关闭的一方就会发送出FIN包，然后迁移到LAST\_WAIT状态。
     -
 
-<++>
+### socket中的LT模式和ET模式
+
+- LT(level-triggered)是一种触发方式，它的含义是Socket中有缓冲区中有数据可以读或者可写时，就会触发相应的事件，而不管这些数据是否已经被读取或者写入。
+- ET(Edge-Triggered)是在socket缓冲区中有新数据到达时才会触发事件
+- linux程序中采用select,epoll方式设置LT模式和ET模式
+- 需要注意的是，ET模式需要程序及时处理所有的就绪事件，否则可能会导致事件丢失。而LT模式则不需要考虑这个问题，因为它会一直触发事件，直到数据被读取或写入。因此，在选择LT模式和ET模式时，需要根据具体的应用场景和需求进行选择。
+- ET模式（边缘触发模式）适用于需要高效处理大量Socket事件的场景，例如高并发的网络服务器。ET模式的特点是只有在Socket状态发生变化时才会触发事件，因此可以减少事件触发的次数，提高程序的性能。在ET模式下，当Socket状态发生变化时，epoll\_wait函数只会返回一次就绪事件，直到程序读取或写入所有的数据。因此，程序需要及时处理所有的就绪事件，否则可能会导致事件丢失。ET模式的优点是可以提高程序的性能，因为它只在Socket状态发生变化时才会触发事件，减少了事件触发的次数。ET模式适用于需要高效处理大量Socket事件的场景，例如高并发的网络服务器。需要注意的是，在使用ET模式时，程序需要及时处理所有的就绪事件，否则可能会导致事件丢失。因此，在选择LT模式和ET模式时，需要根据具体的应用场景和需求进行选择。
+- LT模式的特性如下：稳定性高：由于LT模式会在Socket缓冲区中有数据可读或可写时一直触发事件，因此可以保证程序能够及时处理所有的数据，避免数据丢失或延迟。适用性广：由于LT模式不需要考虑数据是否已经被读取或写入，因此适用于各种不同的Socket应用场景，包括HTTP、FTP、SMTP等。编程简单：由于LT模式只需要在事件触发时进行相应的处理，因此编程比较简单，容易实现和维护。可靠性高：由于LT模式会在Socket缓冲区中有数据可读或可写时一直触发事件，因此可以保证程序能够及时处理所有的数据，避免数据丢失或延迟。总的来说，LT模式是一种稳定性高、适用性广、编程简单、可靠性高的Socket触发方式，适用于各种不同的Socket应用场景。
+- select的LT模式
+
+```
+fd_set read_fds;
+FD_ZERO(&read_fds);
+FD_SET(sockfd, &read_fds);
+select(sockfd + 1, &read_fds, NULL, NULL, NULL);
+```
+
+- select的ET模式
+
+```
+int flags = fcntl(sockfd, F_GETFL, 0);
+fcntl(sockfd, F_SETFL, flags | O_NONBLOCK);
+```
+
+- epoll的ET
+
+```cpp
+int epoll_fd = epoll_create(1);
+struct epoll_event event;
+event.data.fd = sockfd;
+event.events = EPOLLIN | EPOLLET;
+epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sockfd, &event);
+//在等待事件触发时，可以使用epoll_wait函数等待事件的触发，并指定超时时间。例如，以下代码等待Socket事件的触发，并处理就绪事件：
+struct epoll_event events[MAX_EVENTS];
+int n = epoll_wait(epoll_fd, events, MAX_EVENTS, timeout);
+for (int i = 0; i < n; i++) {
+    if (events[i].events & EPOLLIN) {
+        // 处理读事件
+    }
+    if (events[i].events & EPOLLOUT) {
+        // 处理写事件
+    }
+}
+```
+
+- epoll的LT模式:LT模式是epoll的默认触发方式，因此在使用epoll时，如果不指定触发方式，则默认为LT模式。以下代码将Socket文件描述符注册到epoll实例中，并设置LT模式
+
+```
+int epoll_fd = epoll_create(1);
+struct epoll_event event;
+event.events = EPOLLIN;
+event.data.fd = sockfd;
+epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sockfd, &event);
+```
