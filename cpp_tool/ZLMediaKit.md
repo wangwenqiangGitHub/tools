@@ -185,3 +185,45 @@ sudo apt install boost-dev
 ffmpeg -f gdigrab -i desktop -framerate 25 -s 640x480 -pix_fmt yuv420p  -vcodec libx264 -profile baseline -tune zerolatency  -g 25 -f rtp rtp://127.0.0.1:56000
 # 打开easy_webrtc_server/webrtchtml/index.html既可以观看流
 ```
+
+### clion调试代码
+
+- 程序运行
+
+```shell
+#1.本机clion启动mediaServer程序
+#2.命令行运行ffmpeg推流
+ffmpeg -stream_loop -1 -re -i ~/Downloads/source.200kbps.768x320.flv -acodec copy -vcodec copy -f flv  rtmp://127.0.0.1:1935/live/test
+#3.命令行拉流
+ffplay rtsp://127.0.0.1:554/live/test
+```
+
+- clion调试
+
+```
+//RingBuffer类中的write方法会分发，就是先切换线程，查看函数的调用栈比较困难，需要重写一下write方法
+ for (auto &pr : _dispatcher_map) {
+            auto &second = pr.second;
+            //切换线程后触发onRead事件
+//            pr.first->async([second, in, is_key]() { second->write(std::move(const_cast<T &>(in)), is_key); }, false);
+            second->write(std::move(const_cast<T &>(in)), is_key);
+        }
+// RtspSession中的sendRtpPacket方法是对客户端发送数据包,可以在pSock-send()函数处打断点调试
+// 1 Socket::onRead触发可读事件
+// 2 Rtmp::onRecv触发
+// 3 RtmpProtocal::onParseRtmp
+// 4 HttpRequestSplitter::input
+// RtmpProtocol::handle_chunk用于处理RTMP协议的数据块(chunk)。在rtmp协议中，数据被分成一个固定大小的数据块，每个数据块包含了一些元数据和实际数据，这个函数的作用就是解析这些数据块，提取元数据和实际数据，根据协议规定的顺序和方式将它们组合成完成的数据流。
+具体操作:解析数据块头部，提取出数据块的长度，类型时间戳等元数据；根据协议规定的时间戳顺序，将数据块组合成完整的数据流交给上层的应用程序或者媒体数据播放器进行处理。
+```
+
+### 基本概念
+
+- rtsp mediaSource
+  - pps是Picture Parameter
+    Set图像参数集，PPS包含了编码图像的特定参数，如量化参数，运动补偿等参考帧，在视频编码时，每个图像都需要使用一个pps进行编码。解码时，需要解码器使用的pps进行解码，以便可以正确的还原出原始图像/
+  - SPS是Sequenece Parameter
+    Set序列参数集，一起构成了视频编码标准的参数集。SPS包含了视频序列的参数，如帧数据大小，帧率，比特率等信息，PPS和SPS一起传输给解码器，可以解码器能够正确地解码视频流。
+  - SDP代表会话描述协议(Session Description
+    Protocal),是一种文本格式的协议，用于描述多媒体会话的参数，SDP通常用于VoIP和视频会议等应用中，以便在参与者之间之间交换会话信息。
+  - GOP代表“group of pictures，即一组图像，GOP是视频编码中的一个重要概念，它定义了视频序列中的图像帧的组织方式。

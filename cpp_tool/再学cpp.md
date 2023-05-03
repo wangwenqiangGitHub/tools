@@ -259,3 +259,7 @@ event.events = EPOLLIN;
 event.data.fd = sockfd;
 epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sockfd, &event);
 ```
+
+### 右值引用
+
+- 右值引用可以减少对象的拷贝次数，可以将临时对象的值，直接移动到目标对象，不需要将对象进行拷贝构造
