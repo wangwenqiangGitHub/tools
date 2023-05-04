@@ -190,12 +190,21 @@ ffmpeg -f gdigrab -i desktop -framerate 25 -s 640x480 -pix_fmt yuv420p  -vcodec 
 
 - 程序运行
 
+  - 推rtmp流,拉rtsp流
+
 ```shell
 #1.本机clion启动mediaServer程序
 #2.命令行运行ffmpeg推流
 ffmpeg -stream_loop -1 -re -i ~/Downloads/source.200kbps.768x320.flv -acodec copy -vcodec copy -f flv  rtmp://127.0.0.1:1935/live/test
 #3.命令行拉流
 ffplay rtsp://127.0.0.1:554/live/test
+```
+
+    - 推rtsp流，拉rtmp流
+
+```
+ffmpeg.exe -re -stream_loop -1 -i out.flv -vcodec copy -rtsp_transport tcp -f rtsp rtsp://192.168.206.129:8090/h264/stream1
+ffplay.exe rtmp://192.168.206.129:8092/h264/stream1
 ```
 
 - clion调试
