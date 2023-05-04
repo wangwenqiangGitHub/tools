@@ -207,6 +207,40 @@ ffmpeg.exe -re -stream_loop -1 -i out.flv -vcodec copy -rtsp_transport tcp -f rt
 ffplay.exe rtmp://192.168.206.129:8092/h264/stream1
 ```
 
+    - 嵌入式设备存储音视频文件
+
+```
+https://github.com/ZLMediaKit/ZLMediaKit/issues/658
+#MP4Muxer.cpp
+createWriter(MOV_FLAG_FASTSTART, true);
+Index: src/Record/MP4Muxer.cpp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Record/MP4Muxer.cpp b/src/Record/MP4Muxer.cpp
+--- a/src/Record/MP4Muxer.cpp(revision a4ba0c2b60c682e823cc0900fb42b422d75ecb0e)
+    +++ b/src/Record/MP4Muxer.cpp(date 1618381598000)
+    @@ -29,7 +29,7 @@
+     
+     MP4FileIO::Writer MP4Muxer::createWriter(){
+          GET_CONFIG(bool, mp4FastStart, Record::kFastStart);
+     -    return _mp4_file->createWriter(mp4FastStart ? MOV_FLAG_FASTSTART : 0, false);
+     +    return _mp4_file->createWriter(MOV_FLAG_SEGMENT, true);
+      }
+ 
+ void MP4Muxer::closeMP4(){
+ @@ -79,6 +79,8 @@
+          }
+         //开始写文件
+         _started = true;
+         +        initSegment();
+         +        saveSegment();
+              }
+ 
+     //mp4文件时间戳需要从0开始
+```
+
 - clion调试
 
 ```
