@@ -262,7 +262,7 @@ diff --git a/src/Record/MP4Muxer.cpp b/src/Record/MP4Muxer.cpp
 
 ### 基本概念
 
-- rtsp mediaSource
+- rtsp mediaSource,SDP是rtsp中的关键信息可以获取sps, pps
   - pps是Picture Parameter
     Set图像参数集，PPS包含了编码图像的特定参数，如量化参数，运动补偿等参考帧，在视频编码时，每个图像都需要使用一个pps进行编码。解码时，需要解码器使用的pps进行解码，以便可以正确的还原出原始图像/
   - SPS是Sequenece Parameter
@@ -270,3 +270,12 @@ diff --git a/src/Record/MP4Muxer.cpp b/src/Record/MP4Muxer.cpp
   - SDP代表会话描述协议(Session Description
     Protocal),是一种文本格式的协议，用于描述多媒体会话的参数，SDP通常用于VoIP和视频会议等应用中，以便在参与者之间之间交换会话信息。
   - GOP代表“group of pictures，即一组图像，GOP是视频编码中的一个重要概念，它定义了视频序列中的图像帧的组织方式。
+
+- rtmp mediaSource
+  - metadata，不是必须的但是很重要,包括音视频codec id高度,采样率等信息
+  - config frame是特殊的rtmp packet格式一样，但是包含sps pps aac adts等
+  - rtmp packet(h264/aac)
+
+- 媒体中最重要的两个概念:track和frame是媒体文件中的两个重要概念。在媒体文件中，track指的是一组相关的媒体数据，例如音频或视频。而frame则是媒体数据中的一个单独的图像或音频样本。在媒体文件中，每个track都包含了一系列的frames。这些frames按照时间顺序排列，形成了媒体文件的时间轴。每个frame都包含了一些元数据，例如时间戳、帧类型、编码格式等等。在媒体文件中，track和frame数据都是通过特定的函数进行处理和解析的。具体来说，track数据通常是通过解析文件头部信息来获取的，而frame数据则是通过解析媒体数据流来获取的。这些函数通常由媒体文件的解码器或播放器来实现。媒体数据需要包含这两种数据，因为它们共同构成了媒体文件的基本结构。通过解析track和frame数据，媒体播放器可以准确地按照时间轴播放媒体文件，并且可以根据需要进行解码和渲染。因此，track和frame数据是媒体文件中不可或缺的组成部分。
+  - Track(轨道, 描述音视频codec信息，还有其他的元数据，包括sps, pps)
+  - Frame帧数据 H264,H265/AAC/G711
