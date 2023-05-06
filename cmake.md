@@ -80,3 +80,25 @@ INTERFACE:对外公开，对内不公开，可传递头文件目录以及链接�
 # 编译选项
 
 - -fPIC是作用与编译阶段，告诉编译器产生与位置无关代码(position Independent Code)则产生的代码中没有绝对地址，全部使用相对地址
+
+# protobuf编译选项
+
+```cmake
+add_custom_command(OUTPUT rpc.pb.cc rpc.pb.h
+        COMMAND protoc
+        ARGS --cpp_out . ${CMAKE_CURRENT_SOURCE_DIR}/rpc.proto -I${CMAKE_CURRENT_SOURCE_DIR}
+        DEPENDS rpc.proto
+        VERBATIM )
+
+set_source_files_properties(rpc.pb.cc PROPERTIES COMPILE_FLAGS "-Wno-conversion")
+```
+
+# 编译文件输出路径
+
+```
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/static)
+```
+
+<++>
