@@ -263,3 +263,22 @@ epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sockfd, &event);
 ### 右值引用
 
 - 右值引用可以减少对象的拷贝次数，可以将临时对象的值，直接移动到目标对象，不需要将对象进行拷贝构造
+
+### std::stringstream类型的数据提取
+
+- 当使用>>运算符从std::stringstream类型的数据中提取std::string类型的数据时，遇到空格、制表符、换行符等空白字符或者遇到字符串结束符\0时，提取操作就会结束。
+
+```
+std::stringstream ss("Hello, world!");
+std::string str;
+std::getline(ss, str);
+```
+
+- std::getline()函数会从ss中提取整个字符串"Hello, world!"，并将其存储到str中。
+- std::string子函数
+
+```
+std::string test = "xml.a.core.system";
+auto pos = test.find_first_of('.');
+std::string a = test.substr(pos); // .a.core.system
+```
