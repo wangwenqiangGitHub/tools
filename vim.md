@@ -25,6 +25,7 @@ cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
   - ctrl+b & kill session
   - ctrl+b ( session 切换
   - ctrl+b ) session 切换
+  - ctrl+b c-c new session
   - tmux list-keys查看所有快捷键
 
 - tmux window/pane
