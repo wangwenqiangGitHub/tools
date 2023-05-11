@@ -20,3 +20,17 @@ fsutil.exe file setCaseSensitiveInfo <path> disable
 ```
 $env:HTTP_PROXY="http://127.0.0.1:1080"
 ```
+
+# windows程序编译
+
+- msys2中安装编译
+
+```
+pacman -S mingw-w64-x86_64-toolchain make
+pacman -S mingw-w64-x86_64-gnutls mingw-w64-x86_64-libgcrypt mingw-w64-x86_64-libtasn1
+./configure --prefix=/usr/local --disable-static
+make
+make install
+```
+
+- vs中编译
