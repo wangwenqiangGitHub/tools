@@ -19,7 +19,17 @@ cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
 
 ## tmux重要功能补充
 
-- ctrl+b z 全屏/恢复面板窗口
+- tmux session
+  - ctrl+b c-f 查找session
+  - ctrl+b $ 重命名session
+  - ctrl+b & kill session
+  - ctrl+b ( session 切换
+  - ctrl+b ) session 切换
+  - tmux list-keys查看所有快捷键
+
+- tmux window/pane
+  - ctrl+b z 全屏/恢复面板窗口
+  - ctrl+b x kill pane
 
 ## 查看vim的安装路径
 
