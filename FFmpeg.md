@@ -428,6 +428,7 @@ ffmpeg -f dshow -i video="USB webcam" -vcodec libx264 -acodec aac -ar 44100 -ac 
 ```
 
 # FFmpeg从mp4提取h264视频和aac文件
+
 ```
 ffmpeg -i test.mp4 -an -vcodec copy -f h264 test.h264
 ffmpeg -i test.mp4 -av -vcodec copy -f aac test.aac
