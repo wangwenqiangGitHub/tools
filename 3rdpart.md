@@ -24,3 +24,38 @@
   - 7 将其中一行 xmltest.o：tinyxml.h tinystr.h 删除，因为不需要编译测试文件
   - 8 保存Makefile文件
   - 9 回退到上一层目录即目录tinyxml中，执行make命令，即可在该目录得到编译出来的动态库文件libtinyxml.so
+
+# busybox
+
+- 安装交叉编译链
+  - 配置环境变量
+- 下载busybox
+
+```
+wget http://busybox.net/downloads/busybox-2.23.tar.bz2
+tar -xjf busybox-2.23.tar.bz2
+cd busybox-2.23/
+```
+
+- 配置编译安装busybox
+
+```
+配置： 
+ 生成默认arm版配置文件.config：  
+    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig
+ 通过图形界面修改配置文件.config： 
+    make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
+ 在编译选项中，一般选择静态方式
+```
+
+- 编译：
+
+```
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
+```
+
+- 安装
+
+```
+make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- install
+```
