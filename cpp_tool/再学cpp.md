@@ -260,6 +260,13 @@ event.data.fd = sockfd;
 epoll_ctl(epoll_fd, EPOLL_CTL_ADD, sockfd, &event);
 ```
 
+- epoll 使用LT模式的原因
+  - poll兼容
+  - LT模式不会出现发生漏掉事件的bug，但是POLLOUT事件不能一开始就关注，否则会出现busyloop的现象，而应该在write无法完全写入内核缓冲区的时候才关注，将未写到内核缓冲区的数据添加到应用层output
+    buffer直到应用层output buffer写完，停止关注POLLOUT事件。
+  - 读写的时候不必等到EAGAIN，可以减少系统调用次数，降低延迟，---边沿触发只通知一次，没有处理好，就会出现事件漏掉的bug，ET模式会多读一次直到读到EAGAIN,至少多读一次(boost
+    asio, libevent都是采用LT模式)
+
 ### 右值引用
 
 - 右值引用可以减少对象的拷贝次数，可以将临时对象的值，直接移动到目标对象，不需要将对象进行拷贝构造
