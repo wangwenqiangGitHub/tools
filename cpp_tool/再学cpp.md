@@ -289,3 +289,7 @@ std::string test = "xml.a.core.system";
 auto pos = test.find_first_of('.');
 std::string a = test.substr(pos); // .a.core.system
 ```
+
+# weak\_ptr与shared\_ptr
+
+- weakSelf.lock()是std::weak\_ptr类的成员函数，用于获取一个指向底层对象的std::shared\_ptr,如果std::weak\_ptr对象已经失效，即指向的底层对象已经被释放，那么std::shared\_ptr将为空指针。
