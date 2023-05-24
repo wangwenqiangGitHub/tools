@@ -174,3 +174,5 @@ passwd yonghuming
 # 新机
 sudo passwd root
 ```
+
+# 终端显示不正常后输入reset解决输入乱码问题
