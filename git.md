@@ -337,3 +337,18 @@ git stash clear
 ```
 git stash  --help
 ```
+
+# git将branch1分支的某次提交合并到branch2分支中
+
+```
+在branch1分支中:git log #查看提交及哈希值
+在branch2分支中:git cherry-pick <commit hash>
+在branch2分支中，使用git push命令将更改推送到远程存储 git push origin branch2
+```
+
+# git在rep1将几次提交合并到rep2中
+
+```
+rep1中: git format-patch <commit hash>..HEAD
+rep2中: git apply 0001-<commit message>.patch
+```
