@@ -14,4 +14,5 @@ cargo build
 sudo apt install fzf
 # 类似于z autojump工具
 sudo apt install zoxide
+# 关于批量修改文件采用joshuto, bulk_rename命令需要设置$EDITOR环境变量
 ```
