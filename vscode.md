@@ -58,3 +58,9 @@ alt-o
 # vscode解决terminal打开默认时shell，需要手动切换为bash问题
 
 - settings 中 Terminal\>Integrade\>Default Profile:linx选择bash
+
+# vs中快速打开vsvimrc
+
+```
+:nnoremap <leader>v :e C:\Users\戴尔\_vsvimrc<CR>
+```
