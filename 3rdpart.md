@@ -59,3 +59,12 @@ make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
 ```
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- install
 ```
+
+# protobuf3.8编译
+
+```
+sudo apt install autoreconf automake libtool
+./automake.sh
+./autogen.sh
+make -j4 && make install
+```
