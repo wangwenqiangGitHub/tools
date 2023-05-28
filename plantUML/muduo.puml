@@ -1,0 +1,465 @@
+@startuml
+class InetAddress {
+    -ip_: uint32_t
+    -port_: uint16_t
+    +InetAddress() (uint16_t port)
+    +InetAddress(const std::string& ip, uint16_t port)
+    +InetAddress(const struct sockaddr_in& addr)
+    +setSockAddrInet(struct sockaddr_in* addr) const
+    +toIp() const
+    +toIpPort() const
+    +toPort() const
+    +ipNetEndian() const
+    +portNetEndian() const
+    +resolve(const std::string& hostname, InetAddress* out)
+}
+
+class Buffer {
+    -buffer_: std::vector<char>
+    -readIndex_: size_t
+    -writeIndex_: size_t
+    +Buffer()
+    +size() const
+    +readableBytes() const
+    +writableBytes() const
+    +prependableBytes() const
+    +peek() const
+    +retrieve(size_t len)
+    +retrieveUntil(const char* end)
+    +retrieveAll()
+    +retrieveAsString(size_t len)
+    +append(const char* data, size_t len)
+    +append(const void* data, size_t len)
+    +append(const std::string& str)
+    +ensureWritableBytes(size_t len)
+    +hasWritten(size_t len)
+    +unwrite(size_t len)
+    +peekInt8() const
+    +peekInt16() const
+    +peekInt32() const
+    +peekInt64() const
+    +peekUint8() const
+    +peekUint16() const
+    +peekUint32() const
+    +peekUint64() const
+    +readInt8()
+    +readInt16()
+    +readInt32()
+    +readInt64()
+    +readUint8()
+    +readUint16()
+    +readUint32()
+    +readUint64()
+    +appendInt8(int8_t x)
+    +appendInt16(int16_t x    +appendInt32(int32_t x)
+    +appendInt64(int64_t x)
+    +appendUint8(uint8_t x)
+    +appendUint16(uint16_t x)
+    +appendUint(uint32_t)
+    +appendUint64(uint64_t x)
+    +prependInt8(int8_t x)
+    +prependInt16(int16_t x)
+    +prependInt32(int32_t x)
+    +prependInt64(int64_t x)
+   prependUint8(uint8_t x)
+    +prependUint16(uint16_t x)
+    +prependUint32(uint32_t x)
+    +prependUint64(uint64_t x)
+    +shrink(size_t reserve)
+    +internal() const
+    +makeSpace(size_t len)
+}
+
+class TcpConnection {
+    -loop_: EventLoop*
+    -name_: std::string
+    -state_: std::atomic_int
+    -socket std::unique_ptr<Socket>
+    -channel_: std::unique_ptr<Channel>
+    -localAddr_: InetAddress
+    -peerAddr_: InetAddress
+    -highWaterMarkCallback_: HighWaterMarkCallback
+    -writeCompleteCallback_: WriteCompleteCallback
+    -closeCallback_: CloseCallback
+    -connectionCallback_: ConnectionCallback
+    -messageCallback_: MessageCallback
+    -context_: std::any
+    -inputBuffer_: Buffer
+    -outputBuffer_: Buffer
+    +TcpConnection(EventLoop* loop, const std::string& name, int sockfd, const InetAddress& localAddr, const InetAddress& peerAddr)
+    +~TcpConnection()
+    +getLoop() const
+	getName() const
+    +getState() const
+    +setContext(const std::any& context)
+    +getContext() const
+    +setHighWaterMarkCallback(const HighWaterMarkCallback& cb, size_t highWaterMark)
+    +setWriteCompleteCallback(const WriteCompleteCallback& cb)
+    +setCloseCallback(const CloseCallback& cb)
+    +setConnectionCallback(const ConnectionCallback& cb)
+    +setMessageCallback(const MessageCallback& cb)
+    +send(const void* data, int len)
+    +send(const std::string& message)
+    +send(Buffer* message)
+    +shutdown()
+    +forceClose()
+    +forceCloseWithDelay(double seconds)
+    +setTcpNoDelay(bool on)
+    +startRead()
+    +stopRead()
+    +isReading() const
+    +getLocalAddress() const
+    +getPeerAddress() const
+    +getTcpInfo(struct tcp_info*) const
+    +getTcpInfoString() const
+    +getContext()
+    +getContextMutable()
+
+    ---
+
+    +handleRead(Timestamp receiveTime)
+    +handleWrite()
+    +handleClose()
+    +handleError()
+    +sendInLoop(const void* data, size_t len)
+    +shutdownInLoop()
+    +forceCloseInLoop()
+    +setState(StateE s)
+    +startReadInLoop()
+    +stopReadInLoop()
+}
+
+class TcpServer {
+    -loop_: EventLoop*
+    -name_: std::string
+    -acceptor_: std::unique_ptr<Acceptor>
+    -threadPool_: std::shared_ptr<EventLoopThreadPool>
+    -connectionCallback_: ConnectionCallback
+    -messageCallback_: MessageCallback
+    -started_: std::atomic_bool
+    -nextConnId_: std::atomic_int64_t
+    -connections_: std::unordered_map<std::string, TcpConnectionPtr>
+    +TcpServer(EventLoop* loop, const InetAddress& listenAddr, const std::string& name, Option option = kNoReusePort)
+    +~TcpServer()
+    +setThreadNum(int numThreads)
+    +start()
+    +setConnectionCallback(const ConnectionCallback& cb)
+    +setMessageCallback(const MessageCallback& cb)
+    +setThreadInitCallback(const ThreadInitCallback& cb)
+    +getLoop() const
+    +getIpPort() const
+    +getName() const
+    +setReuseAddr(bool on)
+    +setReusePort(bool)
+    +setTcpNoDelay(bool on)
+
+ ---
+
+    +newConnection(int sockfd, const InetAddress& peerAddr)
+    +removeConnection(const TcpConnectionPtr& conn)
+    +removeConnectionInLoop(const TcpConnectionPtr& conn)
+
+}
+
+class Acceptor {
+    -loop_: EventLoop*
+    -acceptSocket_: Socket
+    -acceptChannel_: Channel
+    -newConnectionCallback_: NewConnectionCallback
+    -listenning_: bool
+    -idleFd_: int
+    +Acceptor(EventLoop* loop, const InetAddress& listenAddr, bool reuseport)
+    +~Acceptor()
+    +listen()
+    +handleRead()
+    +setNewConnectionCallback(const NewConnectionCallback& cb)
+
+    ---
+
+    +listenning() const
+    +idleFd() const
+}
+
+class Channel {
+    -loop_: EventLoop*
+    -fd_: int
+    -events_: int
+    -revents_: int
+    -index_: int
+    -eventHandling_: bool
+ -addedToLoop_: bool
+    -readCallback_: EventCallback
+    -writeCallback_: EventCallback
+    -closeCallback_: EventCallback
+    -errorCallback_: EventCallback
+    +Channel(EventLoop* loop, int fd)
+    +~Channel()
+    +handleEvent(Timestamp receiveTime)
+    +setReadCallback(const EventCallback& cb)
+    +setWriteCallback(const EventCallback& cb)
+    +setCloseCallback(const EventCallback& cb)
+    +setErrorCallback(const EventCallback& cb)
+    +tie(const std::shared_ptr<void>&)
+    +remove()
+    +isNoneEvent() const
+    +enableReading()
+    +enableWriting()
+    +disableWriting()
+    +disableAll()
+    +isWriting() const
+    +update()
+
+    ---
+
+    +update()
+    +handleEventWithGuard(Timestamp receiveTime)
+
+}
+
+class EpollPoller {
+    -ownerLoop_: EventLoop*
+    -epollfd_: int
+    -events_: std::vector<struct epoll_event>
+    +EpollPoller(EventLoop* loop)
+    +~EpollPoller()
+    +poll(int timeout, ChannelList* activeChannels)
+    +updateChannel(Channel* channel)
+    +removeChannel(Channel* channel)
+    +hasChannel(Channel* channel) const
+
+    ---
+
+    +fillActiveChannels(int numEvents, ChannelList* activeChannels) const
+    +update(int operation, Channel* channel)
+
+}
+
+class EventLoop {
+    -looping_: bool
+    -quit_: bool
+    -eventHandling_: bool
+    -callingPendingFunctors_: bool
+    -iteration_: int
+    -threadId_: std::thread::id
+    -poller_: std::unique_ptr<Poller>
+    -timerQueue_: TimerQueue
+    -wakeupFd_: int
+    -wakeupChannel_: std::unique_ptr<Channel>
+    -currentActiveChannel_: Channel*
+    -mutex_: std::mutex
+    -pendingFunctors_: std::vector<Functor>
+    +EventLoop()
+    +~EventLoop()
+    +loop()
+    +quit()
+    +runInLoop(Functor cb)
+    +queueInLoop(Functor cb)
+    +runAt(Timestamp time, TimerCallback cb)
+    +runAfter(double delay, TimerCallback cb)
+    +runEvery(double interval, TimerCallback cb)
+    +updateChannel(Channel* channel)
+    +removeChannel(Channel* channel)
+    +hasChannel(Channel* channel)
+    +abortNotInLoopThread()
+    +isInLoopThread() const
+    +assertInLoopThread()
+    +getIteration() const
+    +runInLoop(std::function<void()> cb)
+    +queueInLoop(std::function<void()> cb)
+    +runAt(Timestamp time, std::function<void()> cb)
+    +runAfter(double delay, std::function<void()> cb)
+    +runEvery(double interval, std::function<void()> cb)
+
+    ---
+
+    +handleRead()
+    +doPendingFunctors()
+    +printActiveChannels() const
+
+}
+
+class EventLoopThread {
+    -loop_: EventLoop*
+    -thread_: std::thread
+    -mutex_: std::mutex
+    -cond_: std::condition_variable
+    -callback_: Functor
+    +EventLoopThread()
+    +~LoopThread()
+    +start()
+    +join()
+    +getLoop()
+
+    ---
+
+    +threadFunc()
+
+}
+
+class EventLoopThreadPool {
+    -loop_: EventLoop*
+    -name_: std::string
+    -started_: bool
+    -numThreads_: int
+    -next_: int
+    -threads_: std::vector<std::unique_ptr<EventLoopThread>>
+    -loops_: std::vector<EventLoop*>
+    +EventLoopThreadPool(EventLoop* baseLoop, const std::string& name)
+    +~EventLoopThreadPool()
+    +setThreadNum(int numThreads)
+    +start()
+    +getNextLoop()
+    +getAllLoops()
+
+}
+
+class Socket {
+    -fd_: int
+    +Socket(int sockfd)
+    +~Socket()
+    +fd() const
+    +bindAddress(const InetAddress& localaddr)
+    +listen()
+    +accept(InetAddress* peeraddr)
+    +shutdownWrite()
+    +setTcpNoDelay(bool on)
+    +setReuseAddr(bool on)
+    +setReusePort(bool on)
+    +setKeepAlive(bool on)
+
+}
+
+class Timer {
+    -expiration_: Timestamp
+    -interval_: double
+    -repeat_: bool
+    -callback_: TimerCallback
+    +Timer(TimerCallback cb, Timestamp when, double interval)
+    +expiration() const
+    +repeat() const
+    +run() const
+    +restart(Timestamp now)
+
+}
+
+class TimerQueue {
+    -loop_: EventLoop*
+    -timers_: std::set<TimerPtr>
+    -timerfd_: int
+    -timerfdChannel_: std::unique_ptr<Channel>
+    +TimerQueue(EventLoop* loop)
+    +~TimerQueue()
+    +addTimer(TimerCallback cb, Timestamp when, double interval)
+    +cancel(TimerId timerId)
+
+    ---
+
+    +addTimerInLoop(TimerPtr timer)
+    +cancelInLoop(TimerId timerId)
+    +handleRead()
+
+}
+
+class Connector {
+    -loop_: EventLoop*
+   serverAddr_: InetAddress
+    -connect_: bool
+    -state_: StateE
+    -retryDelayMs_: int
+    -connector_: std::unique_ptr<Channel>
+    -newConnectionCallback_: NewConnectionCallback
+    -connectCallback_: EventCallback
+    -connecting_: bool
+    -socket_: std::unique_ptr<Socket>
+    -channel_: std::unique_ptr<Channel>
+    -retryTimer_: TimerId
+    +Connector(EventLoop* loop, const InetAddress& serverAddr)
+    +~Connector()
+    +start()
+    +restart    +stop()
+
+    ---
+
+    +connect()
+    +connecting(int sockfd)
+    +handleWrite()
+    +handleError()
+    +retry(int sockfd)
+    +removeAndResetChannel()
+    +resetChannel()
+
+}
+
+class TcpClient {
+    -loop_: EventLoop*
+    -connector_: std::unique_ptr<Connector>
+    -connection_: TcpConnectionPtr
+    -retry_: bool
+    -connect_: bool
+    -nextConnId_: std::atomic_int64_t
+    -name_: std::string
+    -connectionCallback_: ConnectionCallback
+    -messageCallback_: MessageCallback
+    -writeCompleteCallback_: WriteCompleteCallback
+    +TcpClient(EventLoop* loop, const InetAddress& serverAddr, const std::string& name)
+    +~TcpClient()
+    +connect()
+    +disconnect()
+    +stop()
+    +retry()
+    +isConnected() const
+    +connection() const
+    +getLoop() const
+    +setName(const std::string& name)
+    +setConnectionCallback(const ConnectionCallback& cb)
+    +setMessageCallback(const MessageCallback& cb)
+    +setWriteCompleteCallback(const WriteCompleteCallback& cb)
+
+    ---
+
+    +newConnection(int sockfd)
+    +removeConnection(const TcpConnectionPtr& conn)
+
+}
+
+InetAddress --> Socket
+InetAddress --> TcpConnection
+InetAddress --> TcpServer
+InetAddress --> Acceptor
+InetAddress --> Connector
+Buffer --> TcpConnection
+TcpConnection --> EventLoop
+TcpConnection --> Socket
+TcpConnection --> Channel
+TcpConnection --> InetAddress
+TcpConnection --> Buffer
+TcpConnection --> TcpServer
+TcpConnection --> TcpClient
+TcpServer --> EventLoop
+TcpServer --> Acceptor
+TcpServer --> TcpConnection
+Acceptor --> EventLoop
+Acceptor --> Socket
+Acceptor --> Channel
+Channel --> EventLoop
+Channel --> Socket
+EpollPoller --> Poller
+Poller --> Channel
+Poller --> EventLoop
+EventLoop --> Channel
+EventLoop --> Poller
+EventLoop --> TimerQueue
+EventLoop --> EventLoopThread
+EventLoop --> EventLoopThreadPool
+EventLoopThread --> EventLoop
+Timer --> TimerQueue
+TimerQueue --> EventLoop
+Socket --> InetAddress
+Socket --> Connector
+Connector --> EventLoop
+Connector --> Socket
+Connector --> Channel
+TcpClient --> Connector
+TcpClient --> EventLoop
+TcpClient --> TcpConnection
+@enduml
