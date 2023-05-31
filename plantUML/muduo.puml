@@ -70,6 +70,15 @@ class Buffer {
     +makeSpace(size_t len)
 }
 
+class Buffer
+note left: 为什么non-blocking网络编程中应用层buffer是必需的，\n \
+non-blocking IO的核心思想是避免阻塞在read()或者write()上或者其他系统调用上，\n \
+这样可以最大限度地复用thread-of-control,让一个线程可以服务于多个socket连接。\n \
+IO线程只能在IO multiplexing函数上，如select/poll/epoll_wait。\n这样一来，应用层 \
+的缓冲区是必须的, \n每个TCP的 socket都要有stateful的input buffer 和 output buffer \n \
+(TCP Socket Stateful 意味着 TCP 连接是一种状态化的连接，\n 它需要在客户端和服务器之间建立一个持久的连接，\n \
+以便在数据传输过程中保持连接状态。这种连接状态包括连接的建立、数据传输和连接的关闭等过程)
+
 class TcpConnection {
     -loop_: EventLoop*
     -name_: std::string
