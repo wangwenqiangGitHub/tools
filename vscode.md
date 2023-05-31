@@ -47,8 +47,7 @@ alt-o
 # 分屏相关快捷键
 
 分屏 ctrl+\
-关闭页面 ctrl+w
-合并分屏 ctrl+alt+\
+关闭页面 ctrl+w 合并分屏 ctrl+alt+\
 合并所有分屏 ctrl+shift+alt+\
 三列编辑器布局 shift+alt+3 切换分屏 ctrl+1/2/3
 
@@ -94,9 +93,9 @@ https://snippet-generator.app/
 - setting.json 中添加配置
 
 ```
-  "emmet.triggerExpansionOnTab": true,
-  "emmet.includeLanguages": {
-    "vue-html": "html",
-    "vue": "html"
-  }
+"emmet.triggerExpansionOnTab": true,
+"emmet.includeLanguages": {
+  "vue-html": "html",
+  "vue": "html"
+}
 ```
