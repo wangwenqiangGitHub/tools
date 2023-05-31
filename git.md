@@ -352,3 +352,9 @@ git stash  --help
 rep1中: git format-patch <commit hash>..HEAD
 rep2中: git apply 0001-<commit message>.patch
 ```
+
+# git 保存密码
+
+```
+git config --global credential.helper store
+```
