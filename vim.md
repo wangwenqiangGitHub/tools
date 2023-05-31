@@ -31,6 +31,8 @@ cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
 - tmux window/pane
   - ctrl+b z 全屏/恢复面板窗口
   - ctrl+b x kill pane
+- tmux 在mac-Item2中设置
+  - Settings-profiles-terminal-enable.mouse.reporting不打开这个会有问题，鼠标不好用
 
 ## 查看vim的安装路径
 
