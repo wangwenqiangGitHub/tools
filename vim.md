@@ -201,3 +201,11 @@ s/\(\w.*\)/data[10] = "\1";
 	"cpp":["app"]
 },
 ```
+
+# coc的配置
+
+```
+# tab 按键会默认第一个跳过, 将coc-settings.json拷贝到 ～/.vim下
+https://github.com/neoclide/coc.nvim/issues/1288
+"suggest.enablePreselect": false
+```
