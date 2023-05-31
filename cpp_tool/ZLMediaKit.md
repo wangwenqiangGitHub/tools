@@ -107,7 +107,22 @@ find()
 findAsync()
 ```
 
-## rtsp MediaSource中最重要的两个元素;RTP是实时传输协议，传输层，Real-time Transport Protocol是用于Internet上针对多媒体数据流的一种传输协议。RTP协议详细说明了互联网上传输的音频和视频的标准数据包格式。SDP包中描述了一个Session中包含哪些媒体数据。
+## rtsp MediaSource中最重要的两个元素
+
+- RTP是实时传输协议，传输层，Real-time Transport
+  Protocol是用于Internet上针对多媒体数据流的一种传输协议。RTP协议详细说明了互联网上传输的音频和视频的标准数据包格式。SDP包中描述了一个Session中包含哪些媒体数据。
+- RTP报文包括两部分:报头和有效载荷
+  - V:RTP协议的版本号,占2位.当前协议版本号位2;
+  - P:填充标志，占1位，如果P=1, 则在该报文的尾部填充一个或者多个额外的八位组，它们不是载荷的一部分。
+  - X: 扩展标志，占1位，如果X=1，则在报头后跟一个扩展报头。
+  - CC: CSRC计数器，占4位，指示CSRC标识符的个数
+  - M: 标记，占1位，不同的有效载荷有不同的含义，对于视频，标记一帧的结束；对于音频，标记会话的开始。
+  - PT:有效载荷类型
+  - 序列号
+  - 时间戳
+  - 同步信源
+  - 特约信源
+- 代码中封装了这个RtpHeader，具体参考: `rtp_client/Rtp.h`
 
 ## rtsp中最重要的两个元素
 
@@ -285,3 +300,20 @@ diff --git a/src/Record/MP4Muxer.cpp b/src/Record/MP4Muxer.cpp
 - 媒体中最重要的两个概念:track和frame是媒体文件中的两个重要概念。在媒体文件中，track指的是一组相关的媒体数据，例如音频或视频。而frame则是媒体数据中的一个单独的图像或音频样本。在媒体文件中，每个track都包含了一系列的frames。这些frames按照时间顺序排列，形成了媒体文件的时间轴。每个frame都包含了一些元数据，例如时间戳、帧类型、编码格式等等。在媒体文件中，track和frame数据都是通过特定的函数进行处理和解析的。具体来说，track数据通常是通过解析文件头部信息来获取的，而frame数据则是通过解析媒体数据流来获取的。这些函数通常由媒体文件的解码器或播放器来实现。媒体数据需要包含这两种数据，因为它们共同构成了媒体文件的基本结构。通过解析track和frame数据，媒体播放器可以准确地按照时间轴播放媒体文件，并且可以根据需要进行解码和渲染。因此，track和frame数据是媒体文件中不可或缺的组成部分。
   - Track(轨道, 描述音视频codec信息，还有其他的元数据，包括sps, pps)
   - Frame帧数据 H264,H265/AAC/G711
+
+# 搭建gb28182大华相机推送ps流，sip信令服务器配置，ZLMediaKit转发，ffplay拉流
+
+```
+# 修改gb28182 client代码，将所有ip设置为"0.0.0.0"; 代码中有一处内存问题，需要屏蔽
+sipServer开启
+ZLMediaKit开启，需要sudo权限
+sudo ffplay -i rtmp://127.0.0.1/rtp/71FB04CB
+```
+
+# Camera simulation
+
+[PS封装格式:GB28181协议RTP传输](https://blog.csdn.net/ichenwin/article/details/100086930)
+
+- I帧的PS流格式,需要注意的是SPS，PPS之前需要加上PES头部，一般情况IDR帧很大，超过了RTP负载长度限制(1400字节)，所以I帧要拆分成多个RTP包发送
+- 摄像头模拟软件主要是针对gb28182实现sip信令交互，当sip交互从EXOSIP_MESSAGE_NEW 到 EXOSIP_REGISTRATION_SUCCESS
+  到EXOSIP_CALL_ACK然后新建立rtpClient
