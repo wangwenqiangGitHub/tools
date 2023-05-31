@@ -68,3 +68,24 @@ sudo apt install autoreconf automake libtool
 ./autogen.sh
 make -j4 && make install
 ```
+
+# sip库
+
+## 先编译libosip
+
+```
+./configure --prefix=$(pwd)/OUT
+```
+
+## 编译libexosip2-5.1.2
+
+```shell
+./configure --prefix=$(pwd)/../libosip2-5.1.2/OUT PKG_CONFIG_PATH=$(pwd)/../libosip2-5.1.2/OUT/lib/pkgconfig/
+```
+
+- 如果不加PKG\_CONFIG\_PATH程序编译会出错
+
+```
+wget http://download.savannah.gnu.org/releases/exosip/libexosip2-5.1.2.tar.gz
+wget http://ftp.twaren.net/Unix/NonGNU/osip/libosip2-5.1.2.tar.gz
+```
