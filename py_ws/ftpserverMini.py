@@ -49,6 +49,26 @@ N + 1
 服务器配置管理稍显复杂，不利于安全，服务器需要开放随机高位端口以便客户端可以连接，因此大多数FTP服务软件都可以手动配置被动端口的范围
 被动模式的优点：对客户端网络环境没有要求
 了解了FTP之后，开始使用python来实现FTP服务
+
+mac中需要安装ftp客户端测试:brew Install tnftp
+~
+╰─ ftp 127.0.0.1 2121
+Connected to 127.0.0.1.
+220 pyftpdlib based ftpd ready.
+Name (127.0.0.1:wangwenqiang): wangwenqiang
+331 Username ok, send password.
+Password:
+    230 Login successful.
+    Remote system type is UNIX.
+    Using binary mode to transfer files.
+    ftp> rest 100
+    Restarting at 100 for next get, put or append
+    ftp> q
+    ?Ambiguous command.
+    ftp> exit
+    221 Goodbye.
+
+从 rest100 返回值可以看出
 '''
 
 def main():
