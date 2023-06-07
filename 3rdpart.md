@@ -89,3 +89,10 @@ make -j4 && make install
 wget http://download.savannah.gnu.org/releases/exosip/libexosip2-5.1.2.tar.gz
 wget http://ftp.twaren.net/Unix/NonGNU/osip/libosip2-5.1.2.tar.gz
 ```
+
+- 减少文件体积
+
+```
+arm-linux-gnueabi-strip -s
+/Users/wangwenqiang/Documents/code/r14_ltev2x_app/build/toolchain/gcc-4.9-2016.02-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-strings
+```
