@@ -305,3 +305,8 @@ std::string a = test.substr(pos); // .a.core.system
 # weak\_ptr与shared\_ptr
 
 - weakSelf.lock()是std::weak\_ptr类的成员函数，用于获取一个指向底层对象的std::shared\_ptr,如果std::weak\_ptr对象已经失效，即指向的底层对象已经被释放，那么std::shared\_ptr将为空指针。
+
+# multiset与set
+
+- multiset是支持重复, set会去重，不会排序
+- multiset可以看成一个序列，插入删除都是在O(logn)的时间内完成，而且他能时刻保证序列中的数据是有序的，而序列中可以存在重复的数。
