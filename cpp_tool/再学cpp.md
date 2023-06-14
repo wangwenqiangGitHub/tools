@@ -29,7 +29,7 @@
 
 ### 类型转换
 
-- const\cast
+- const\_cast
   - 用来移除对象的常量性(const away the constness)
   - const\_cast一般用于指针或者引用
   - 使用const\_cast去除const限定的目的不是为了修改它的内容
