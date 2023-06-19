@@ -96,3 +96,35 @@ wget http://ftp.twaren.net/Unix/NonGNU/osip/libosip2-5.1.2.tar.gz
 arm-linux-gnueabi-strip -s
 /Users/wangwenqiang/Documents/code/r14_ltev2x_app/build/toolchain/gcc-4.9-2016.02-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-strings
 ```
+
+# clipp是用于处理命令行
+
+- `clipp::option`用于定义命令行选项。例如，如果接收一个`--file`选项。可以使用clipp::option("--file")
+- `clipp::one_of`:用于定义一个命令行选项,该选项的值必须是给定的几个值之一。例如:如果你的程序接收一个名为`--color`的选项，其值必须是"red", "green",
+  "blue",可以使用clipp::oneof("red","green","blue")
+- `clipp::joinable`:用于指定一个或者多个选项可以连续写在一起。例如-a和-b
+
+```
+#include <clipp.h>
+
+int main(int argc, char* argv[]) {
+    std::string filename;
+    std::string color;
+    bool a = false, b = false;
+
+    auto cli = (
+        clipp::option("--file").doc("the input file") & clipp::value("file", filename),
+        clipp::option("--color").doc("the color") & clipp::one_of("red", "green", "blue").bind(color),
+        clipp::joinable(clipp::option("-a").set(a).doc("option a"), clipp::option("-b").set(b).doc("option b"))
+    );
+
+    if(!clipp::parse(argc, argv, cli)) {
+        std::cout << clipp::make_man_page(cli, argv[0]);
+        return 1;
+    }
+
+    // 在这里使用filename、color、a和b
+
+    return 0;
+}
+```
