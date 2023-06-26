@@ -358,3 +358,11 @@ rep2中: git apply 0001-<commit message>.patch
 ```
 git config --global credential.helper store
 ```
+
+# git cherry-pick
+
+```
+git cherry-pick <hash>
+git cherry-pick --continue\--skip\--abort
+#需要手动解决冲突然后continue
+```
