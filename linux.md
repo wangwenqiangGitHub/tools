@@ -176,3 +176,9 @@ sudo passwd root
 ```
 
 # 终端显示不正常后输入reset解决输入乱码问题
+
+# wget下载网页所有html
+
+```
+wget -nv -c -p -k -H -i
+```
