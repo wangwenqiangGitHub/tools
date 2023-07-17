@@ -128,3 +128,9 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 ```
+
+# sshpass
+
+```shell
+./configure  --prefix=`pwd`/OUT CC=${GCC_ARM_GCC} CXX=${GCC_ARM_CXX} --host=arm-linux-gnueabi --no-create
+```
