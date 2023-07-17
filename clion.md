@@ -1,6 +1,7 @@
 # clion快捷键
 
 - 智能补全: Ctrl+Shift+Space
+- 自动补全位置: `setting|Editor|general|Code Completion`
 
 # clion 快捷键速查连接
 
