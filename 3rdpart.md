@@ -134,3 +134,11 @@ int main(int argc, char* argv[]) {
 ```shell
 ./configure  --prefix=`pwd`/OUT CC=${GCC_ARM_GCC} CXX=${GCC_ARM_CXX} --host=arm-linux-gnueabi --no-create
 ```
+
+# openssl
+
+- projectX86 openssl static lib
+
+```
+./config --prefix=`pwd`/build --openssldir=--prefix=`pwd`/build "-Wl,-dl,--enable-new-dtags,-rpath,$(LIBRPATH)"
+```
