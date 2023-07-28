@@ -366,3 +366,34 @@ git cherry-pick <hash>
 git cherry-pick --continue\--skip\--abort
 #需要手动解决冲突然后continue
 ```
+
+# 开源git contribute步骤
+
+- fork
+
+- clone
+
+```
+git clone <github url>
+```
+
+- 关联开源项目地址
+
+```
+git remote add upstream <open source>
+git remote -v
+```
+
+- 代码提交
+
+```
+git branch 新分支（develop）
+git checkout develop
+// 在本地编辑改变代码
+git add .
+git status
+git commit -m '提交本地代码'
+git push origin master
+```
+
+- PR代码-github操作
