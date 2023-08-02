@@ -46,6 +46,8 @@ cd busybox-2.23/
  通过图形界面修改配置文件.config： 
     make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
  在编译选项中，一般选择静态方式
+设备上编译通过命令:
+make CROSS_COMPILE=/home/wwq/gcc-4.9-2016.02-0x86_64_arm_linux-gnueabi/bin/arm-linux-guneabi- ARCH=arm
 ```
 
 - 编译：
