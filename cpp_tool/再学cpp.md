@@ -350,3 +350,76 @@ private:
 - 虚函数
 - 函数指针
 - 类成员函数指针
+
+# 类型擦除
+
+- 对于地方库实现是c语言的类型封装，比如speak函数，把speak封装成多态的虚函数，可以如下实现:
+```
+// 类型擦除
+struct Cat
+{
+	void speak() const
+	{
+		printf("Meow~~~~\n");
+	}
+};
+struct Dog
+{
+	void speak() const
+	{
+		printf("Woah~~~~\n");
+	}
+};
+struct Animal 
+{
+	virtual void speak() const = 0;
+	virtual ~Animal() = default;
+};
+
+template<class Inner>
+struct AnimalWrapper : Animal
+{
+	Inner m_inner;
+
+	virtual void speak() const override
+	{
+		return m_inner.speak();
+	}
+};
+
+```
+这里我们的animal擦除了speak这个成员函数,而std::any实际上擦除了拷贝构造函数和解构函数，std::function则是擦除了operator()函数;
+
+- 实际上std::any也是一种类型擦除的容器
+
+- 静态初始化用于批量注册函数
+```
+#include <map>
+
+std::map<std::string, std::function<void()>> funcitontab;
+static void catFunc()
+{
+	printf("Meow ~~~\n");
+}
+static int defCat = (functab.emplace("cat", catFunc), 0);
+
+static void dogFunc()
+{
+	printf("Meow ~~~\n");
+}
+static int defDog = (functab.emplace("dog", dogFunc), 0);
+int main()
+{
+	functab.at("cat")();
+	functab.at("dog")();
+	return 0;
+}
+```
+
+# 编译问题
+
+- Linux链接静态库到动态库出错(编译静态库需要开启 -fPIC选项，如果是cmake则是在最前面添加`set(CMAKE_POSITION_INDEPENDENT_CODE ON))`即可，建议linux全部用动态库，windows全部用静态库
+
+- 使用`set(CMAKE_CXX_STANDARD 17)`代替`set(CMAKE_CXX_FLAGS "-std=c++17")`(有概率被覆盖而且不跨平台); `set(CMAKE_CXX_FLAGS "-O3")` (可能会被覆盖，并且不跨平台),`set(CMAKE_BUILD_TYPE Release)`是标准做法，Release开优化，Debug关优化，如果让Release从默认的-O3变成-O2应该`set(CMAKE_CXX_FLAGS_RELEASE "-O2")`同理还有`CMAKE_CXX_FLAGS_DEUBUG`可以设置;我想要链接 pthread，有没有现代 CMake 跨平台的写法？（用 `find_package(Threads REQUIRED)` 和 `target_link_libraries(你的目标程序名 Threads::Threads)` 即可，Linux 上等同于 pthread，在 Wendous 上会变成 Wendous 的线程库）
+
+
