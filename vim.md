@@ -209,3 +209,12 @@ s/\(\w.*\)/data[10] = "\1";
 https://github.com/neoclide/coc.nvim/issues/1288
 "suggest.enablePreselect": false
 ```
+
+# vim查看快捷键冲突
+
+---
+
+`:map` 用于查看普通模式下的快捷键映射
+`:map!` 用于查看插入模式下的快捷键映射
+`verbose map <键>` 用于查看普通模式下的快捷键映射
+`verbose map! <键>` 用于查看插入模式下的快捷键映射
