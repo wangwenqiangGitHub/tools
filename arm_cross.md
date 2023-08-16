@@ -27,3 +27,12 @@ apt install make cmake
 - 官网 https://releases.linaro.org/components/toolchain/binaries/
   https://launchpad.net/gcc-arm-embedded/+download
 - 国内镜像 https://mirrors.tuna.tsinghua.edu.cn/armbian-releases/_toolchains/
+
+## microcom
+
+- microcom是一个串口调试指令，经常用于串口调试，相当于linux自带的串口调试助手
+- 用例
+    - 设置波特率
+    ```
+    microcom -s 115200 /dev/tty0
+    ```
