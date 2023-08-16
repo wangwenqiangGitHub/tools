@@ -280,7 +280,17 @@ git branch --set-upstream-to=origin/develop develop
 git submodule update --init
 ```
 
-- git 拉取远程引用的子代码仓库的更新 git submodule update --remote
+- git 拉取远程引用的子代码仓库的更新
+
+```
+git submodule update --remote
+```
+
+- 将远程仓库的子模块也更新到最新版，需要使用:
+
+```
+git submodule foreach git pull origin master
+```
 
 # vim中git查看修改记录
 
