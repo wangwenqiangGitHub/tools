@@ -16,7 +16,9 @@
 ```shell
 cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
 ```
+## a.vim插件问题
 
+- a.vim插件需要修改插件中的imap。目前改为屏蔽掉，否则会在输入模式下按住空格键，有卡顿
 ## tmux重要功能补充
 
 - tmux session
