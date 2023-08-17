@@ -16,9 +16,11 @@
 ```shell
 cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
 ```
+
 ## a.vim插件问题
 
 - a.vim插件需要修改插件中的imap。目前改为屏蔽掉，否则会在输入模式下按住空格键，有卡顿
+
 ## tmux重要功能补充
 
 - tmux session
@@ -216,7 +218,5 @@ https://github.com/neoclide/coc.nvim/issues/1288
 
 ---
 
-`:map` 用于查看普通模式下的快捷键映射
-`:map!` 用于查看插入模式下的快捷键映射
-`verbose map <键>` 用于查看普通模式下的快捷键映射
-`verbose map! <键>` 用于查看插入模式下的快捷键映射
+`:map` 用于查看普通模式下的快捷键映射 `:map!` 用于查看插入模式下的快捷键映射 `verbose map <键>` 用于查看普通模式下的快捷键映射 `verbose map! <键>`
+用于查看插入模式下的快捷键映射

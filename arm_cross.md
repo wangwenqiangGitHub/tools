@@ -32,7 +32,7 @@ apt install make cmake
 
 - microcom是一个串口调试指令，经常用于串口调试，相当于linux自带的串口调试助手
 - 用例
-    - 设置波特率
-    ```
-    microcom -s 115200 /dev/tty0
-    ```
+  - 设置波特率
+  ```
+  microcom -s 115200 /dev/tty0
+  ```
