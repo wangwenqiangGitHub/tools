@@ -182,3 +182,9 @@ sudo passwd root
 ```
 wget -nv -c -p -k -H -i
 ```
+
+# 设置程序运行时链接库的路径
+
+```
+export LD_LIBRARY_PATH=/home/wwq:$LD_LIBRARY_PATH
+```
