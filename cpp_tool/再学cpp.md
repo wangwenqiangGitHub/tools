@@ -429,3 +429,10 @@ int main()
   pthread，有没有现代 CMake 跨平台的写法？（用 `find_package(Threads REQUIRED)` 和
   `target_link_libraries(你的目标程序名 Threads::Threads)` 即可，Linux 上等同于 pthread，在 Wendous 上会变成 Wendous
   的线程库）
+
+# 包含头部信息的流协议
++----------+--------------+-------+
+| 0x0F     | Length       | JSON  |
++----------+--------------+-------+
+采用[魔幻数+长度]的形式进行数据包界定
+
