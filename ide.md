@@ -5,6 +5,8 @@
 # eclipse快捷键
 
 - alt+/ 自动补全
+- <leader>v c-v块模式
+- <leader>w c/c++搜索关键字，主要通过快捷键导出的excel表查看快捷键
 
 # idear
 
