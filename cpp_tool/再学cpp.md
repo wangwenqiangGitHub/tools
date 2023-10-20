@@ -447,6 +447,658 @@ int main()
 
 - 信号槽: 是c++中用于实现对象间的一种机制，它类似于事件驱动编程中的事件和事件处理函数，可以用于在对象之间传递信号和消息。
   - 定义信号和槽: 信号是一个可以被发送的信号标识符，槽函数是一个可以被调用的函数。在信号槽机制中，信号和槽函数之间通过建立连接操作来建立对应关系。
+  - Q&A: How does nod differ from other signals&slots libraries
+  ```
+  Since the scope of the signal & slots construct is pretty narrow, you will find most of the differences are syntactical in nature.
+
+  The nod library is primarily designed to be easy to use, have a modern C++ feel to it, and above all be lightweight and only be dependent on the standard template library. Performance is not the primary focus of the nod library. Many libraries out there sacrifice "syntactical sugar" for performance. Nod was developed as an alternative to using boost.signal2 in my own projects, just to avoid the massive dependency that using boost libraries can incur.
+
+  Compared specifically to nano there are a few points that are different, besides slightly different ways of doing things like connection management and retrieving slot return values.
+
+  Nod guarantees that slots are called in connection order.
+  Nod aims to provide thread safe signals by default, but also provide the possibility of single threaded only signals if needed.
+  ```
+
+```cpp
+#ifndef IG_NOD_INCLUDE_NOD_HPP
+#define IG_NOD_INCLUDE_NOD_HPP
+#include <vector>        // std::vector
+#include <functional>    // std::function
+#include <mutex>         // std::mutex, std::lock_guard
+#include <memory>        // std::shared_ptr, std::weak_ptr
+#include <algorithm>     // std::find_if()
+#include <cassert>       // assert()
+#include <thread>        // std::this_thread::yield()
+#include <type_traits>   // std::is_same
+#include <iterator>      // std::back_inserter
+
+namespace nod{
+    /// implemetentational details
+    /// 实现细节
+    namespace detail {
+        /// interface for type erasure when disconnection slots
+        /// 断开插槽连接时用于类型擦除的接口
+        struct disconnect {
+            virtual void operator()(std::size_t index) const = 0;
+        };
+
+        /// Deleter that doesn't delete
+        /// 不删除的删除程序
+        inline void no_delete(disconnector*){
+        }
+    } // namespace detail
+
+    /// Base template for the signal class
+    /// 信号类的模板基类
+    template <class P, class T>
+    class signal_type;
+
+    /// Connection class.
+    ///
+    /// This is used to be able to disconnect slots after they have been connected.
+    /// Used as return type for the connect method of the signals.
+    ///
+    /// Connections are default constructible.
+    /// Connections are not copy constructible or copy assignable.
+    /// Connections are move constructible and move assignable.
+    ///
+    ///连接类。
+    ///
+    ///这用于在插槽连接后断开它们的连接。
+    ///用作信号的连接方法的返回类型。
+    ///
+    ///连接是默认可构造的。
+    ///连接不可复制构造或可复制分配。
+    ///连接可移动构造，也可移动指定。
+    ///
+    class connection {
+        public:
+            connection():
+                _index() {}
+            /// Connection are not copy constructible or copy assignable
+            /// 拷贝构造 赋值构造
+            connection( connection const& ) = delete;
+            connection& operator=( connection const& ) = delete;
+            /// Move constructor
+            /// @param other   The instance to move from.
+            /// 移动构造
+            connection(connection&& other):
+                _weak_disconnector(std::move(other._weak_disconnector)),
+                _index(other._index)
+            {}
+            /// 移动赋值操作符
+            /// Move assign operator.
+            /// @param other   The instance to move from.
+            connection& operator=( connection&& other ) {
+                _weak_disconnector = std::move( other._weak_disconnector );
+                _index = other._index;
+                return *this;
+            }
+
+            /// @returns `true` if the connection is connected to a signal object,
+            ///          and `false` otherwise.
+            bool connected() const {
+                return !_weak_disconnector.expired();
+            }
+
+            /// Disconnect the slot from the connection.
+            ///
+            /// If the connection represents a slot that is connected to a signal object, calling
+            /// this method will disconnect the slot from that object. The result of this operation
+            /// is that the slot will stop receiving calls when the signal is invoked.
+            // 如果连接表示连接到信号对象的插槽，则调用此方法将断开插槽与该对象的连接。此操作的结果是，当调用信号时，插槽将停止接收调用。
+            void disconnect();
+
+        private:
+            /// The signal template is a friend of the connection, since it is the
+            /// only one allowed to create instances using the meaningful constructor
+            /// 信号模板是连接类的友元类，因为它是只有一个允许使用有意义的构造函数创建实例。
+            template<class P,class T> friend class signal_type;
+            
+            /// Create a connection.
+            /// @param shared_disconnector Disconnector instance that will be used to disconnect
+            ///                            the connection when the time comes. A weak pointer
+            ///                            to the disconnector will be held within the connection
+            ///                            object.
+            /// @param index               The slot index of the connection.
+            ///创建连接。
+            ///@param shared_disconnector 该实例将在时间到来时用于断开连接。指向隔离开关的弱指针将保持在连接对象内。
+            ///@param index连接的插槽索引。
+            connection(std::shared_ptr<detail::disconnector> const& shared_disconnector, std::size_t index) :
+                _ weak_disconnector( shared_disconnector ),
+                _index( index )
+        {}
+
+            /// Weak pointer to the current disconnector functor.
+            /// 指向当前断开连接函数的弱指针
+            std::weak_ptr<detail::disconnector> _weak_disconnector;
+            /// Slot index of the connected slot.
+            ///已连接插槽的插槽索引。
+            std::size_t _index;
+    };
+
+    class scoped_connection
+    {
+    public:
+        /// Scoped are default constructible
+        scoped_connection() = default;
+        /// Scoped connections are not copy constructible
+        scoped_connection( scoped_connection const& ) = delete;
+        /// Scoped connections are not copy assingable
+        scoped_connection& operator=( scoped_connection const& ) = delete;
+
+        /// Move constructor
+        scoped_connection( scoped_connection&& other ) :
+            _connection( std::move(other._connection) )
+        {}
+
+		/// Move assign operator.
+		/// @param other   The instance to move from.
+		scoped_connection& operator=( scoped_connection&& other ) {
+			reset( std::move( other._connection ) );
+			return *this;
+		}
+
+		/// Construct a scoped connection from a connection object
+		/// @param connection   The connection object to manage
+		scoped_connection( connection&& c ) :
+			_connection( std::forward<connection>(c) )
+		{}
+
+		/// destructor
+		~scoped_connection() {
+			disconnect();
+		}
+
+		/// Assignment operator moving a new connection into the instance.
+		/// @note If the scoped_connection instance already contains a
+		///       connection, that connection will be disconnected as if
+		///       the scoped_connection was destroyed.
+		/// @param c   New connection to manage
+		scoped_connection& operator=( connection&& c ) {
+			reset( std::forward<connection>(c) );
+			return *this;
+		}
+
+		/// Reset the underlying connection to another connection.
+		/// @note The connection currently managed by the scoped_connection
+		///       instance will be disconnected when resetting.
+		/// @param c   New connection to manage
+		void reset( connection&& c = {} ) {
+			disconnect();
+			_connection = std::move(c);
+		}
+
+		/// Release the underlying connection, without disconnecting it.
+		/// @returns The newly released connection instance is returned.
+		connection release() {
+			connection c = std::move(_connection);
+			_connection = connection{};
+			return c;
+		}
+
+		///
+		/// @returns `true` if the connection is connected to a signal object,
+		///          and `false` otherwise.
+		bool connected() const {
+			return _connection.connected();
+		}
+
+		/// Disconnect the slot from the connection.
+		///
+		/// If the connection represents a slot that is connected to a signal object, calling
+		/// this method will disconnect the slot from that object. The result of this operation
+		/// is that the slot will stop receiving calls when the signal is invoked.
+		void disconnect() {
+			_connection.disconnect();
+		}
+
+	private:
+		/// Underlying connection object
+		connection _connection;
+	};
+
+
+    };
+
+   	/// Signal accumulator class template.
+	///
+	/// This acts sort of as a proxy for triggering a signal and
+	/// accumulating the slot return values.
+	///
+	/// This class is not really intended to instantiate by client code.
+	/// Instances are aquired as return values of the method `accumulate()`
+	/// called on signals.
+	///
+	/// @tparam S      Type of signal. The signal_accumulator acts
+	///                as a type of proxy for a signal instance of
+	///                this type.
+	/// @tparam T      Type of initial value of the accumulate algorithm.
+	///                This type must meet the requirements of `CopyAssignable`
+	///                and `CopyConstructible`
+	/// @tparam F      Type of accumulation function.
+	/// @tparam A...   Argument types of the underlying signal type.
+	/// 信号累加器类模板
+	/// 这在某种程度上充当了触发信号和累积时隙返回值的代理。
+	/// 这个类实际上并不是用来由客户端代码实例化的。实例被获取为对信号调用的方法“accumulate（）”的返回值。
+	/// @tparam S信号类型。signal_accumulator充当此类型的信号实例的代理类型;
+	/// @tparam T累加算法的初始值类型。此类型必须满足“CopyAssignable”的要求，并且`CopyConstructable`
+	/// @tparam F累加函数的类型；
+	/// @tparam A…基本信号类型的参数类型。
+	template <class S, class T, class F, class...A>
+	class signal_accumulator
+	{
+		public:
+			/// Result type when calling the accumulating function operator.
+			#if (__cplusplus > 201703L)
+			using result_type = typename std::invoke_result<F, T, typename S::slot_type::result_type>::type;
+			#else
+			using result_type = typename std::result_of<F(T, typename S::slot_type::result_type)>::type;
+			#endif
+
+			/// Construct a signal_accumulator as a proxy to a given signal
+			//
+			/// @param signal   Signal instance.
+			/// @param init     Initial value of the accumulate algorithm.
+			/// @param func     Binary operation function object that will be
+			///                 applied to all slot return values.
+			///                 The signature of the function should be
+			///                 equivalent of the following:
+			///                   `R func( T1 const& a, T2 const& b )`
+			///                  - The signature does not need to have `const&`.
+			///                  - The initial value, type `T`, must be implicitly
+			///                    convertible to `R`
+			///                  - The return type `R` must be implicitly convertible
+			///                    to type `T1`.
+			///                  - The type `R` must be `CopyAssignable`.
+			///                  - The type `S::slot_type::result_type` (return type of
+			///                    the signals slots) must be implicitly convertible to
+			///                    type `T2`.
+			signal_accumulator( S const& signal, T init, F func ) :
+				_signal( signal ),
+				_init( init ),
+				_func( func )
+			{}
+
+			/// Function call operator.
+			///
+			/// Calling this will trigger the underlying signal and accumulate
+			/// all of the connected slots return values with the current
+			/// initial value and accumulator function.
+			///
+			/// When called, this will invoke the accumulator function will
+			/// be called for each return value of the slots. The semantics
+			/// are similar to the `std::accumulate` algorithm.
+			///
+			/// @param args   Arguments to propagate to the slots of the
+			///               underlying when triggering the signal.
+			result_type operator()( A const& ... args ) const {
+				return _signal.trigger_with_accumulator( _init, _func, args... );
+			}
+
+		private:
+
+			/// Reference to the underlying signal to proxy.
+			S const& _signal;
+			/// Initial value of the accumulate algorithm.
+			T _init;
+			/// Accumulator function.
+			F _func;
+
+	};
+
+    /// Signal template specialization.
+    ///
+    /// This is the main signal implementation, and it is used to
+    /// implement the observer pattern whithout the overhead
+    /// boilerplate code that typically comes with it.
+    ///
+    /// Any function or function object is considered a slot, and
+    /// can be connected to a signal instance, as long as the signature
+    /// of the slot matches the signature of the signal.
+    ///
+    /// @tparam P      Threading policy for the signal.
+    ///                A threading policy must provide two type definitions:
+    ///                 - P::mutex_type, this type will be used as a mutex
+    ///                   in the signal_type class template.
+    ///                 - P::mutex_lock_type, this type must implement a
+    ///                   constructor that takes a P::mutex_type as a parameter,
+    ///                   and it must have the semantics of a scoped mutex lock
+    ///                   like std::lock_guard, i.e. locking in the constructor
+    ///                   and unlocking in the destructor.
+    ///
+    /// @tparam R      Return value type of the slots connected to the signal.
+    /// @tparam A...   Argument types of the slots connected to the signal.
+    /// 信号模板专业化
+    /// 这是主要的信号实现，它用于实现观测器模式，而不需要通常附带的开销样板代码。
+    /// 任何函数或函数对象都被视为槽，并且可以连接到信号实例，只要槽的签名与信号的签名匹配即可。
+    /// tparam P信号的线程策略。线程策略必须提供两种类型定义：
+    /// -P：：mutex _type，此类型将用作signal_type类模板中的互斥对象。
+    /// -P:：mute_lock_type，此类型必须实现一个以P:：mutex _type为参数的构造函数，并且它必须具有类似std:：lock_guard的作用域互斥锁的语义，即在构造函数中锁定，在析构函数中解锁。
+    ///@tparam R返回连接到信号的插槽的值类型。
+    ///@tparam A…连接到信号的插槽的参数类型。
+	template <class P, class R, class... A >
+	class signal_type<P,R(A...)>
+	{
+		public:
+			/// signals are not copy constructible
+			signal_type( signal_type const& ) = delete;
+			/// signals are not copy assignable
+			signal_type& operator=( signal_type const& ) = delete;
+			/// signals are move constructible
+			signal_type(signal_type&& other)
+			{
+				mutex_lock_type lock{other._mutex};
+				_slot_count = std::move(other._slot_count);
+				_slots = std::move(other._slots);
+				if(other._shared_disconnector != nullptr)
+				{
+					_disconnector = disconnector{ this };
+					_shared_disconnector = std::move(other._shared_disconnector);
+					// replace the disconnector with our own disconnector
+					*static_cast<disconnector*>(_shared_disconnector.get()) = _disconnector;
+				}
+			}
+			/// signals are move assignable
+			signal_type& operator=(signal_type&& other)
+			{
+				auto lock = thread_policy::defer_lock(_mutex);
+				auto other_lock = thread_policy::defer_lock(other._mutex);
+				thread_policy::lock(lock,other_lock);
+
+				_slot_count = std::move(other._slot_count);
+				_slots = std::move(other._slots);
+				if(other._shared_disconnector != nullptr)
+				{
+					_disconnector = disconnector{ this };
+					_shared_disconnector = std::move(other._shared_disconnector);
+					// replace the disconnector with our own disconnector
+					*static_cast<disconnector*>(_shared_disconnector.get()) = _disconnector;
+				}
+				return *this;
+			}
+            /// signals are default constructible
+            signal_type() :
+                _slot_count(0)
+            {}
+
+            // Destruct the signal object.
+            ~signal_type() {
+                invalidate_disconnector();
+            }
+
+            /// Type that will be used to store the slots for this signal type.
+            using slot_type = std::function<R(A...)>;
+            /// Type that is used for counting the slots connected to this signal.
+            using size_type = typename std::vector<slot_type>::size_type;
+				/// Connect a new slot to the signal.
+			///
+			/// The connected slot will be called every time the signal
+			/// is triggered.
+			/// @param slot   The slot to connect. This must be a callable with
+			///               the same signature as the signal itself.
+			/// @return       A connection object is returned, and can be used to
+			///               disconnect the slot.
+			template <class T>
+			connection connect( T&& slot ) {
+				mutex_lock_type lock{ _mutex };
+				_slots.push_back( std::forward<T>(slot) );
+				std::size_t index = _slots.size()-1;
+				if( _shared_disconnector == nullptr ) {
+					_disconnector = disconnector{ this };
+					_shared_disconnector = std::shared_ptr<detail::disconnector>{&_disconnector, detail::no_delete};
+				}
+				++_slot_count;
+				return connection{ _shared_disconnector, index };
+			}
+
+			/// Function call operator.
+			///
+			/// Calling this is how the signal is triggered and the
+			/// connected slots are called.
+			///
+			/// @note The slots will be called in the order they were
+			///       connected to the signal.
+			///
+			/// @param args   Arguments that will be propagated to the
+			///               connected slots when they are called.
+			void operator()( A const&... args ) const {
+				for( auto const& slot : copy_slots() ) {
+					if( slot ) {
+						slot( args... );
+					}
+				}
+			}
+
+			/// Construct a accumulator proxy object for the signal.
+			///
+			/// The intended purpose of this function is to create a function
+			/// object that can be used to trigger the signal and accumulate
+			/// all the slot return values.
+			///
+			/// The algorithm used to accumulate slot return values is similar
+			/// to `std::accumulate`. A given binary function is called for
+			/// each return value with the parameters consisting of the
+			/// return value of the accumulator function applied to the
+			/// previous slots return value, and the current slots return value.
+			/// A initial value must be provided for the first slot return type.
+			///
+			/// @note This can only be used on signals that have slots with
+			///       non-void return types, since we can't accumulate void
+			///       values.
+			///
+			/// @tparam T      The type of the initial value given to the accumulator.
+			/// @tparam F      The accumulator function type.
+			/// @param init    Initial value given to the accumulator.
+			/// @param op      Binary operator function object to apply by the accumulator.
+			///                The signature of the function should be
+			///                equivalent of the following:
+			///                  `R func( T1 const& a, T2 const& b )`
+			///                 - The signature does not need to have `const&`.
+			///                 - The initial value, type `T`, must be implicitly
+			///                   convertible to `R`
+			///                 - The return type `R` must be implicitly convertible
+			///                   to type `T1`.
+			///                 - The type `R` must be `CopyAssignable`.
+			///                 - The type `S::slot_type::result_type` (return type of
+			///                   the signals slots) must be implicitly convertible to
+			///                   type `T2`.
+			template <class T, class F>
+			signal_accumulator<signal_type, T, F, A...> accumulate( T init, F op ) const {
+				static_assert( std::is_same<R,void>::value == false, "Unable to accumulate slot return values with 'void' as return type." );
+				return { *this, init, op };
+			}
+
+
+			/// Trigger the signal, calling the slots and aggregate all
+			/// the slot return values into a container.
+			///
+			/// @tparam C     The type of container. This type must be
+			///               `DefaultConstructible`, and usable with
+			///               `std::back_insert_iterator`. Additionally it
+			///               must be either copyable or moveable.
+			/// @param args   The arguments to propagate to the slots.
+			template <class C>
+			C aggregate( A const&... args ) const {
+				static_assert( std::is_same<R,void>::value == false, "Unable to aggregate slot return values with 'void' as return type." );
+				C container;
+				auto iterator = std::back_inserter( container );
+				for( auto const& slot : copy_slots() ) {
+					if( slot ) {
+						(*iterator) = slot( args... );
+					}
+				}
+				return container;
+			}
+
+			/// Count the number of slots connected to this signal
+			/// @returns   The number of connected slots
+			size_type slot_count() const {
+				return _slot_count;
+			}
+
+			/// Determine if the signal is empty, i.e. no slots are connected
+			/// to it.
+			/// @returns   `true` is returned if the signal has no connected
+			///            slots, and `false` otherwise.
+			bool empty() const {
+				return slot_count() == 0;
+			}
+
+			/// Disconnects all slots
+			/// @note This operation invalidates all scoped_connection objects
+			void disconnect_all_slots() {
+				mutex_lock_type lock{ _mutex };
+				_slots.clear();
+				_slot_count = 0;
+				invalidate_disconnector();
+			}
+		private:
+			template<class, class, class, class...> friend class signal_accumulator;
+			/// Thread policy currently in use
+			using thread_policy = P;
+			/// Type of mutex, provided by threading policy
+			using mutex_type = typename thread_policy::mutex_type;
+			/// Type of mutex lock, provided by threading policy
+			using mutex_lock_type = typename thread_policy::mutex_lock_type;
+
+			/// Invalidate the internal disconnector object in a way
+			/// that is safe according to the current thread policy.
+			///
+			/// This will effectively make all current connection objects to
+			/// to this signal incapable of disconnecting, since they keep a
+			/// weak pointer to the shared disconnector object.
+			void invalidate_disconnector() {
+				// If we are unlucky, some of the connected slots
+				// might be in the process of disconnecting from other threads.
+				// If this happens, we are risking to destruct the disconnector
+				// object managed by our shared pointer before they are done
+				// disconnecting. This would be bad. To solve this problem, we
+				// discard the shared pointer (that is pointing to the disconnector
+				// object within our own instance), but keep a weak pointer to that
+				// instance. We then stall the destruction until all other weak
+				// pointers have released their "lock" (indicated by the fact that
+				// we will get a nullptr when locking our weak pointer).
+				std::weak_ptr<detail::disconnector> weak{_shared_disconnector};
+				_shared_disconnector.reset();
+				while( weak.lock() != nullptr )	{
+					// we just yield here, allowing the OS to reschedule. We do
+					// this until all threads has released the disconnector object.
+					thread_policy::yield_thread();
+				}
+			}
+
+			/// Retrieve a copy of the current slots
+			///
+			/// It's useful and necessary to copy the slots so we don't need
+			/// to hold the lock while calling the slots. If we hold the lock
+			/// we prevent the called slots from modifying the slots vector.
+			/// This simple "double buffering" will allow slots to disconnect
+			/// themself or other slots and connect new slots.
+			/// 检索当前插槽的副本
+			/// 复制插槽是有用和必要的，这样我们在调用插槽时就不需要持有锁。如果我们保持锁定，我们将阻止被调用的槽修改槽向量。这种简单的“双重缓冲”将允许插槽断开自身或其他插槽的连接，并连接新的插槽。
+			std::vector<slot_type> copy_slots() const
+			{
+				mutex_lock_type lock{ _mutex };
+				return _slots;
+			}
+
+			/// Implementation of the signal accumulator function call
+            /// 信号累加器函数调用的实现
+			template <class T, class F>
+			typename signal_accumulator<signal_type, T, F, A...>::result_type trigger_with_accumulator( T value, F& func, A const&... args ) const {
+				for( auto const& slot : copy_slots() ) {
+					if( slot ) {
+						value = func( value, slot( args... ) );
+					}
+				}
+				return value;
+			}
+
+			/// Implementation of the disconnection operation.
+			///
+			/// This is private, and only called by the connection
+			/// objects created when connecting slots to this signal.
+			/// @param index   The slot index of the slot that should
+			///                be disconnected.
+			void disconnect( std::size_t index ) {
+				mutex_lock_type lock( _mutex );
+				assert( _slots.size() > index );
+				if( _slots[ index ] != nullptr ) {
+					--_slot_count;
+				}
+				_slots[ index ] = slot_type{};
+				while( _slots.size()>0 && !_slots.back() ) {
+					_slots.pop_back();
+				}
+			}
+
+			/// Implementation of the shared disconnection state
+			/// used by all connection created by signal instances.
+			///
+			/// This inherits the @ref detail::disconnector interface
+			/// for type erasure.
+            ///信号实例创建的所有连接使用的共享断开状态的实现。
+            ///这继承了用于类型擦除的@ref detail:：隔离开关接口。
+			struct disconnector :
+				detail::disconnector
+			{
+				/// Default constructor, resulting in a no-op disconnector.
+				disconnector() :
+					_ptr(nullptr)
+				{}
+
+				/// Create a disconnector that works with a given signal instance.
+				/// @param ptr   Pointer to the signal instance that the disconnector
+				///              should work with.
+				disconnector( signal_type<P,R(A...)>* ptr ) :
+					_ptr( ptr )
+				{}
+
+				/// Disconnect a given slot on the current signal instance.
+				/// @note If the instance is default constructed, or created
+				///       with `nullptr` as signal pointer this operation will
+				///       effectively be a no-op.
+				/// @param index   The index of the slot to disconnect.
+				void operator()( std::size_t index ) const override {
+					if( _ptr ) {
+						_ptr->disconnect( index );
+					}
+				}
+
+				/// Pointer to the current signal.
+				signal_type<P,R(A...)>* _ptr;
+			};
+
+			/// Mutex to synchronize access to the slot vector   互斥锁 用于同步slot vector
+			mutable mutex_type _mutex;
+			/// Vector of all connected slots     所有的slots
+			std::vector<slot_type> _slots;
+			/// Number of connected slots        slots的数量
+			size_type _slot_count;
+			/// Disconnector operation, used for executing disconnection in a
+			/// type erased manner.
+            /// 隔离开关操作，用于以类型擦除的方式执行隔离。
+			disconnector _disconnector;
+			/// Shared pointer to the disconnector. All connection objects has a
+			/// weak pointer to this pointer for performing disconnections.
+            /// 隔离开关的共享指针。所有连接对象都有一个指向该指针的弱指针，用于执行断开连接。
+			std::shared_ptr<detail::disconnector> _shared_disconnector;
+	};
+
+		inline void connection::disconnect(){
+			auto ptr = _weak_disconnector.lock();
+			if (ptr) {
+				(*ptr)( _index;);
+			}
+			_weak_disconnector.reset();
+		}
+
+		template <class T> using signal = signal_type<multithread_policy, T>;
+	}// namespace nod
+```
+
+用vector去存储slots槽函数，然后通过signal的时候去遍历这个vector，触发事件
 
 # C++与C
 
