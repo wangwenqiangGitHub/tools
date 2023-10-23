@@ -47,33 +47,46 @@ clean:
 - local-make学习
   - 基础:定义了当前模块的相对路径;
   ```
-# 定义一个变量LOCAL_PATH, 它的值是通过调用local-dir函数得到的. local-dir函数是Makefile中中的内置函数,用于获取当前Makefile所在的目录路径.
-  LOCAL_PATH:=$(call local-dir):
-  ```
-  - 清空环境变量
-  ```
-  include$(CLEAR_VARS)
-  ```
-  - 编译所生成的目标文件格式
-  - 项目中引用系统的库:
-  ```
-  # 将系统库文件名添加到Android.mk
-    LOCAL_SHARED_LIBRARIES += libxxxx:
-  ```
-  - 引入第三方库文件:
-  ```
-  LOCAL_LDFLAGS:=-L/Path -lxxx
   ```
 
+# 定义一个变量LOCAL_PATH, 它的值是通过调用local-dir函数得到的. local-dir函数是Makefile中中的内置函数,用于获取当前Makefile所在的目录路径.
+
+LOCAL_PATH:=$(call local-dir):
+
+```
+- 清空环境变量
+```
+
+include$(CLEAR_VARS)
+
+```
+- 编译所生成的目标文件格式
+- 项目中引用系统的库:
+```
+
+# 将系统库文件名添加到Android.mk
+
+    LOCAL_SHARED_LIBRARIES += libxxxx:
+
+```
+- 引入第三方库文件:
+```
+
+LOCAL_LDFLAGS:=-L/Path -lxxx
+
+```
 - sysroot设置后,就去sysroot目录搜索pthread, rypto, ssl, m,tinyalsa,stdc++库，而不是去默认的/usr/lib,/usr/lib,
-  LD\_LIBRARY\_PATH
-  - include $(LOCAL\_PATH)/sub.mk
-  ```
-  作用是使用include指令将LOCAL_PATH变量指向的目录下的sub.mk文件包含进来。sub.Mk文件中可能包含了一些他的变量和规则
-  ```
-  - MFILES\_DIR是一个变量，用于指定包含其他Makefile文件中的目录路径, 通常在Makefile中定义这个变量:export MFILES\_DIR:=$(TOP\_DIR)/build/mfiles
+LD\_LIBRARY\_PATH
+- include $(LOCAL\_PATH)/sub.mk
+```
+
+作用是使用include指令将LOCAL_PATH变量指向的目录下的sub.mk文件包含进来。sub.Mk文件中可能包含了一些他的变量和规则
+
+```
+- MFILES\_DIR是一个变量，用于指定包含其他Makefile文件中的目录路径, 通常在Makefile中定义这个变量:export MFILES\_DIR:=$(TOP\_DIR)/build/mfiles
 
 
 - include $(EXECUTABLE\_MFILE):这行代码使用include指令将EXECUTABLE\_MFILE文件包含进来，EXECUTABLE\_MFILE是一个预设定变量.
 
 - include$(CLEAR\_MFILE)这个代码使用了include指令将CLEAR\_MFILE文件包含进来.用于清除Makefile中定义的所有变量和规则
+```
