@@ -576,7 +576,10 @@ namespace nod{
             ///已连接插槽的插槽索引。
             std::size_t _index;
     };
-
+    /// Scoped connection class.
+    ///
+    /// This type of connection is automatically disconnected when the connection object is destructed.
+    /// 作用域连接类。当连接对象被破坏时，这种类型的连接会自动断开。
     class scoped_connection
     {
     public:
@@ -777,6 +780,7 @@ namespace nod{
     /// -P:：mute_lock_type，此类型必须实现一个以P:：mutex _type为参数的构造函数，并且它必须具有类似std:：lock_guard的作用域互斥锁的语义，即在构造函数中锁定，在析构函数中解锁。
     ///@tparam R返回连接到信号的插槽的值类型。
     ///@tparam A…连接到信号的插槽的参数类型。
+    /// R(A...)(表示的是传入的回调函数，R表示回调函数的返回类型，A...表示变参;比如:signal_type<P, void(Args ..)>)
 	template <class P, class R, class... A >
 	class signal_type<P,R(A...)>
 	{
