@@ -1109,3 +1109,16 @@ namespace nod{
 - 函数和类:
   在C语言中，我们通过函数来封装和复用代码，函数可以接受参数，执行特定任务，并返回值，然而复用是有限的，因为函数不能封装状态(不能拥有字段和属性)，相比之下，C++的类不仅可以封装函数，还可以封装状态，这为更高级的复用提供了可能。c语言没有字段和属性，是因为C语言是一种面向过程的语言，而不是面向对象的编程语言，在C语言中，数据通常是通过变量来表示，而函数来操作这些变量，数据和函数是分开的，不能紧密联系
 - 代码复用
+
+# JSON-C
+
+```
+json_object_new_object():创建一个新的JSON对象.该函数会分配内存来存储JSON对象的结构和相关数据;
+json_object_new_array(): 创建一个新的JSON数组对象,该函数会分配一个JSON数据对象
+json_object_new_string()
+json_object_new_int()
+json_object_new_double()
+json_object_new_boolean()
+json_object_new_null()
+统一采用json_object_put()函数来释放分配的内存;
+```
