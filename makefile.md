@@ -90,3 +90,6 @@ LD\_LIBRARY\_PATH
 
 - include$(CLEAR\_MFILE)这个代码使用了include指令将CLEAR\_MFILE文件包含进来.用于清除Makefile中定义的所有变量和规则
 ```
+
+- TOP\_ALL\_NECESSARY\_MODULES
+  TOP\_ALL\_NECESSARY\_MODULES是一个变量，它通常用于指定一组必需的模块。这些模块是构建整个项目所必需的，因此在编译过程中需要包含它们。
