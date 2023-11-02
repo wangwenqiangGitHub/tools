@@ -30,6 +30,7 @@ export VALGRIND_LIB=/system/etc
 valgrind --leak-check=full  --log-file=reportleak /system/bin/app
 # 运行的时候直接退出，可以cd到/system/bin目录下，然后
 valgrind --leak-check=full  --log-file=reportleak ./app
+valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --log-file=/var/ramlog/om/m.txt /system/bin/om -b
 ```
 
 # 运行中报错问题及解决
