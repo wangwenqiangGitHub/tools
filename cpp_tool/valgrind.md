@@ -16,8 +16,10 @@ maka -j9 && make install
 
 ```shell
 # valgrind运行的依赖放在这个文件夹下
-cd /mnt/d/github_ws/github_ws/valgrind-3.19.0/OUT/libexec \
-&& scp scp memcheck-arm-linux *.so root@192.2.23.13:/system/etc
+cd /mnt/d/github_ws/github_ws/valgrind-3.19.0/OUT/libexec/valgrind \
+&& scp memcheck-arm-linux *.so root@192.2.23.13:/system/etc
+
+scp bin/valgrind root@192.2.23.13:/system/bin
 ```
 
 # 运行
@@ -26,6 +28,8 @@ cd /mnt/d/github_ws/github_ws/valgrind-3.19.0/OUT/libexec \
 export VALGRIND_LIB=/system/etc
 
 valgrind --leak-check=full  --log-file=reportleak /system/bin/app
+# 运行的时候直接退出，可以cd到/system/bin目录下，然后
+valgrind --leak-check=full  --log-file=reportleak ./app
 ```
 
 # 运行中报错问题及解决
