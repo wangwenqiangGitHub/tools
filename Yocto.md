@@ -160,5 +160,38 @@ Hello, world!
 # Yocto中的一些专有名词，及术语
 
 - 1.配方(recipe): 只的是一个用于软件构建包的脚本，通常以.bb文件为后缀名。配方文件中包含了软件的源代码，依赖关系，编译选项等信息，可以使用bitbake工具自动化地进行构建和安装。
-- 2.层(layer)指的是 Yocto 的组成部分之一，用于管理和组织不同的软件包、配置文件、补丁、镜像等资源。每个层都包含了一个或多个配方文件和其他相关文件，并可以随时添加到 Yocto
-  构建系统中以扩展功能或定制化配置。
+- 2.层(layer)指的是 Yocto 的组成部分之一，用于管理和组织不同的软件包、配置文件、补丁、镜像等资源。每个层都包含了一个或多个配方文件和其他相关文件，并可以随时添加到
+  Yocto构建系统中以扩展功能或定制化配置。Layer层可以理解成是一种组织元数据的方式。每个Layer包含了构建系统所需的配置,环境变量等,通过使用Layer，用户可以方便地定制和扩展Yocto构建系统，以满足特定的Linux的需求。**组织结构**
+  每个Layer都有自己的目录结构,包括配置文件, BitBake文件(.bb文件)等,这些文件描述了Layer中包含的软件包的构建规则.依赖关系和其他元数据。**层次关系**
+  Yocto支持多层Layer的叠加，每个Layer可以覆盖或者扩展上层Layer的配置。这种层次关系使得用户可以根据需要组合不同的Layer，以满足特定项目的需要.**定制能力**:通过创建自定义的Layer，用户可以添加新的软件包,修改现有软件包的构建规则，或者定义新的配置选项。这种定制能力使得Yocto构建十分灵活
+- 3.配置文件
+- 4 类 classes
+- 5.附加文件
+
+- Bitbake工程布局
+  - Layer目录:包含配置,任务和项目描述.常用meta-xxx命名为Layer
+  - Build目录是bitbake命令被执行的地方，在这里BitBake期望能找到其初始配置文件，将其生成的所有文件放在这个目录。
+  - downloads目录是构建过程中下载的源代码和补丁文件。这些文件可以被多个软件包共享，避免重复下载。
+
+- Layer(meta-xxx)目录
+  - conf目录:包含整个Layer的配置文件和BitBake配方文件。这些文件定义了Layer中包含的软件包的构建规则,依赖关系和其他元数据.
+    recipes目录:包含了Layer层中所有软件的BitBake配方文件。每个软件包通常有一个对应的.bb文件，其中定义了构建该软件包所需的信息
+  - conf/layer.conf，定义了Layer的元数据信息，包括Layer的名称,版本和依赖关系
+
+- g9h编译后文件位置
+  - `/home/xxx/buildsystem/yocto/build-g9h_ref/tmp/deploy/rpm/aarch64`
+
+- cmake工程在Layer层中的使用
+
+- 调试前台打印
+
+```
+bbplain "TOPDIR is: ${TOPDIR}"
+bbplain "D is: ${D}"
+make MACHINE=${MACHINE} SUPPORT_BOARD_DIAG=${SUPPORT_BOARD_DIAG}
+```
+
+# Yocto增加一个应用程序规则
+
+- 命名方式需要采用`-`，而不能采用`_`, 否则不能成功.
+- 编译:bitbake app
