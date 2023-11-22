@@ -1122,3 +1122,49 @@ json_object_new_boolean()
 json_object_new_null()
 统一采用json_object_put()函数来释放分配的内存;
 ```
+
+# 读写锁与互斥锁
+
+- 读写锁的优势:允许多个线程同时获取读取锁, 以便并发地读取共享资源，从而提高了读取操作的并发性能。写入锁是排他的，一次只允许一个线程获取写入锁，以确保写操作的原子性和一致性。
+  - 读写锁的应用场景:om维护着一份配置缓存数据，很多应用程序程序向服务器发出读取请求，只有少数应用程序进程向服务器会修改操作，读取远大于写入适用与读写锁
+
+```
+#include <stdio.h>
+#include <pthread.h>
+
+pthread_rwlock_t rwlock;
+int shared_data = 0;
+
+void* reader(void* arg) {
+    pthread_rwlock_rdlock(&rwlock);
+    printf("Reader: The shared data is %d\n", shared_data);
+    pthread_rwlock_unlock(&rwlock);
+    return NULL;
+}
+
+void* writer(void* arg) {
+    pthread_rwlock_wrlock(&rwlock);
+    shared_data++;
+    printf("Writer: Incremented the shared data to %d\n", shared_data);
+    pthread_rwlock_unlock(&rwlock);
+    return NULL;
+}
+
+int main() {
+    pthread_t reader_thread, writer_thread;
+
+    pthread_rwlock_init(&rwlock, NULL);
+
+    pthread_create(&reader_thread, NULL, reader, NULL);
+    pthread_create(&writer_thread, NULL, writer, NULL);
+
+    pthread_join(reader_thread, NULL);
+    pthread_join(writer_thread, NULL);
+
+    pthread_rwlock_destroy(&rwlock);
+
+    return 0;
+}
+```
+
+- 互斥锁优势:适用于对共享资源的临界区进行互斥访问，可以确保任意时刻只有一个线程可以访问共享资源，从而避免了竞争条件和数据不一致性的问题。
