@@ -93,3 +93,114 @@ LD\_LIBRARY\_PATH
 
 - TOP\_ALL\_NECESSARY\_MODULES
   TOP\_ALL\_NECESSARY\_MODULES是一个变量，它通常用于指定一组必需的模块。这些模块是构建整个项目所必需的，因此在编译过程中需要包含它们。
+
+# Makefile中的 目标(target)和规则(rule)是构建软件项目时非常重要的概念
+
+- 一个简单的规则通常包括以下几个部分:
+  - 目标:需要生成的文件或者动作的名称
+  - 依赖关系: 生成目标所需要的文件或者其他目标
+  - 命令: 生成目标的具体命令
+
+```
+main.o: main.c utils.h
+    gcc -c main.c -o main.o
+
+    utils.o: utils.c utils.h
+        gcc -c utils.c -o utils.o
+在这个例子中，main.o和utils.o是目标，main.c、utils.c和utils.h是依赖关系，gcc -c main.c -o main.o和gcc -c utils.c -o utils.o是命令。
+```
+
+# Makefile 基础语法
+
+- 变量赋值:采用`=`进行赋值时, 变量的值会在整个Makfile中都可见，这意味着无论变量在何处被定义，其值在整个Makefile中都会生效.
+- 变量赋值:采用`:=`,变量的值只有在当前被赋值的那一行以及其后续引用中有效。这种方式是简单赋值，它可以避免一些意外的副作用，更符合变量作用域的概念
+- `$(filter false,$(SD_BUILD_SOC))`是一个条件判断语句，用于检查`SD_BUILD_SOC`中是否包含字符串flase
+- ifeq用于判断两个字符串是否相等
+- `$(if $(genpac_emmc_target),$(call build-emmc-pac-cmd),$(info No need to generate global pac!!))`表示如果变量`genpac_emmc_target`的值存在(非空)，那么执行`build-emmc-pac-cmd`函数;否则输出消息"No
+  need to ..."
+- makefile中的call是一个函数，用于调用自定义的函数。语法`$(call function_name, parameters).`
+- 函数:`sd_cp = $(sd_cp_cmd) $(1) $(2)`
+  表示这个是一个参数化的宏，它会将`sd_cp_cmd`和两个参数连接在一起当调用这个函数时，实际上会展开为:`$(sd_cp_cmd) param1 param2`
+- `test $$? -eq 0 || exit 1`表示这是个条件语句,如果是执行的命令的退出状态是0(即成功),那什么都不做，否则退出
+
+# 应用程序万能Makefile
+
+```
+####################################################
+# Generic makefile - 万能Makefile
+# for compiling and linking C++ projects on Linux
+# Author: George Foot  Modified:Jackie Lee
+####################################################
+### Customising
+#
+# Adjust the following if necessary; EXECUTABLE is the target
+# executable's filename, and LIBS is a list of libraries to link in
+# (e.g. alleg, stdcx, iostr, etc). You can override these on make's
+# command line of course, if you prefer to do it that way.
+#
+#
+EXECUTABLE := test-makefile# 可执行文件名
+LIBDIR:= # C:/sfml2.5/lib              # 静态库目录
+LIBS := # sfml-audio sfml-graphics  sfml-main sfml-network sfml-system  sfml-window  # 静态库文件
+INCLUDES:=. #C:/sfml2.5/include          # 头文件目
+SRCDIR:=  #./src         # 除了当前目录外，其他的源代码文件目录
+#
+# # Now alter any implicit rules' variables if you like, e.g.:
+
+CC:=gcc
+CFLAGS := -g -Wall  #-std=c++14 -O3
+CPPFLAGS := $(CFLAGS)
+CPPFLAGS += $(addprefix -I,$(INCLUDES))
+#CPPFLAGS += -MMD
+#
+# # The next bit checks to see whether rm is in your djgpp bin
+# # directory; if not it uses del instead, but this can cause (harmless)
+# # `File not found' error messages. If you are not using DOS at all,
+# # set the variable to something which will unquestioningly remove
+# # files.
+#
+RM-F := rm -rf#del
+
+# # You shouldn't need to change anything below this point.
+#
+SRCS := $(wildcard *.cpp) $(wildcard $(addsuffix /*.cpp, $(SRCDIR)))
+SRCS := $(wildcard *.c) $(wildcard $(addsuffix /*.c, $(SRCDIR)))
+OBJS := $(patsubst %.cpp,%.o,$(SRCS))
+OBJS := $(patsubst %.c,%.o,$(SRCS))
+DEPS := $(patsubst %.o,%.d,$(OBJS))
+MISSING_DEPS := $(filter-out $(wildcard $(DEPS)),$(DEPS))
+MISSING_DEPS_SOURCES := $(wildcard $(patsubst %.d,%.cpp,$(MISSING_DEPS)))
+
+.PHONY : all deps objs clean veryclean rebuild info
+
+all: $(EXECUTABLE)
+
+deps : $(DEPS)
+
+objs : $(OBJS)
+
+clean :
+        @$(RM-F) *.o
+        @$(RM-F) *.d
+
+veryclean: clean
+        @$(RM-F) $(EXECUTABLE)
+
+rebuild: veryclean all
+ifneq ($(MISSING_DEPS),)
+$(MISSING_DEPS) :
+        @$(RM-F) $(patsubst %.d,%.o,$@)
+endif
+-include $(DEPS)
+
+$(EXECUTABLE) : $(OBJS)
+        $(CC) -o $(EXECUTABLE) $(OBJS) $(addprefix -L,$(LIBDIR)) $(addprefix -l,$(LIBS))
+
+
+info:
+        @echo "srcs:" $(SRCS)
+        @echo "objs" $(OBJS)
+        @echo "deps" $(DEPS)
+        @echo "missing_deps:" $(MISSING_DEPS)
+        @echo "missing_deps_sources:" $(MISSING_DEPS_SOURCES)
+```
