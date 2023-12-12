@@ -41,3 +41,9 @@ D:\Qt\Qt5.14.2\5.14.2\msvc2017_64
     ]
 }
 ```
+
+# qml
+
+### 开源项目
+
+- [OCR](https://github.com/hiroi-sora/Umi-OCR)
