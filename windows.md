@@ -31,6 +31,8 @@ pacman -S mingw-w64-x86_64-gnutls mingw-w64-x86_64-libgcrypt mingw-w64-x86_64-li
 ./configure --prefix=/usr/local --disable-static
 make
 make install
+https://www.freecodecamp.org/news/how-to-install-c-and-cpp-compiler-on-windows/
+pacman -S mingw-w64-x86_64-gcc
 ```
 
 - vs中编译
