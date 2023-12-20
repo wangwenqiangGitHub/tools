@@ -100,3 +100,26 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/static)
 ```
+
+# cmake中的`target_link_libraries`中的PUBLIC和PRIVATE关键字作用:
+
+- PUBLIC:关键字指定的库将会被链接到目标上，并且这个链接对目标的依赖项也是公开的.这意味着，如果有其他目标链接到当前目标，那么这个库也会被连接到这些目标上。
+- PRIVATE: 关键字是指定的库会被链接到目标上，但是这个链接对于目标的依赖项是私有的。这意味着，如果有其他目标链接到当前目标，这个库不会被传递到这些目标上
+- Makefiel中有个LDLIBS的宏
+
+```Makefile
+LDLIBS = -lmylib
+```
+
+- 例子
+
+```cmake
+假设我们有一个名为myapp的可执行文件目标，它依赖于一个名为mylib的库目标，并且mylib又依赖于lib1和lib2这两个库。
+add_library(mylib ...)
+target_link_libraries(mylib PRIVATE lib1)
+target_link_libraries(mylib PUBLIC lib2)
+add_executable(myapp ...)
+target_link_libraries(myapp PRIVATE mylib)
+
+当构建myapp时，它会链接mylib和lib2;但不会链接lib1.这种机制可以帮助我们控制依赖关系的传递。确保每个目标都能正确的链接到所需要的库中。
+```
