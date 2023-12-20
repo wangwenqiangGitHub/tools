@@ -21,6 +21,10 @@ create venv in project: python3 -m venv .venv
 source .venv/bin/activate
 install modules with pip and work with Pyright
 deactivate
+
+#windows
+cd .venv
+Script/activate
 ```
 
 # 工程中需要的包
@@ -107,3 +111,17 @@ python.exe -m venv .env
   - 目的服务器(Google/Twitter/Facebook)响应ss server的请求，即图4Response
   - ss server 收到响应数据后，将其加密发送给ss local,即图5 Encrypt Response
   - ss local收到ss server发回的经加密的响应数据后，解密交给请求发起方PC。即图6Response
+
+# python __init__文件
+
+`__init__.py`文件的作用是将文件变为一个python的包, Python中的每个包中都有这个文件, 通常为空, 但是我们还可以为它增加其他的功能,
+在我们导入一个包时，实际上是导入了它的`__init__.py`文件，这样我们可以在这个文件中批量导入我们需要的模块，而不需要一个一个的导入。
+
+# windows
+
+```
+python3.exe -m venv .venv
+cd .venv
+Script/activate
+pip install pandas --proxy=http:127.0.0.1:7890
+```
