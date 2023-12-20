@@ -38,6 +38,8 @@ cd ~/.vim/bundles/markdown_preview.nvim ，git reset --hard e5bfe9
   - ctrl+b x kill pane
 - tmux 在mac-Item2中设置
   - Settings-profiles-terminal-enable.mouse.reporting不打开这个会有问题，鼠标不好用
+- tmux快捷键配置查看
+  - tmux show-options -g | grep prefix
 
 ## 查看vim的安装路径
 
@@ -221,3 +223,11 @@ https://github.com/neoclide/coc.nvim/issues/1288
 
 `:map` 用于查看普通模式下的快捷键映射 `:map!` 用于查看插入模式下的快捷键映射 `verbose map <键>` 用于查看普通模式下的快捷键映射 `verbose map! <键>`
 用于查看插入模式下的快捷键映射
+
+# vim打开文件光标在固定行
+
+---
+
+```
+vim aa.text +100
+```
