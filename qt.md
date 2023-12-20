@@ -47,3 +47,13 @@ D:\Qt\Qt5.14.2\5.14.2\msvc2017_64
 ### 开源项目
 
 - [OCR](https://github.com/hiroi-sora/Umi-OCR)
+
+# windows `qt_creator`
+
+- install
+
+```
+# 安装的qt包的qt-creator不能使用需要单独安装，然后设置qt-opensource-windows-x86-5.14.2.exe安装的路径就可以使用了
+scoop install qt-creator
+# 最终采用的时onLine的安装方式可以使用
+```
