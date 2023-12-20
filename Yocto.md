@@ -195,3 +195,11 @@ make MACHINE=${MACHINE} SUPPORT_BOARD_DIAG=${SUPPORT_BOARD_DIAG}
 
 - 命名方式需要采用`-`，而不能采用`_`, 否则不能成功.
 - 编译:bitbake app
+- 当报错ldflags时添加:
+
+```
+INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP_${PN}-dev = "ldflags"
+```
+
+- 注意Makefile中的工程名还有bb文件中的install的程序的名称是否一致
