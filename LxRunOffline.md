@@ -67,3 +67,24 @@ lxrunoffline ur -n <wsl名称>
 wsl -l -v
 wsl --set-version  Ubuntu-18.04 1
 ```
+
+# wsl2最新版本支持静态ip
+
+- 参考:https://zhuanlan.zhihu.com/p/593263088
+- 更新wsl:
+
+```
+wsl --update --pre-release
+```
+
+- 在用户目录:`%USERPROFILE%`下配置`.wslconfig`:
+
+```
+[experimental]
+networkingMode=mirrored
+dnsTunneling=true
+firewall=true
+autoProxy=true
+
+# 备注:果你遇到 docker 无法从 Windows 访问的问题，这个是 iptables 的问题，在 /etc/docker/daemon.json 里添加一句 "iptables": false 就好了
+```
