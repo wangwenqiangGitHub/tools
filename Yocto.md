@@ -203,3 +203,68 @@ INSANE_SKIP_${PN}-dev = "ldflags"
 ```
 
 - 注意Makefile中的工程名还有bb文件中的install的程序的名称是否一致
+
+# cmake工程例子
+
+```cmake
+cmake_minimum_required(VERSION 3.5)
+project(cmake-hello-world)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "-fexceptions -fpermissive")
+set(SYSROOT ${SDKTARGETSTSROOT})
+include_directories(
+    ${SYSROOT}/usr/include
+    ${SYSROOT}/usr/include/drm
+    ${SYSROOT}/usr/include/c++/7.3.0
+        )
+link_directories(
+        .
+        ${SYSROOT}/usr/lib
+        )
+
+add_executable(
+        ${PROKECT_NAME}
+        hello-world.c
+        )
+```
+
+- bb 文件
+
+```bb
+SUMMARY = "bbfile for cmake"
+LICENSE = "CLOSED"
+LIC_FILES_CHKSUM = ""
+
+inherit cmake
+inherit externalsrc
+
+EXTERNALSRC= "${TOPDIR}/../meta-semidrive/recipes-app/cmake-hello-world/cmake-hello-world"
+EXTERNALSRC_BUILD= "${WORKDIR}/build"
+
+#库
+DEPENDS = " "
+#RDEPENDS_${PN} = "libdrm libhwconverter"
+#LDLIBS_append = "-L${WORKDIR} -ldrm -ldrmdisplay -libhwconverter"
+S = "${WORKDIR}"
+FILES_${PN} = "\
+        /usr/bin/cmake-hello-world \
+        "
+FILES_SOLIBSDEV = ""
+EXTRA_OECMAKE = ""
+
+do_compile() {
+    #cp -r ${S}/* ${B}
+    #bb use ninja default, remove the CMakeCache.txt if you want use Makefile
+    rm -f `find -name CMakeCache.txt`
+    cmake ${EXTERNALSRC} -DSDKTARGETSYSROOT=${STAGING_DIR_TARGET} -G "Unix Makefiles"
+    make
+    #cmake ${EXTERNALSRC} -DSDKTARGETSYSROOT=${STAGING_DIR_TARGET} -GNinja
+    #ninja
+}
+
+do_install() {
+    install -d ${D}/usr/bin
+    install -m 0755 ${B}/cmake-hello-world ${D}/usr/bin
+    #cp -v ${B}/cmake-hello-world ${D}/usr/bin
+}
+```
