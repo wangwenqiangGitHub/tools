@@ -138,6 +138,10 @@ lftp> ls
 ping 可以ping通
 telnet ip port
 默认端口21
+nc ip port
+USER <用户名>
+PASS <PASSWORD>
+230 Login successful
 ```
 
 - 抓包过程: ![抓包](./images/ftp抓包.png)
