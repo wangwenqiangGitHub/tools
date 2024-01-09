@@ -1216,8 +1216,11 @@ int main() {
 - 高层抽象:muduo网络库提供了基于事件驱动的编程模型，隐藏了底层socket细节,简化了网络编程.它提供了Reactor模式的封装，使得开发者可以更专注于业务逻辑的实现，而不必过多关注底层网络通讯的细节。
 - 多线程支持: muduo网络库提供了多线程并发编程的支持,可以方便地编写多线程多线程网络应用程序，充分利用多核处理器的性能优势。
 - 高性能: muduo网络库经过优化，具有较高的性能，适用于开发对性能要求较高的网络应用程序，如服务器端开发。
+
 # muduo网络库的三个半事件(基于对象)
-- 连接建立(服务端被动accept, 客户端主动connection)，连接断开(主动断开(close, shutdown)和被动断开(read返回0))------------ connectionCallback_
+
+- 连接建立(服务端被动accept, 客户端主动connection)，连接断开(主动断开(close, shutdown)和被动断开(read返回0))------------
+  connectionCallback_
 - 消息到达(最重要的一个事件，对它的处理方式决定了网络编程风格(阻塞和非阻塞，如何处理分包，程序层的缓冲区设计))---------------------- messageCallback_
 - 消息发送完毕 ----------------- writeComepleteCallback_
 
@@ -1226,6 +1229,7 @@ int main() {
 - 在muduo网络库中，当一个TCP连接断开后，如果采用epoll_wait来监听该连接的事件，那么在连接断开后，epoll_wait会触发一个EPOLLIN事件，表示有数据可读，当读取数据时会得到一个EOF，表明已经断开
 - 在Unix域套接字中，当服务器断开连接后，通过epoll_wait来监听该连接的事件，会触发EPOLLHUP事件。EPOLLHUP事件表示套接字挂起，即对端连接断开或者发生了某种错误。当服务器端断开连接后，客户端监听该连接的epoll_wait将会收到EPOLLHUP事件，从而得知连接已经断开。
 - 原生socket编程:
+
 ```cpp
 #参考easycwmp/cwmp.c---->cwmp_do_alive(void){}
 #include <sys/socket.h>
@@ -1238,6 +1242,4 @@ bool isTcpConnected(int socketDescriptor) {
     getsockopt(socketDescriptor, IPPROTO_TCP, TCP_INFO, &info, &len);
     return info.tcpi_state == TCP_ESTABLISHED;
 }
-
 ```
-
