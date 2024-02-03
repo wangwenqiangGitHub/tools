@@ -88,3 +88,9 @@ autoProxy=true
 
 # 备注:果你遇到 docker 无法从 Windows 访问的问题，这个是 iptables 的问题，在 /etc/docker/daemon.json 里添加一句 "iptables": false 就好了
 ```
+
+# 删除wsl
+
+```
+wsl --unregister Ubuntu
+```
