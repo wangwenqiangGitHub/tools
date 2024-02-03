@@ -16,10 +16,13 @@ std::ostream &operator<< (std::ostream & os, std::vector<T> const &a)
 	return os;
 }
 
+#include <string.h>
+#define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
+
 int main(int argc, char *argv[])
 {
-	
 	std::vector<int> a = {1, 2, 4, 5, 7};
 	std::cout << a << std::endl;
+	printf("<%s %s %d>\n",__FILENAME__, __func__, __LINE__);
 	return 0;
 }
