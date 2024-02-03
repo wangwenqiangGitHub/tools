@@ -123,3 +123,12 @@ target_link_libraries(myapp PRIVATE mylib)
 
 当构建myapp时，它会链接mylib和lib2;但不会链接lib1.这种机制可以帮助我们控制依赖关系的传递。确保每个目标都能正确的链接到所需要的库中。
 ```
+
+# 设置编译库和可执行文件的输出目录
+
+```
+set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
+	${CMAKE_CURRENT_SOURCE_DIR}/../../lib)
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
+	${CMAKE_CURRENT_SOURCE_DIR}/../../bin)
+```
