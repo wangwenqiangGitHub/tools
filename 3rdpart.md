@@ -144,3 +144,9 @@ int main(int argc, char* argv[]) {
 ```
 ./config --prefix=`pwd`/build --openssldir=--prefix=`pwd`/build "-Wl,-dl,--enable-new-dtags,-rpath,$(LIBRPATH)"
 ```
+
+# ini file parse
+
+```
+https://github.com/Rookfighter/inifile-cpp/tree/master
+```
