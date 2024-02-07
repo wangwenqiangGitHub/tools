@@ -130,3 +130,9 @@ https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-w
 https://learn.microsoft.com/zh-cn/windows/wsl/wsl-config#configure-settings-with-wslconfig-and-wslconf
 wsl1或者wsl2采用/etc/wsl.conf
 ```
+
+# wsl配置显示的语言
+
+```
+sudo dpkg-reconfigure locales
+```
