@@ -135,4 +135,11 @@ wsl1或者wsl2采用/etc/wsl.conf
 
 ```
 sudo dpkg-reconfigure locales
+sudo apt-get install fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp
+sudo vim /etc/default/locale
+# LANG=zh_CN.UTF-8 可以显示终端输出的中文
+sudo apt install zh-autoconvert
+sudo apt install zhcon
+sudo apt install language-pack-zh-hans
+locale -a || locale
 ```
