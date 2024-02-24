@@ -53,6 +53,8 @@ type vim
 ```
 sudo add-apt-repository ppa:jonathonf/vim-daily
 sudo apt update
+# 如果vim没升级到vim9,通过which vim将系统识别到的vim 重命名vim8
+/usr/bin/vim中了。原来的vim在/usr/local/bin下
 ```
 
 # coc依赖nodejs
