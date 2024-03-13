@@ -103,3 +103,21 @@ f:表示addr指向的内存内容的输出格式，s对应输出字符串，此�
 u:就是指以多少个字节作为一个内存单元-unit,默认为4。u还可以用被一些字符表示:
     如b=1 byte, h=2 bytes
 ```
+
+# GDB打印结构体数组
+- 通过bt命令
+```
+# 结构体StruBuf 成员 Buf即可以查看
+p ((StruBuf*)0xaf8feb60)->Buf
+p ((StruBuf*)0xaf9ccb60)->Len
+$9 = 7
+x /7xb 0xaf9ccb60
+0xaf9ccb60:     0x06    0x81    0x02    0x00    0x21    0x20    0xca
+7 个单元 x是16个进制 b是每个单元是一个字节(byte)
+```
+# core文件
+```
+#正确生成core文件, 可选记录pid echo <pid> /proc/sys/kernel/core_uses_pid
+ulimit -c unlimited
+echo /mnt/mmc/core-%e-%p-%t> /proc/sys/kernel/core_pattern
+```
