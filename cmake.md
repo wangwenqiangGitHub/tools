@@ -132,3 +132,12 @@ set_target_properties(${PROJECT_NAME} PROPERTIES LIBRARY_OUTPUT_DIRECTORY
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
 	${CMAKE_CURRENT_SOURCE_DIR}/../../bin)
 ```
+
+# windows terminal cmake编译
+```
+# MinGW-W64-builds-4.3.5.tar.gz
+cd build
+rm -r ./*
+cmake ../ -G"Unix Makefiles"
+make -j12
+```
