@@ -134,6 +134,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY
 ```
 
 # windows terminal cmake编译
+
 ```
 # MinGW-W64-builds-4.3.5.tar.gz
 cd build

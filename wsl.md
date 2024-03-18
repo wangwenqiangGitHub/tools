@@ -147,3 +147,9 @@ locale -a || locale
 # wsl 终端下 vim block <ctrl-v> 不生效
 
 - 需要设置一下windows terminal的ctrl-v使用为粘贴快捷键删除。
+
+# 重启wsl
+
+```
+taskkill /f /im wslservice.exe
+```
