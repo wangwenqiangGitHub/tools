@@ -57,3 +57,18 @@ include_directories(inc INC_LIST)
 aux_source_directory(src SRC_LIST)
 add_executable(hello_world main.c ${SRC_LIST})
 ```
+
+# 限制作用域
+
+```
+GCC的visibility属性用来控制.so文件的符号表，
+也就是控制外部能不能找到符号调用，比如函数、变量、模板、类等。符号表分静态的
+.symtab 和动态的 .dynsym，一个对应链接视图另一个对应执行视图。
+设置为 hidden 符号将不导出，即不出现在 .dynsym 当中，不能为模块外所用。
+默认是可见，这也就是“default”的含义。
+在编译文件中：
+1. 当-fvisibility=hidden时
+动态库中的函数默认是隐藏的，除非代码中显示声明为__attribute__((visibility("default"))).
+2. 当-fvisibility=default时
+动态库中的函数默认是可见的，除非代码中显示声明为__attribute__((visibility("hidden"))).
+```
