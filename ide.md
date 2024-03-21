@@ -12,3 +12,7 @@
 
 - <leaderf>fa 可以运行所有命令
 - <esc>可以实现从其他面板跳到编辑面板
+
+# vsVimrc
+
+- 依赖Visual Assist
