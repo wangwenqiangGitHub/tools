@@ -72,3 +72,16 @@ GCC的visibility属性用来控制.so文件的符号表，
 2. 当-fvisibility=default时
 动态库中的函数默认是可见的，除非代码中显示声明为__attribute__((visibility("hidden"))).
 ```
+
+# c++报错undefine reference
+
+##### 问题 错误："undefined reference to"
+
+- 是链接器(linker)报出的错误，表示代码中某个地方引用了一个符号（例如函数或全局变量），但是链接器在链接各个目标文件（.o 或 .obj）和库文件时，找不到这个符号的定义。
+
+##### 解决方法：
+
+- `include_directories`中没有包含库的文件
+- 编译出的库格式不对。arm 或者 linux
+- c文件中h文件需要加 `extern "C"{}` extern "C"的主要作用是解决C++和C语言在混合编程时的链接问题，确保两者能够正确地相互调用。
+- 库的链接顺序问题。
