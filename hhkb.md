@@ -11,3 +11,7 @@
 双模版和双模静音版出现这种问题主要是没有通过Fn+control+1、2、3、4分配序号造成。
 
 用蓝牙适配器连接2.0USB连接不了hhkb,蓝牙耳机可以，hhkb必须用3.0的usb.
+
+# [hhkb多设备之间切换](https://happyhackingkb.com/manual/studio/ug-us/en/ug/topic/connect_device_switch.html)
+
+- Fn Ctronl [1-4]
