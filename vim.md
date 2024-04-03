@@ -233,3 +233,7 @@ https://github.com/neoclide/coc.nvim/issues/1288
 ```
 vim aa.text +100
 ```
+
+# vim中的一些命令
+
+- 删除文件行尾的空格`:%s/\s\+$//g`
