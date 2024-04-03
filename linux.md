@@ -188,3 +188,12 @@ wget -nv -c -p -k -H -i
 ```
 export LD_LIBRARY_PATH=/home/wwq:$LD_LIBRARY_PATH
 ```
+
+# locale设置系统语言
+
+- sudo apt install language-pack-zh-hans
+- `sudo vim /etc/default/locale`
+
+```
+LANG=zh_CN.UTF-8
+```
