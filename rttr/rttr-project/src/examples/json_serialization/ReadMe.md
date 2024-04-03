@@ -1,9 +1,10 @@
-JSON Serialization
-==================
+# JSON Serialization
 
-This example demonstrate the usage of RTTR in order to serialize and deserialize an object with JSON.
+This example demonstrate the usage of RTTR in order to serialize and deserialize an object with
+JSON.
 
 Given is following class:
+
 ```cpp
 enum class color
 {
@@ -49,7 +50,9 @@ struct circle : shape
     RTTR_ENABLE(shape)
 };
 ```
+
 serialize it like this:
+
 ```cpp
 int main(int argc, char** argv)
 {
@@ -91,6 +94,7 @@ int main(int argc, char** argv)
 ```
 
 Output:
+
 ```
 Circle: c_1:
 {
