@@ -68,3 +68,16 @@ New-Alias -Name envgccc -Value  gcccscriptBlock
 scoop install llvm
 $env:CC="clang"
 ```
+
+# SecureCRT安装
+- 卸载:
+```
+在控制面板中不能卸载，需要手动删除注册表
+win+r
+regedit进入注册表
+HKEY_CURRENT_USER保存的是当前用户配置
+HKEY_LOCAL_MACHINA是当前计算机配置信息
+删除VanDyke目录。
+```
+
+<++>
