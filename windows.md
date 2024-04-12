@@ -70,7 +70,9 @@ $env:CC="clang"
 ```
 
 # SecureCRT安装
+
 - 卸载:
+
 ```
 在控制面板中不能卸载，需要手动删除注册表
 win+r
@@ -80,4 +82,6 @@ HKEY_LOCAL_MACHINA是当前计算机配置信息
 删除VanDyke目录。
 ```
 
-<++>
+# Mobaxterm
+
+- 支持串口, ftp, sftp, ssh 免费
