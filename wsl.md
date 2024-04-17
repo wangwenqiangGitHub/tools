@@ -148,8 +148,18 @@ locale -a || locale
 
 - 需要设置一下windows terminal的ctrl-v使用为粘贴快捷键删除。
 
-# 重启wsl
+# wsl重启
 
 ```
 taskkill /f /im wslservice.exe
+```
+# wsl报错时相关问题解决
+
+## 错误1，找不到wsl文件路径
+
+```
+windows terminal中配置的启动有问题，需要更改启动配置
+默认是:
+C:\Windows\system32\wsl.exe -d Ubuntu-22.04
+实际上需要找到wsl.exe; 更改为wsl.exe的实际位置，可以解决报错
 ```
