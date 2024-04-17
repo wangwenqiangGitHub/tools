@@ -153,6 +153,7 @@ locale -a || locale
 ```
 taskkill /f /im wslservice.exe
 ```
+
 # wsl报错时相关问题解决
 
 ## 错误1，找不到wsl文件路径

@@ -85,3 +85,17 @@ HKEY_LOCAL_MACHINA是当前计算机配置信息
 # Mobaxterm
 
 - 支持串口, ftp, sftp, ssh 免费
+
+# oh-my-posh
+
+-
+
+```
+scoop install https://github.com/JanDeDobbeleer/oh-my-posh/releases/latest/download/oh-my-posh.json
+$env:Path += ";C:\Users\user\AppData\Local\Programs\oh-my-posh\bin"
+nvim $PROFILE
+# 内容
+oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_rainbow.omp.json" | Invoke-Expression
+# AutoComplete 参考youtobe
+Install-Module PSReadLine -Force
+```
