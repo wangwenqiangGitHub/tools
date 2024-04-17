@@ -142,3 +142,10 @@ rm -r ./*
 cmake ../ -G"Unix Makefiles"
 make -j12
 ```
+
+# install路径
+```cmake
+file(GLOB HEADERS "src/*.h")
+install(FILES ${HEADERS} DESTINATION include)
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
+```
