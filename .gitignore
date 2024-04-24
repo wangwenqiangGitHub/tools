@@ -2,3 +2,5 @@
 build
 OUT
 *.exe
+.cache
+.root
