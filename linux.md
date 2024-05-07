@@ -201,13 +201,22 @@ LANG=zh_CN.UTF-8
 # linux系统函数system命令出现父子进程继承问题
 
 - system函数调用顺序
+
 ```
 fork()->execv()->waitpid()
 socket fd 端口等会继承并且system函数是阻塞的
 ```
+
 - 对于socket继承问题的解决方式:
+
 ```
 flags = fcntl(fd, F_GETFD);
 flags |= FD_CLOEXEC;
 fcntl(fd, F_SETFD, flags);
+```
+
+# 查看库编译采用的gcc版本
+
+```
+strings libpugixml.so | grep GCC
 ```
