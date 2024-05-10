@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+#check args 
+if [ x"$1" == x ]; then
+	echo "please input one libso or exec file!"
+	exit -1
+fi
+
+for each_file in $@
+do
+	if [ ! -f ${each_file} ]; then
+        	echo "file <${each_file}> read failed!"
+	else
+		gcc_ver=$(strings $each_file | grep "GCC: ")
+		echo "file <$each_file> build by gcc : ${gcc_ver#*GCC: }"
+	fi
+done
