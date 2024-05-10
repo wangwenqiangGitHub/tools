@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+#check args 
+if [ x"$1" == x ]; then
+	echo "please input one libso or exec file!"
+	exit -1
+fi
+
+for each_file in $@
+do
+	if [ ! -f ${each_file} ]; then
+        	echo "file <${each_file}> read failed!"
+	else
+		sed -i '0,/^/s/^/\xEF\xBB\xBF/' $each_file 
+	fi
+done
+
+
+
