@@ -237,3 +237,35 @@ vim aa.text +100
 # vim中的一些命令
 
 - 删除文件行尾的空格`:%s/\s\+$//g`
+
+# build vim
+
+1. 下载vim release源码
+2. 安装python
+
+```
+sudo apt install python3.10-dev
+```
+
+3. 编译
+
+```
+#参考 https://allanchain.github.io/blog/post/compile-vim-python3/
+LDFLAGS=-rdynamic ./configure \
+        --with-features=huge \
+        --enable-fail-if-missing \
+        --enable-largefile \
+        --enable-multibyte \
+        --enable-python3interp \
+        --with-python3-command=python3 \
+        --with-python3-config-dir=/usr/lib/python3.10/config-3.10-x86_64-linux-gnu --prefix=`pwd`/OUT
+make -j12
+make install
+# 将OUT/bin加入到环境变量里
+```
+
+# clang-format
+
+```
+.clang-format放在${HOME}或者vim目录下
+```
