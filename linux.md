@@ -220,3 +220,11 @@ fcntl(fd, F_SETFD, flags);
 ```
 strings libpugixml.so | grep GCC
 ```
+
+# 修改文件编码
+
+```
+utf8-bom
+```
+
+<++>
