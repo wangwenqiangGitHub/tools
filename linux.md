@@ -227,4 +227,13 @@ strings libpugixml.so | grep GCC
 utf8-bom
 ```
 
-<++>
+# 二进制文件编辑工具
+
+- hexdump
+- xxd
+- bed: 基于go语言开发的跨平台二进制编辑器
+- od
+- hexedit: 功能比较强大的命令行二进制编辑器
+- hexer: 模仿vi操作和命令的二进制编辑器
+- ncurses-hexedit 又名hexeditor,支持hjkl移动等少量vi操作的二进制编辑器
+- hexed: windows console-based hex editor
