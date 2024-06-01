@@ -128,3 +128,18 @@ x/256 buf
 ulimit -c unlimited
 echo /mnt/mmc/core-%e-%p-%t> /proc/sys/kernel/core_pattern
 ```
+
+# gdb打印命令 查看命令
+
+```
+(gdb) info args
+this = 0x5555555c9390
+conn = std::shared_ptr<sfl::net::TcpConnection> (use count 2, weak count 1) = {get() = 0x5555555ca040}
+buf = 0x5555555ca098
+(gdb) info locals
+head = 0x5555555ca198
+event = std::shared_ptr<Event> (use count 1442455055, weak count 1223002439) = {get() = 0x7fffffffd1d0}
+(gdb) x /8xw 0x5555555ca198
+0x5555555ca198: 0x00000021      0x00000000      0x00000000      0x00000000
+0x5555555ca1a8: 0x00000000      0x00000000      0x00000000      0x00000000
+```
