@@ -57,3 +57,9 @@ D:\Qt\Qt5.14.2\5.14.2\msvc2017_64
 scoop install qt-creator
 # 最终采用的时onLine的安装方式可以使用
 ```
+
+# ui文件生成h文件命令
+
+```
+uic -o ui.h mainwindow.ui
+```
