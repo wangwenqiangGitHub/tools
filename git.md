@@ -407,3 +407,11 @@ git push origin master
 ```
 
 - PR代码-github操作
+
+- git增加过滤规则(git中.gitignore忘记添加文件如何操作)
+
+```
+git rm -r --cached .
+git add .
+git commit -m "add ignore"
+```
