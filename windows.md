@@ -99,3 +99,9 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_rainbow.omp.j
 # AutoComplete 参考youtobe
 Install-Module PSReadLine -Force
 ```
+
+# windows批处理命令
+
+```
+Get-Process | findstr.exe E
+```
