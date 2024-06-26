@@ -150,3 +150,43 @@ file(GLOB HEADERS "src/*.h")
 install(FILES ${HEADERS} DESTINATION include)
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 ```
+
+# CMake跨平台
+
+- 问题1 程序编译出来会显示库是链接的绝对路径
+
+```
+objdump -p ../bin/exe
+readelf -d ../bin/exe
+...
+动态节:
+NEEDED      /mnt/mnt/code/linux/project/libxxxx.so
+这种问题需要设置cmake的运行操作系统
+...
+
+if(NOT GLOBAL_VAR_WIN32)
+    set(CMAKE_SYSTEM_NAME "Linux")
+endif()
+# 注意 Linux 这个是关键字 需要大写 小写不生效
+
+# 查看编译的可执行程序的符号表
+readelf -s -W ../bin/exe 即可看出符号表
+```
+
+- 问题2 编译的库依赖后缀的库比如编译时依赖libxml2.so,运行时依赖libxml2.so.2
+
+```
+readelf -d libxml2.so
+
+Dynamic section at offset 0x7b1c4 contains 30 entries:
+标记        类型                         名称/值
+0x00000001 (NEEDED)                     共享库：[libdl.so.2] 
+0x00000001 (NEEDED)                     共享库：[libm.so.6]
+0x00000001 (NEEDED)                     共享库：[libgcc_s.so.1]
+0x00000001 (NEEDED)                     共享库：[libc.so.6]
+0x0000000e (SONAME)                     Library soname: [libxml2.so.2]---- 从这里看出库的真实名字
+0x0000000c (INIT)                       0xe7f4
+
+修改方法，用二进制编辑器
+bed libxml2.so 进入搜索进行修改，将libxml2.so.2修改成libxml2.so.. 将2(hex是32)修改成.(hex00)
+```
