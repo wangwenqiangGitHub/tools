@@ -96,6 +96,7 @@ route add default gw 192.216.223.1 dev eth0
 # apt install proxy set up
 
 ```
+# clash 中选择上允许局域网
 cd /etc/apt/apt.conf.d
 vim 05proxy
 Acquire::http::Proxy "http://0.0.0.0:7890";
@@ -237,3 +238,8 @@ utf8-bom
 - hexer: 模仿vi操作和命令的二进制编辑器
 - ncurses-hexedit 又名hexeditor,支持hjkl移动等少量vi操作的二进制编辑器
 - hexed: windows console-based hex editor
+
+# 白名单网络攻击方案
+
+- iptables: 通过脚本实现
+- 入侵检测系统Snort
