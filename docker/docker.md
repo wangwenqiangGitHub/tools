@@ -69,3 +69,17 @@ docker-compose up
 # Dockerfile中配置docker ssh登录的密码
 
 - RUN echo 'root:root'|chpasswd
+
+# docker 报错:Cannot connect to the Docker daemon at tcp://localhost:2375. Is the docker daemon running?
+
+```
+export DOCKER_HOST='unix:///var/run/docker.sock'
+```
+
+# docker报错:Ubuntu 22.04 Error response from daemon: Get “https://registry-1.docker.io/v2/”: dial tcp: lookup registry-1.docker.io on 127.0.0.53:53: read udp 127.0.0.1:48086->127.0.0.53:53: read: connection refused
+
+```
+vim  /etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+```
