@@ -1,4 +1,4 @@
-# buffer设计
+# [buffer设计](http://www.cppblog.com/Solstice/archive/2011/04/17/144378.html)
 
 - 为什么non-blocking网络编程中应用层buffer是必需的 non-blocking IO的核心思想是避免阻塞在read()或者write()上或者其他系统调用上，
   这样可以最大限度地复用thread-of-control,让一个线程可以服务于多个socket连接。 IO线程只能在IO
