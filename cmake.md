@@ -190,3 +190,12 @@ Dynamic section at offset 0x7b1c4 contains 30 entries:
 修改方法，用二进制编辑器
 bed libxml2.so 进入搜索进行修改，将libxml2.so.2修改成libxml2.so.. 将2(hex是32)修改成.(hex00)
 ```
+
+# 编译时报错
+
+- 编译出错
+
+- 链接出错
+```
+ld ... undefined reference to 'func name'
+```
