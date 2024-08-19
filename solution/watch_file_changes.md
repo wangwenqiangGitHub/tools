@@ -1,10 +1,10 @@
-# ¼à¿ØÎÄ¼þ±ä»¯
+# ç›‘æŽ§æ–‡ä»¶å˜åŒ–
 
-- [Linux C Ê¹ÓÃ inotify ¼à¿ØÎÄ¼þ»òÄ¿Â¼±ä»¯](https://www.cnblogs.com/PikapBai/p/14480881.html)
+- [Linux C ä½¿ç”¨ inotify ç›‘æŽ§æ–‡ä»¶æˆ–ç›®å½•å˜åŒ–](https://www.cnblogs.com/PikapBai/p/14480881.html)
 
-	- ×¢ÒâµÄÎÊÌâ: vim±àÒëÐÞ¸ÄµÄÎÄ¼þ²»ÄÜ¼àÌý£¬ÕâÊÇÓÉÓÚ vim µÄ¹¤×÷»úÖÆÒýÆðµÄ£¬vim »áÏÈ½«Ô´ÎÄ¼þ¸´ÖÆÎªÁíÒ»¸öÎÄ¼þ£¬È»ºóÔÚÁíÒ»ÎÄ¼þ»ù´¡ÉÏ±à¼­(ºó×ºÃûÎª swp)£¬±£´æµÄÊ±ºòÔÙ½«Õâ¸öÎÄ¼þ¸²¸ÇÔ´ÎÄ¼þ¡£´ËÊ±Ô­À´µÄÎÄ¼þÒÑ¾­±»ºóÀ´µÄÐÂÎÄ¼þ´úÌæ£¬Òò´Ë¼àÊÓ¶ÔÏóËù¼àÊÓµÄÎÄ¼þÒÑ¾­²»´æÔÚÁË£¬ËùÒÔ×ÔÈ»²»»á²úÉúÈÎºÎÊÂ¼þ¡£
+	- æ³¨æ„çš„é—®é¢˜: vimç¼–è¯‘ä¿®æ”¹çš„æ–‡ä»¶ä¸èƒ½ç›‘å¬ï¼Œè¿™æ˜¯ç”±äºŽ vim çš„å·¥ä½œæœºåˆ¶å¼•èµ·çš„ï¼Œvim ä¼šå…ˆå°†æºæ–‡ä»¶å¤åˆ¶ä¸ºå¦ä¸€ä¸ªæ–‡ä»¶ï¼Œç„¶åŽåœ¨å¦ä¸€æ–‡ä»¶åŸºç¡€ä¸Šç¼–è¾‘(åŽç¼€åä¸º swp)ï¼Œä¿å­˜çš„æ—¶å€™å†å°†è¿™ä¸ªæ–‡ä»¶è¦†ç›–æºæ–‡ä»¶ã€‚æ­¤æ—¶åŽŸæ¥çš„æ–‡ä»¶å·²ç»è¢«åŽæ¥çš„æ–°æ–‡ä»¶ä»£æ›¿ï¼Œå› æ­¤ç›‘è§†å¯¹è±¡æ‰€ç›‘è§†çš„æ–‡ä»¶å·²ç»ä¸å­˜åœ¨äº†ï¼Œæ‰€ä»¥è‡ªç„¶ä¸ä¼šäº§ç”Ÿä»»ä½•äº‹ä»¶ã€‚
 
-- ²é¿´ÎÄ¼þ¸ü¸ÄÊ±¼ä£¬¶¨ÒåÎÄ¼þ±ä»¯
+- æŸ¥çœ‹æ–‡ä»¶æ›´æ”¹æ—¶é—´ï¼Œå®šä¹‰æ–‡ä»¶å˜åŒ–
 
 ```cpp
 bool hasFileChanged()
@@ -29,3 +29,64 @@ std::time_t getFileLastModifiedTime()
 }
 ```
 
+- æŸ¥çœ‹æŸä¸ªè·¯å¾„ä¸‹ï¼Œç›¸åŒåŽç¼€æ–‡ä»¶ä¸ªæ•°
+
+```cpp
+
+/**
+ * @brief æŸ¥æ‰¾è·¯å¾„ä¸‹ï¼ŒæŸä¸ªæ–‡ä»¶ä¸ªæ•°
+ * @param path è·¯å¾„
+ * @param suffix  åŽç¼€
+ * @param  flag æ˜¯å¦é€’å½’æŸ¥æ‰¾
+ * @return int  ä¸ªæ•°
+ */
+int count_files_with_suffix(const char *path, const char *suffix, uint8 flag)
+{
+    DIR *dir;
+    struct dirent *entry;
+    struct stat statbuf;
+    int count = 0;
+
+    if (!(dir = opendir(path)))
+    {
+        perror("opendir");
+        return -1;
+    }
+
+    while ((entry = readdir(dir)) != NULL)
+    {
+        char fullpath[1024];
+
+        // è·³è¿‡"."å’Œ".."
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
+            continue;
+
+        snprintf(fullpath, sizeof(fullpath), "%s/%s", path, entry->d_name);
+
+        if (stat(fullpath, &statbuf) == -1)
+        {
+            perror("stat");
+            continue;
+        }
+
+        // å¦‚æžœæ˜¯ç›®å½•ï¼Œåˆ™é€’å½’è°ƒç”¨
+        if (S_ISDIR(statbuf.st_mode) && flag)
+        {
+            count += count_files_with_suffix(fullpath, suffix);
+        }
+        else
+        {
+            // æ£€æŸ¥æ–‡ä»¶æ˜¯å¦ä»¥æŒ‡å®šåŽç¼€ç»“å°¾
+            size_t len = strlen(entry->d_name);
+            if (len > strlen(suffix) && strcmp(entry->d_name + len - strlen(suffix), suffix) == 0)
+            {
+                count++;
+            }
+        }
+    }
+
+    closedir(dir);
+    return count;
+}
+
+```
