@@ -2,6 +2,8 @@
 
 ```shell
 find <file_path> -name "*.h" | xargs grep "find_word"
+find . -type d -name xxx
+find . -type f -name xxx
 ```
 
 ## Makefile脚本
