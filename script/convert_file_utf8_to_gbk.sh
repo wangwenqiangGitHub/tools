@@ -24,5 +24,6 @@ find "$DIRECTORY" -type f \( -name "*.c" -o -name "*.cpp" -o -name "*.h" \) | wh
 done
 
 find . -type f -name "*.tmp"
-#find . -type f -name "*.tmp" -exec rm {} \;
+# 删除 find . -type f -name "*.tmp" | xargs rm -rf
+find . -type f -name "*.tmp" -exec rm {} \;
 echo "所有文件已转换为GBK编码"
