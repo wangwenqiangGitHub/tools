@@ -164,3 +164,14 @@ windows terminal中配置的启动有问题，需要更改启动配置
 C:\Windows\system32\wsl.exe -d Ubuntu-22.04
 实际上需要找到wsl.exe; 更改为wsl.exe的实际位置，可以解决报错
 ```
+
+
+# wsl1不能运行m32程序
+```
+sudo apt-get install gcc-multilib g++-multilib
+sudo apt-get install lib32stdc++6 lib32z1
+gcc test.c -m32 -o test
+# 程序运行错误，主要原因是wsl不支持32位运行
+# wsl2上运行没有问题
+```
+
