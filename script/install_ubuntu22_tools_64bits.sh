@@ -1,28 +1,12 @@
 #!/bin/bash
-#source ~/.colorc
 do_install()
 {
-	#pwarn "Install $1 [START]"
     sudo apt-get install -y $1 > /dev/null 2>&1
-    #if [ $? -eq 0 ]; then
-		##pdone "Install $1  [OK]"
-	#else
-		##perro "Install $1  [ERROR]"
-		#exit 1
-	#fi
 }
 fo_install()
 {
-	#pwarn "Install $1 [START]"
     sudo apt-get install -y $1 --force-yes > /dev/null 2>&1
-    #if [ $? -eq 0 ]; then
-		##pdone "Install $1  [OK]"
-	#else
-		##perro "Install $1  [ERROR]"
-		#exit 1
-	#fi
 }
-#pwarn "Instal tools [START]"
 do_install gcc
 do_install g++
 do_install gcc-multilib 
@@ -84,5 +68,3 @@ do_install svnkit
 do_install svn2git
 do_install libgl1-mesa-dev
 do_install libglu1-mesa-dev
-#do_install asciidoc
-pdone "Instal tools [FINISH]"
