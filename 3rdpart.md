@@ -150,3 +150,46 @@ int main(int argc, char* argv[]) {
 ```
 https://github.com/Rookfighter/inifile-cpp/tree/master
 ```
+
+# iconv
+
+```cpp
+// 参考https://github.com/TarsCloud/TarsCpp/blob/master/util/src/tc_encoder.cpp
+// 交叉编译:https://www.gnu.org/software/libiconv/#downloading
+//./configure --prefix=`pwd`/OUT CC=arm-linux-gnueabi-gcc CXX=arm-linux-gnueabi-g++ --host=arm-linux-gnueabi
+// 例子
+void utf82gbk(char *sOut, int iMaxOutLen, const char *sIn, int iInLen,int mode)
+{
+	iconv_t cd;
+    //switch(mode){
+    //case TC_Encoder::ICONV_TRANSLIT:
+    //    cd = iconv_open("GBK//TRANSLIT", "UTF-8");
+    //    break;
+    //case TC_Encoder::ICONV_IGNORE:
+    //    cd = iconv_open("GBK//IGNORE", "UTF-8");
+    //    break;
+    //default:
+        cd = iconv_open("GBK", "UTF-8");
+    //    break;
+    //}
+	if (cd == (iconv_t)-1){
+        printf("[gbk2utf8] iconv_open error\n");
+    }
+
+    char * pIn = (char*)sIn;
+    size_t sizeLeftLen      = iMaxOutLen;
+    size_t sizeInLen        = iInLen;
+    char* pOut = sOut;
+
+    size_t ret = iconv(cd, &pIn, &sizeInLen, (char **)&sOut, &sizeLeftLen);
+    if (ret == (size_t) - 1 && TC_Encoder::ICONV_NORMAL == mode){
+        iconv_close(cd);
+        printf("[gbk2utf8] iconv error\n");
+        return;
+    }
+
+    iconv_close(cd);
+    pOut[iMaxOutLen - (int)sizeLeftLen] = '\0';
+    iMaxOutLen = iMaxOutLen - (int)sizeLeftLen;
+}
+```
