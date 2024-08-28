@@ -196,6 +196,7 @@ bed libxml2.so 进入搜索进行修改，将libxml2.so.2修改成libxml2.so.. �
 - 编译出错
 
 - 链接出错
+
 ```
 ld ... undefined reference to 'func name'
 ```

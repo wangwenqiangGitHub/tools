@@ -1,13 +1,13 @@
 # boost 相关API
 
 ### 多索引容器:`boost::multi_index::multi_index_container`
+
 - 需要typedef来为新的容器提供对`Boost multi_index::multi_index_container`中类的方便的访问，优势在于对同一组同样的数据提供了多组访问接口。
 
-
-- 每个容器定义都需要类`boost::multi_index::multi_index_container` 第一个参数是容器中存储的元素类型，在例子中为person, 在第二个参数指明了容器所提供的所有索引类型。访问接口的具体细节都可以在定义容器的时候被指定。接口的定义必须由模板类`boost::multi_index::indexed_by`开实现，每个接口都作为参数传动给它。
+- 每个容器定义都需要类`boost::multi_index::multi_index_container` 第一个参数是容器中存储的元素类型，在例子中为person,
+  在第二个参数指明了容器所提供的所有索引类型。访问接口的具体细节都可以在定义容器的时候被指定。接口的定义必须由模板类`boost::multi_index::indexed_by`开实现，每个接口都作为参数传动给它。
 
 ```cpp
-
 /*
 例子中定义了两个 boost::multi_index::hashed_non_unique 类型的接口，
 boost::multi_index::hashed_non_unique 是一个模板类， 他需要一个可计算 Hash 值的类型作为它的参数。 
