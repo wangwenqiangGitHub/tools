@@ -12,3 +12,9 @@
 ```
 (mms||((tcp.port == 102)&&(tcp.flags.fin==1||tcp.flags.reset==1||tcp.flags.syn==1))||(cotp.type==0x0d)||(cotp.type==0x0e)||(cotp.type==0x08))
 ```
+
+# 通过数据内容过滤
+
+```
+tcp.port == 2404 && (tcp contains 852A)
+```
