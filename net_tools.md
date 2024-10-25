@@ -20,3 +20,10 @@ nc -l -p 1234
 #客户端 
 nc 0.0.0.0 1234
 ```
+
+- wsl查看本机ip
+
+```
+ipconfig.exe
+ip ad
+```
