@@ -105,3 +105,8 @@ Install-Module PSReadLine -Force
 ```
 Get-Process | findstr.exe E
 ```
+
+# windows 启动BitLocker
+```
+win 所有BitLocker 激活，然后关闭，就可以通过老毛桃操作修改磁盘文件了
+```
