@@ -121,4 +121,16 @@ int main() {
 }
 ```
 
-<++>
+### build boost headers
+
+```
+./bootstrap.sh --prefix=/path/to/prefix
+./b2 --prefix=/path/to/prefix headers
+```
+
+### boost 结合共享内存构建数据库
+
+```
+# 官方介绍:The widely used Boost.MultiIndex library is compatible with Boost.Interprocess so we can construct pretty good databases in shared memory.
+https://www.boost.org/doc/libs/1_48_0/doc/html/interprocess/allocators_containers.html#interprocess.allocators_containers.containers_explained.containers_of_containers
+```
