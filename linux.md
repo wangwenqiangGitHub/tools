@@ -243,3 +243,7 @@ utf8-bom
 
 - iptables: 通过脚本实现
 - 入侵检测系统Snort
+
+# filesystem
+
+- 刷写次数(flash-10w eeprom-100w emmc-3w)
