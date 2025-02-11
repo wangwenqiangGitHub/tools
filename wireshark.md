@@ -65,3 +65,42 @@ ff ff ff ff ff ff 00 53 46 01 00 15 40 02 00 00
 
 tcpdump '(ether dst ff:ff:ff:ff:ff:ff) and ether[31:2]=0x3396'
 ```
+
+# tcpdump抓包保存命令
+
+```
+tcpdump -i net1 tcp and not port 22 or !tcp -w /tmp/net1.pcap -C 4M -W 3
+tcpdump: 网络数据包捕获工具。
+-i net1: 指定要捕获数据包的网络接口 net1。
+tcp and not port 22 or !tcp: 过滤条件，表示捕获 TCP 数据包且端口不是 22 的流量，或者不是 TCP 协议的流量。
+-w /tmp/net1.pcap: 将捕获的数据包保存到文件路径 /tmp/net1.pcap。
+-C 4M: 每个输出文件的最大大小为 4MB（兆字节）。
+-W 3: 最多生成 3 个文件，文件名将依次为 net1.pcap0, net1.pcap1, net1.pcap2。
+综合起来，这个命令将在网络接口 net1 上捕获 TCP 数据包（不包括端口 22 的流量）或非 TCP 流量，并将数据包保存到 /tmp/ 目录下的多个文件中。每个文件最大 4MB，总共生成 3 个文件。
+```
+
+# 本地抓远端的包
+
+```
+sshpass -p '12345678' ssh root@100.100.100.100 'tcpdump -s 0 -U -i any -w - not port 22' > capture.pcap
+```
+
+# windows wsl抓取远程包
+
+```
+sshpass -p '12345678' ssh root@100.100.100.100 'tcpdump -s 0 -U -i any -w - not port 22' |  wireshark.exe -i - -k
+```
+
+# lua plugins
+
+- 问题1，老版本的lua需要init.lua文件，新版本不需要了,[参考文章](https://ask.wireshark.org/question/33747/initlua-is-not-present-in-the-latest-wireshark/)
+  [参考文章1](https://mika-s.github.io/wireshark/lua/dissector/2017/11/04/creating-a-wireshark-dissector-in-lua-1.html)
+
+- 学习wireshark
+  lua好的博文:[Mika's tech blog](https://mika-s.github.io/wireshark/lua/dissector/2018/12/18/creating-a-wireshark-dissector-in-lua-5.html)
+
+# wireshark设置mms/IEC61850
+
+- [链接](https://blog.csdn.net/weixin_42342523/article/details/134271761)
+- 打开菜单Edit-Preference. 在左侧Protocol列选择PRES. 点击右侧"Users Context Lists"选项中的Edit按钮。点击编辑Context Id:3,
+  Syntax Name OID:'1.0.9506.2.3';
