@@ -100,6 +100,12 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_rainbow.omp.j
 Install-Module PSReadLine -Force
 ```
 
+- windows terminal 补全
+
+```
+Install-Module PSReadLine -Force
+```
+
 # windows批处理命令
 
 ```
@@ -117,4 +123,10 @@ win 所有BitLocker 激活，然后关闭，就可以通过老毛桃操作修改
 ```
 scoop config proxy proxy.example.org:8080
 scoop config rm proxy
+```
+
+# WindowsPowerShell 设置utf8
+
+```
+chcp 65001
 ```
