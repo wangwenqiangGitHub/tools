@@ -43,3 +43,15 @@
   - 对解决方案运行代码进行分析：Alt + F11
   - 生成项目：Ctrl + B
   - 编译：Ctrl + F7
+
+- vs中番茄助手插件安装后,取消自动更新,否则后边激活失效了
+
+# source insight工具
+
+- 需要创建project工程
+- 根据函数可以选择jump to caller查看调用关系
+- 菜单栏中 `p`表示 `project_windows`查看文件列表的 ，后一个查看上下文的
+
+# vs打开工程文件使用Unicode(UTF-8)编码问题
+
+- 检查控制面板-时钟和区域:Beta版: 使用Unicode UTF-8提供全球语言支持 这个选项不要勾选。
