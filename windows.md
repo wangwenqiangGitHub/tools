@@ -130,3 +130,14 @@ scoop config rm proxy
 ```
 chcp 65001
 ```
+
+# scoop 出错问题
+
+```
+cd /mnt/c/Scoop/buckets/main/bucket
+git reset --hard HEAD
+git clean -f -d 删除未被git跟踪的文件和目录
+git pull
+scoop update
+scoop update -a
+```
