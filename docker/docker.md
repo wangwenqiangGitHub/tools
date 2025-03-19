@@ -83,3 +83,11 @@ vim  /etc/resolv.conf
 nameserver 8.8.8.8
 nameserver 8.8.4.4
 ```
+
+# docker path
+
+```
+vi /etc/systemd/system/docker.service.d/http-proxy.conf
+```
+
+<++>

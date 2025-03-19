@@ -44,27 +44,29 @@ vi /root/.docker/config.json
 
 ## Configure your terminal and run the installation
 
-See the [production guide](production_readme.md) for more information and options about the setup command.
+See the [production guide](production_readme.md) for more information and options about the setup
+command.
 
 ```bash
 export http_proxy="http://proxy.example.com:8080" https_proxy="https://proxy.example.com:8080" no_proxy="localhost,example.com"
 \curl -sSL setup.fab.mn | bash
 ```
 
-During the installation, if you have correctly exported the variable `http_proxy`, you will be prompted to enter your proxy CA certificate, if needed.
+During the installation, if you have correctly exported the variable `http_proxy`, you will be
+prompted to enter your proxy CA certificate, if needed.
 
-##  Q1: Cannot connect to the Docker daemon at tcp://localhost:2375. Is the docker daemon running?
+## Q1: Cannot connect to the Docker daemon at tcp://localhost:2375. Is the docker daemon running?
 
 ```
 sudo docker ps
-
 ```
 
 ## Q2:https://registry-1.docker.io/v2/: proxyconnect : EOF
 
 ```
+1.
 [Service]
 Environment="HTTP_PROXY=proxy.example.com:80"
 Environment="HTTPS_PROXY=proxy.example.com:443"
-
+2. set clash mode is global, this is very important
 ```
