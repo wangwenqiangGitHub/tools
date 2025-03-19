@@ -164,3 +164,15 @@ arr=(math english chinese)
 | +            | 匹配一个多个前一个字符                    |
 | ?            | 匹配零个或者一个字符                     |
 | ()           | 字符组                            |
+
+# 统计代码量
+
+```shell
+find . -type d \( -name "excluded_folder1" -o -name "excluded_folder2" \) -prune -o -type f \( -name "*.h" -o -name "*.cpp" -o -name "*.hpp" -o -name "*.c" \) -exec wc -l {} +
+find . -type d \( -name "excluded_folder1" -o -name "excluded_folder2" \) -prune -o -type f \( -name "*.h" -o -name "*.cpp" -o -name "*.hpp" -o -name "*.c" \) -exec wc -l {} + | awk 'END {sum=0; for(i=2; i<=NF; i+=2) sum+=$i; print sum}''>)}'
+cloc .
+cloc /path/to/project/  # 统计指定目录
+cloc . --exclude-dir=vendor  # 排除指定目录
+cargo install tokei
+tokei  # 统计当前目录
+```
