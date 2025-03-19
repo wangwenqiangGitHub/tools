@@ -104,3 +104,12 @@ sshpass -p '12345678' ssh root@100.100.100.100 'tcpdump -s 0 -U -i any -w - not 
 - [链接](https://blog.csdn.net/weixin_42342523/article/details/134271761)
 - 打开菜单Edit-Preference. 在左侧Protocol列选择PRES. 点击右侧"Users Context Lists"选项中的Edit按钮。点击编辑Context Id:3,
   Syntax Name OID:'1.0.9506.2.3';
+
+# 过滤
+
+```
+eth.type==0x4002 && (eth contains 3099)
+新版本
+frame contains 33:96
+eth.type== 0x4002 && frame contains 33:96
+```
