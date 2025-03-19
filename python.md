@@ -127,6 +127,7 @@ pip install pandas --proxy=http:127.0.0.1:7890
 ```
 
 # windows虚拟环境破坏问题排查
+
 ```
 python -m venv .env
 python -m venv .env --prompt qml_test_env # 使用--prompt指定环境名称
@@ -141,5 +142,3 @@ set PYTHONPATH=
 set PATH=.env\Scripts;%PATH%  # 强制虚拟环境路径优先
 set PATH=C:\py_ws\qml_test\.env\Scripts;%PATH%
 ```
-
-<++>
