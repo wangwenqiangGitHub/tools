@@ -125,3 +125,21 @@ cd .venv
 Script/activate
 pip install pandas --proxy=http:127.0.0.1:7890
 ```
+
+# windows虚拟环境破坏问题排查
+```
+python -m venv .env
+python -m venv .env --prompt qml_test_env # 使用--prompt指定环境名称
+.env\Scripts\activate.bat
+# 激活虚拟环境
+.env\Scripts\activate.bat
+# 验证激活状态
+where python
+# 如果还是scoop下的pip的话，需要创建一个临时的生效吧，感觉创建的虚拟环境脚本失效了
+#临时生效
+set PYTHONPATH=
+set PATH=.env\Scripts;%PATH%  # 强制虚拟环境路径优先
+set PATH=C:\py_ws\qml_test\.env\Scripts;%PATH%
+```
+
+<++>
