@@ -278,13 +278,13 @@ void func(char* src, char* des, int len);
 
 ```c
 //需要对C的头文件中加上
-#ifdef __cpluscplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 }
 int func();
 
-#ifdef __cpluscplus
+#ifdef __cplusplus
 }
 #endif
 // 传参的时候是const char*还是char*，需要注意类型转换
@@ -299,4 +299,22 @@ int func();
 # 想好要只读元素 for(const auto& x : rannge)
 for(auto& it : ve)
 {}
+```
+
+# cpp预定义宏`__cplusplus`
+
+用于标识当前代码是否在C++编译器下编译,它的值是一个整数，表示C++标准的版本, 例如:
+
+- c++98/03标准下, `__cplusplus`的值是199711L.
+- c++11标准下, `__cplusplus`的值是201103L.
+- c++14标准下, `__cplusplus`的值是201402L.
+- c++17标准下, `__cplusplus`的值是201703L.
+- c++20标准下, `__cplusplus`的值是202002L.
+
+```cpp
+#if __cplusplus >= 201103L
+// C++11或者更高版本的代码
+#else
+// c++98/03的代码
+#endif
 ```
