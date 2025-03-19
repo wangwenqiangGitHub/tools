@@ -119,6 +119,9 @@ x /7xb 0xaf9ccb60
 
 #数组 buf打印数组中的内容
 x/256 buf
+
+x /32c buf
+x /32s buf
 ```
 
 # core文件
@@ -127,6 +130,10 @@ x/256 buf
 #正确生成core文件, 可选记录pid echo <pid> /proc/sys/kernel/core_uses_pid
 ulimit -c unlimited
 echo /mnt/mmc/core-%e-%p-%t> /proc/sys/kernel/core_pattern
+# gdb attach pid生成core文件，新版本的gdb工具可以使用 generate-core-file命令, 或者 kill -3
+# 调试core文件
+gdb <executable> <coredumpfile>
+bt
 ```
 
 # gdb打印命令 查看命令
@@ -142,4 +149,126 @@ event = std::shared_ptr<Event> (use count 1442455055, weak count 1223002439) = {
 (gdb) x /8xw 0x5555555ca198
 0x5555555ca198: 0x00000021      0x00000000      0x00000000      0x00000000
 0x5555555ca1a8: 0x00000000      0x00000000      0x00000000      0x00000000
+```
+
+# 压缩core文件
+
+- 写在sh.snippets中
+
+# 本地gdb 调试core文件
+
+```
+# 打包设备根文件系统
+arm-linux-gdb  program core
+set sysroot
+```
+
+# gdb watch
+
+```
+https://blog.csdn.net/tianyexing2008/article/details/129971711
+当watch观察的是一个局部范围内的变量时, watch必须要和断电一起使用
+```
+
+# info registers
+
+```
+(gdb) info registers
+r0             0x0      0
+r1             0x1      1
+r2             0x2      2
+r3             0x3      3
+r4             0x4      4
+r5             0x5      5
+r6             0x6      6
+r7             0x7      7
+r8             0x8      8
+r9             0x9      9
+r10            0xa      10
+r11            0xb      11
+r12            0xc      12
+sp             0xbefffc 0xbefffc
+lr             0x1044   0x1044
+pc             0x1040   0x1040
+cpsr           0x60000010 1610612752
+fpscr          0x0      0
+```
+
+- registers输出讲解
+  - 通用寄存器 r0 - r12这些是通用寄存器，用于存储数据和地址。它们可以在程序的任何地方被访问和修改
+  - 专用寄存器 sp(stack pointer):栈指针寄存器，指向当前栈顶的位置。栈用于管理函数调用和局部变量。lr (Link Register): 链接寄存器,
+    存储函数调用返回的地址.当一个函数被调用时,返回地址会被保存到lr中, 以便函数执行完毕后返回调用点. pc(Program Counter):程序计数器(也称为指令指针)
+    当存储当前执行指定的地址。pc的值会随着每一条指令的执行而增加。
+  - 状态寄存器: cpsr(Current Program Status Register):当前程序状态寄存器,存储当前程序的状态, 包括条件标志(如零标志, 负标志等),
+    模式位(如用户模式,系统模式等)和中段状态. fpscr(Floating Point Status and Control
+    Register):浮点状态和控制寄存器,存储浮点运算的状态和控制信息
+
+- 根据寄存器排查问题的步骤 1.查看程序计数器(pc):
+  - pc 寄存器指向当前正在执行的指令。如果程序崩溃或卡住，可以查看 pc 的值，定位到具体的代码位置。 2.查看栈指针 (sp):
+  - sp 寄存器指向当前栈顶的位置。通过查看 sp 的值，可以了解当前栈的状态，检查是否发生了栈溢出等问题。 3.查看链接寄存器 (lr):
+  - lr 寄存器存储函数调用返回的地址。如果函数调用出现问题，可以查看 lr 的值，确定调用链。 4.查看通用寄存器 (r0-r12):
+  - 通用寄存器用于存储函数参数和返回值。在调试时，可以查看这些寄存器的值，了解函数调用过程中传递的参数和返回值。 5.查看状态寄存器 (cpsr):
+  - cpsr 寄存器包含条件标志和模式位等信息。通过查看 cpsr 的值，可以了解程序当前的状态，检查是否发生了中断或模式切换。 6.查看浮点寄存器 (fpscr):
+  - 如果程序涉及浮点运算，可以查看 fpscr 寄存器的值，了解浮点运算的状态和控制信息，检查是否发生了浮点异常等问题。
+
+- 栈溢出问题排查
+
+```
+(gdb) info registers
+r0             0x0      0
+r1             0x1      1
+r2             0x2      2
+...
+sp             0xbefffc 0xbefffc
+lr             0x1044   0x1044
+pc             0x1040   0x1040
+cpsr           0x60000010 1610612752
+...
+
+cat /proc/$(pidof your_program)/maps | grep stack
+befc0000-bf000000 rw-p 00000000 00:00 0          [stack]
+如果栈范围是 0xbefc0000 到 0xbf000000，而 sp 的值是 0xbefffc，则说明栈指针已经接近栈的末尾，很可能发生了栈溢出。
+```
+
+# 分析core文件
+
+```
+gdb ./program core-file
+bt full              #查看完整调用栈
+info registers       #显示寄存器状态
+x/10i &pc            #查看崩溃点附近汇编指令
+printf variable_name #查看变量值
+list #查看源码
+(gdb) info threads             # 查看所有线程状态
+(gdb) thread apply all bt     # 获取所有线程堆栈
+(gdb) bt full                # 查看完整调用栈
+(gdb) info registers         # 显示寄存器状态
+(gdb) x/10i $pc              # 查看崩溃点附近汇编指令
+(gdb) print variable_name    # 查看变量值
+(gdb) list                   # 显示对应源代码
+# 定位代码行
+arm-linux-gnueabi-addr2line -e program 0x4005a8
+# 反汇编
+arm-linux-gnueabi-objdump -S -d program > disassembly.txt
+# 查看符号表
+arm-linux-gnueabi-nm -n program
+常见崩溃类型分析
+崩溃现象 排查方向	典型原因
+Segmentation fault	空指针/野指针访问、内存越界	未初始化指针、数组越界
+Bus error	内存对齐错误	强制类型转换不当
+Floating point exception	浮点运算错误	除零操作、FPU配置错误
+Stack overflow	栈空间不足	递归过深、大局部变量
+Aborted (core dumped)	主动调用abort()	断言失败、手动触发
+# 内存验证
+cat /proc/$(pidof program)/maps  # 检查程序内存布局
+```
+
+# 分析函数
+
+```
+info locals
+info args
+# 查看结构体指针
+info args 输出 structA = 0xb584b410
+p *(structA*)0xb584b410
 ```
