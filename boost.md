@@ -135,3 +135,61 @@ int main() {
 https://www.boost.org/doc/libs/1_48_0/doc/html/interprocess/allocators_containers.html#interprocess.allocators_containers.containers_explained.containers_of_containers
 https://www.boost.org/doc/libs/1_87_0/doc/html/interprocess/additional_containers.html
 ```
+
+### Boost.MultiIndex
+
+```cpp
+//!字符串类型定义
+typedef  basic_string<char, std::char_traits<char>, char_allocator> _string;
+typedef struct TableAValue {
+public:
+	TableAValue(const void_allocator &void_alloc)
+        :key(DEFAUT_STR,void_alloc)
+	{ }
+	void dump() const { 
+		std::cerr << key.c_str() <<std::endl;
+	}
+    uint64_t uid64;
+	_string key;
+}TableComYXValue ;
+
+struct uid_index{};
+struct key_index{};
+
+typedef bmi::multi_index_container<
+    TableAValue,
+    bmi::indexed_by<
+    bmi::hashed_unique
+    <bmi::tag<uid_index>,  bmi::member<TableAValue,uint64_t,&TableAValue::uid64> >,
+    bmi::hashed_non_unique
+    <bmi::tag<key_index>,  bmi::member<TableAValue,_string,&TableAValue::key> > >,
+    managed_shared_memory::allocator<TableAValue>::type
+> TableAValue_index;
+
+typedef bmi::nth_index<TableAValue_index,0>::type ordered__DataUID;
+typedef bmi::nth_index<TableAValue_index,1>::type ordered__key;
+
+// 定义迭代器类型别名
+typedef TableAValue_index::index<key_index>::type::iterator key_iterator;
+
+// 获取 key 索引
+ordered__key& key_indexs = TableAValue_index->get<key_index>();
+
+// 创建要查找的 key
+_string key1("abc", alloc_inst);
+
+// 查找单个元素
+key_iterator it = key_indexs.find(key1);
+if (it != key_indexs.end()) {
+    std::cout << "Found: ";
+    it->dump();
+} else {
+    std::cout << "Key not found." << std::endl;
+}
+
+// 查找所有匹配元素
+std::pair<key_iterator, key_iterator> range = key_indexs.equal_range(key1);
+for (key_iterator it = range.first; it != range.second; ++it) {
+    it->dump();
+}
+```
