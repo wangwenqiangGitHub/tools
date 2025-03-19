@@ -96,8 +96,10 @@
 # 关注libuv的issue
 
 # libuv中增加线程名字的方法(更新版本到2024.09.25, Version 1.49.0)
+
 - 另一种实现方法:[IXWebSocket库提供了方法](https://github.com/machinezone/IXWebSocket/tree/master/ixwebsocket)
 - **IXSetThreadName.cpp文件**
+
 ```
 /*
  *  IXSetThreadName.cpp
@@ -187,4 +189,3 @@ namespace ix
     }
 } // namespace ix
 ```
-
