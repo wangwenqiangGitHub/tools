@@ -247,3 +247,16 @@ utf8-bom
 # filesystem
 
 - 刷写次数(flash-10w eeprom-100w emmc-3w)
+
+# linux-sys消息队列
+
+- 相关接口
+
+```
+#include <sys/msg.h>
+
+int msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg);
+int msgrcv ...
+其中 msgflg = 0 是阻塞 , 非阻塞是NOWAIT_IPC
+修改消息队列大小: /proc/sys/kernel/msgmnb
+```
