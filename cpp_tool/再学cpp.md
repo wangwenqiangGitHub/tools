@@ -1261,3 +1261,7 @@ bool isTcpConnected(int socketDescriptor) {
     return info.tcpi_state == TCP_ESTABLISHED;
 }
 ```
+
+# linux accept函数
+
+- 如何不设置套接字超时属性，accept函数会一直阻塞，直到有连接建立。
