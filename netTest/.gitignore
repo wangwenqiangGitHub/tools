@@ -1,0 +1,8 @@
+.cache
+build
+build86
+buildrk
+buildT3
+# .clang-tidy
+clang-tidy-report*
+compile_commands.json
