@@ -181,3 +181,55 @@ gcc test.c -m32 -o test
 需要将启动目录中的:~ 修改为: .
 或者目录输入: wt /d .
 ```
+
+# wsl安装离线安装包
+
+```
+mkdir ~/samba-offline && cd ~/samba-offline
+sudo apt download -d libsmbclient
+cd /var/cache/apt/archives/ #这里会有一些安装包 libtalloc2 libtevent0 libwbclient0
+# 创建目录并下载包及依赖
+sudo apt download samba-libs
+sudo apt download samba-libs libtalloc2 libtevent0 libwbclient0
+# 查看依赖
+apt-cache depends samba-libs
+# 输出:
+samba-libs
+  依赖: libacl1
+  依赖: libavahi-client3
+  依赖: libavahi-common3
+  依赖: libbsd0
+  依赖: libc6
+  依赖: libcap2
+  依赖: libcups2
+  依赖: libgnutls30
+  依赖: libjansson4
+  依赖: libldap-2.5-0
+  依赖: libldb2
+  依赖: libpam0g
+  依赖: libpopt0
+  依赖: libpython3.10
+  依赖: libtalloc2
+  依赖: libtdb1
+  依赖: libtevent0
+  依赖: libtirpc3
+  依赖: libwbclient0
+  依赖: python3-ldb
+  依赖: python3-talloc
+  依赖: zlib1g
+  破坏: <libndr-standard0>
+  破坏: <libsamba-credentials0>
+  破坏: <libsamba-hostconfig0>
+  破坏: <libsamba-util0>
+  破坏: sssd-ad-common
+  替换: <libndr-standard0>
+  替换: <libsamba-credentials0>
+  替换: <libsamba-hostconfig0>
+  替换: <libsamba-util0>
+  替换: samba
+#命令
+  dpkg -s samba-libs | grep Depends
+Depends: libacl1 (>= 2.2.23), libavahi-client3 (>= 0.6.16), libavahi-common3 (>= 0.6.16), libbsd0 (>= 0.5.0), libc6 (>= 2.34), libcap2 (>= 1:2.10), libcups2 (>= 1.7.0), libgnutls30 (>= 3.7.3), libjansson4 (>= 2.1), libldap-2.5-0 (>= 2.5.4), libldb2 (>= 2:2.4.4-0ubuntu0.22.04.2), libpam0g (>= 0.99.7.1), libpopt0 (>= 1.14), libpython3.10 (>= 3.10.0), libtalloc2 (>= 2.3.3~), libtdb1 (>= 1.4.4~), libtevent0 (>= 0.11.0~), libtirpc3 (>= 1.0.2), libwbclient0 (= 2:4.15.13+dfsg-0ubuntu1.6), python3-ldb (>= 2:2.1.0), python3-talloc (>= 2.3.1~), zlib1g (>= 1:1.1.4)
+# 思路把这些包放在packages.txt.下载
+xargs -a packages.txt sudo apt-get download
+```
