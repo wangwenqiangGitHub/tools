@@ -128,10 +128,12 @@ pip install pandas --proxy=http:127.0.0.1:7890
 
 # windows虚拟环境破坏问题排查
 
+- 不应该用`activate.dat`，应该使用`.env\Scripts\activate`
+
 ```
 python -m venv .env
 python -m venv .env --prompt qml_test_env # 使用--prompt指定环境名称
-.env\Scripts\activate.bat
+.env\Scripts\activate
 # 激活虚拟环境
 .env\Scripts\activate.bat
 # 验证激活状态
