@@ -113,3 +113,12 @@ eth.type==0x4002 && (eth contains 3099)
 frame contains 33:96
 eth.type== 0x4002 && frame contains 33:96
 ```
+
+# pcap包任意字节过滤
+
+```
+frame matches ".*\x30.\x1B.*"
+# 理解
+\x30是匹配十六进制字节0x30
+. 是正则表达式中的通配符
+```
