@@ -99,3 +99,15 @@ https://snippet-generator.app/
   "vue": "html"
 }
 ```
+
+## vscode中实现类似与source insight功能的搜索
+
+- open new search editor
+- ctrl+方向键切换搜索框与结果
+
+## vim插件快捷键
+
+```
+"ayy  # 将当前行复制到寄存器 a 中"
+"ap   # 从寄存器 a 中粘贴内容"
+```
