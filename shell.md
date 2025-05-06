@@ -176,3 +176,9 @@ cloc . --exclude-dir=vendor  # 排除指定目录
 cargo install tokei
 tokei  # 统计当前目录
 ```
+
+# 统计文件大小
+
+```
+du -h  | sort -hr
+```
