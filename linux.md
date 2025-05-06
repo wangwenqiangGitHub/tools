@@ -259,4 +259,9 @@ int msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg);
 int msgrcv ...
 其中 msgflg = 0 是阻塞 , 非阻塞是NOWAIT_IPC
 修改消息队列大小: /proc/sys/kernel/msgmnb
+struct msg_buf {
+    long mtype;   // 必须为 long 类型且 >0
+    char mtext[100]; // 消息正文
+};
+const void* msgp必须首long大于0
 ```
