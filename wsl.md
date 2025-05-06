@@ -233,3 +233,10 @@ Depends: libacl1 (>= 2.2.23), libavahi-client3 (>= 0.6.16), libavahi-common3 (>=
 # 思路把这些包放在packages.txt.下载
 xargs -a packages.txt sudo apt-get download
 ```
+
+# arm-linux-gdb依赖
+
+```
+sudo echo "deb http://security.ubuntu.com/ubuntu focal-security main universe" > /etc/apt/sources.list.d/ubuntu-focal-sources.list
+sudo apt install libncurses5
+```
