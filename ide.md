@@ -59,3 +59,7 @@
 # vs必要设置
 
 - `工具-选项-c/c++高级-主动提交成员列表(true)`
+
+# vs中运行程序显示`msvsmon.exe`不可用
+
+- 将`msvsmon.exe`这个程序替换一下路径`C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Remote Debugger\x86`这个路径的值替换掉
