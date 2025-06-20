@@ -200,3 +200,10 @@ bed libxml2.so 进入搜索进行修改，将libxml2.so.2修改成libxml2.so.. �
 ```
 ld ... undefined reference to 'func name'
 ```
+
+# 打包程序采用svn代码仓中提交hash值
+
+```
+sqlite3 xxx/.svn/wc.db  "SELECT changed_version, changed_date FROM nodes WHERE local_relpath LIKE '%KEYWORD' ORDER BY changed_version DESC LIMIT 1;" | awk -F'|' '{printf "MASTER_%s_%s\n", $1, strftime("%Y-%m-%d_%H-%M-%S", $2/1000000)}'
+```
+
