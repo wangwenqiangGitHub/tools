@@ -206,4 +206,3 @@ ld ... undefined reference to 'func name'
 ```
 sqlite3 xxx/.svn/wc.db  "SELECT changed_version, changed_date FROM nodes WHERE local_relpath LIKE '%KEYWORD' ORDER BY changed_version DESC LIMIT 1;" | awk -F'|' '{printf "MASTER_%s_%s\n", $1, strftime("%Y-%m-%d_%H-%M-%S", $2/1000000)}'
 ```
-

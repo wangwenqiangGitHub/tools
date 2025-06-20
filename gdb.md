@@ -161,6 +161,14 @@ event = std::shared_ptr<Event> (use count 1442455055, weak count 1223002439) = {
 # 打包设备根文件系统
 arm-linux-gdb  program core
 set sysroot
+
+# 新方式
+# 使用ldd递归查找依赖（示例）
+ldd /path/app | awk '{print $3}' | xargs -I{} cp --parents {} ./env-rootfs
+# 使用交叉编译链的GDB
+arm-none-eabi-gdb -q ./app.debug
+(gdb) set sysroot ./env-rootfs  # 指定库搜索路径
+(gdb) core-file ./core.1234     # 加载设备生成的core文件
 ```
 
 # gdb watch
@@ -271,4 +279,13 @@ info args
 # 查看结构体指针
 info args 输出 structA = 0xb584b410
 p *(structA*)0xb584b410
+```
+
+# gdb想让程序断点在执行100次后停住
+
+```
+gdb ./your_program
+(gdb) break your_function   # 在your_function函数入口设置断点
+(gdb) ignore 1 100          # 忽略前100次触发（断点编号1）
+(gdb) run                   # 运行程序，当第101次调用your_function时暂停
 ```
