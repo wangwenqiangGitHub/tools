@@ -264,4 +264,15 @@ struct msg_buf {
     char mtext[100]; // 消息正文
 };
 const void* msgp必须首long大于0
+1. 消息大小限制
+系统对单个消息有最大长度限制（可通过 cat /proc/sys/kernel/msgmax 查看）
+典型值为 8192 字节
+2. 队列容量限制
+消息队列总容量有限制（可通过 cat /proc/sys/kernel/msgmnb 查看）
 ```
+
+# free命令
+
+- `free -m` 命令用于显示系统物理内存(RAM) 和交换控件(swap)的使用情况, 包括总量,已用,空闲等
+- Mem行是物理内存:total表示系统总的物理内存,
+  used是已使用的内存(包括应用程序和缓冲/缓冲区),free：完全未被使用的内存。shared：被多个进程共享的内存(如共享库)。buff/cache：被内核缓冲区（buffers）和页面缓存（cache）占用的内存。这部分内存可以被应用程序快速回收。available：系统可用内存（估算值，包括空闲内存和可回收的缓存/缓冲区）。这是新进程可用的内存量。
