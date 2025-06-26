@@ -141,3 +141,26 @@ git pull
 scoop update
 scoop update -a
 ```
+
+# windows cmake配置
+
+```
+scoop install cmake
+cmake .. -G "Visual Studio 17 2022" -AWIN32
+# 学习windows上cmake的编译
+# https://github.com/SPauly/dump1090.git
+```
+
+# windows libpcap 解析windows中的raw socket
+
+```
+ipconfig.exe /all
+```
+
+# windows 程序打包
+
+```
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x86\dumpbin.exe /dependents  D:\xxx\xxx.exe 可以查看到程序链接关系，然后通过手动搜索各个库位置, 需要注意的是这个exe是32位的还是64位的
+# gui程序,查看库的路径，但是需要注意，对于系统库可能找的不对，对应程序是32位的用32位的，64位用64位的程序
+https://github.com/lucasg/Dependencies
+```
