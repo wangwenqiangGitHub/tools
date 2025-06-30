@@ -280,6 +280,7 @@ $ grep -c 'rw-p.*anon' /proc/12345/maps
 1. **修复代码**：
    ```c
    // 正确回收线程
+    // pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
    pthread_create(&tid, NULL, worker, NULL);
    pthread_detach(tid); // 或使用 pthread_join
    ```
