@@ -151,7 +151,7 @@ public:
 	}
     uint64_t uid64;
 	_string key;
-}TableComYXValue ;
+} ;
 
 struct uid_index{};
 struct key_index{};
