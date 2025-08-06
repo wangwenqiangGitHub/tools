@@ -182,3 +182,118 @@ tokei  # 统计当前目录
 ```
 du -h  | sort -hr
 ```
+
+# 电脑连接装置1，装置1连接装置2，如何实现电脑连接装置2
+
+```mermaid
+graph LR
+A(你的电脑) -- ssh 100.1xx.1xx.1xx:xx22 --> B(装置1)
+    B -- DNAT: 100.1xx.1xx.1xx:xx22 → 192.168.1.xx:22 --> C(装置2)
+    C -- 返回流量 SNAT: 源地址变为装置1内网IP --> B
+    B -- 返回流量 --> A
+```
+
+一. DNAT和SNAT的原理
+
+1. DNAT(Destination NAT, 目标地址转换)
+
+- 作用: 把数据包的"目的地址"改成别的地址.
+- 常用场景: 端口转发，内网穿透，反向代理等
+- iptables 规则：一般写在 POSTROUTING 链（数据包即将离开本机时改源地址）。 例子:
+
+```
+iptables -t nat -A PREROUTING -p tcp -d 100.100.100.100 --dport 10122 -j DNAT --to-destination 192.168.1.16:22
+```
+
+- 作用：把所有发到 100.100.100.100:10122 的 TCP 流量，目的地改成 192.168.1.16:22。
+
+2.SNAT（Source NAT，源地址转换）
+
+- 作用：把数据包的“源地址”改成别的地址。
+- 常用场景：内网主机访问外网时，统一改成网关的公网IP（即“伪装”），或做端口映射。
+- iptables 规则：一般写在 POSTROUTING 链（数据包即将离开本机时改源地址）。
+
+```
+ptables -t nat -A POSTROUTING -p tcp -d 192.168.1.16 --dport 22 -j SNAT --to-source 192.168.1.1
+```
+
+作用：所有发往 192.168.1.16:22 的 TCP 流量，源地址都改成 192.168.1.1。
+
+二. iptables规则参数详解
+
+1. -t nat
+
+- 指定操作的表为 nat（网络地址转换表），主要用于 DNAT/SNAT/MASQUERADE 等。
+
+2. -A
+
+- A 是 --append，表示添加一条规则到指定链的末尾。
+
+3. -p
+
+- p 是 --protocol，指定协议类型（如 tcp、udp、icmp 等）。
+
+4. -d
+
+- d 是 --destination，指定目的IP地址。
+
+5. --dport
+
+- 指定目的端口（destination port），常用于 TCP/UDP 协议。
+
+6. --sport
+
+- 指定源端口（source port），常用于 TCP/UDP 协议。
+
+7. -j
+
+- j 是 --jump，指定匹配到规则后要执行的动作，如 ACCEPT、DROP、DNAT、SNAT 等。
+
+8. --to-destination
+
+- 用于 DNAT，指定要改成的目的地址和端口。
+- 例：--to-destination 192.168.1.16:22
+
+9. --to-source
+
+- 用于 SNAT，指定要改成的源地址。
+- 例：--to-source 192.168.1.1
+
+10. -D 是 --delete 的缩写，表示删除一条规则
+11. FORWARD 是 iptables 的一个内置链，用于转发经过本机但不发往本机的流量（即路由转发流量）。 三. iptables命令
+
+- 查看所有表的规则(L列出规则，n数字显示 v详细信息)
+
+```
+iptables -L -n -v
+```
+
+- 查看nat表的规则()
+
+```
+iptables -t nat -L -n -v
+```
+
+- 查看规则的插入顺序
+
+```
+iptables -L -n --line-numbers
+```
+
+- 查看所有表的所有内容
+
+```
+iptables-save
+```
+
+- 查看FORWARD链表规则:
+
+```
+iptables -L PORWARD -n -v
+```
+
+- 查看PREROUTING 链规则:
+
+```
+iptables -t nat -L PREROUTING -n -v
+```
