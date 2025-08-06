@@ -117,6 +117,7 @@ eth.type== 0x4002 && frame contains 33:96
 # pcap包任意字节过滤
 
 ```
+frame matches "\\x2b\\x00"   # 双反斜杠转
 frame matches ".*\x30.\x1B.*"
 # 理解
 \x30是匹配十六进制字节0x30
