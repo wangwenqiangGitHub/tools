@@ -104,7 +104,7 @@ wsl --export Ubuntu-22.04 C:\wsl_ws\ubuntu2204-tools.tar
 # 导入wsl
 
 ```
-wsl --import Ubuntu22.04 D:\wsl_ws\ubuntuww C:\wsl_ws\ubuntu2204-tools.tar
+wsl --import Ubuntu22.04 D:\wsl_ws\ubuntuww C:\wsl_ws\ubuntu2204-tools.tar --version 1
 ```
 
 # wsl 导入后配置用户
