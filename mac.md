@@ -2,8 +2,8 @@
 
 - 需要使用mac自己的terminal配置GB2312:终端--->设置--->高级--->多语言环境(GB2312)
 
-
 # citrix
+
 ```
 cd /Library/Application\ Support/Citrix\ Receiver/
 cat usb.conf
@@ -25,6 +25,4 @@ cat usb.conf
  DENY: class=e0
  DENY: class=ef subclass=04  # 此规则不会影响已允许的 ASIX 设备
  ALLOW:
-
 ```
-
