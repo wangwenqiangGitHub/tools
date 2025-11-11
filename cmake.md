@@ -206,3 +206,13 @@ ld ... undefined reference to 'func name'
 ```
 sqlite3 xxx/.svn/wc.db  "SELECT changed_version, changed_date FROM nodes WHERE local_relpath LIKE '%KEYWORD' ORDER BY changed_version DESC LIMIT 1;" | awk -F'|' '{printf "MASTER_%s_%s\n", $1, strftime("%Y-%m-%d_%H-%M-%S", $2/1000000)}'
 ```
+
+# vs中使用max, min报错
+
+```
+# 参考:retdec-idaplugin/CMakeLists.txt
+# Disable the min() and max() macros to prevent errors when using e.g.
+# std::numeric_limits<...>::max()
+# (http://stackoverflow.com/questions/1904635/warning-c4003-and-errors-c2589-and-c2059-on-x-stdnumeric-limitsintmax).
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DNOMINMAX")
+```
