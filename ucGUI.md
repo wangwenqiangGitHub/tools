@@ -16,3 +16,8 @@
 
 1. 测试ucGUI参考:`https://github.com/hh115154/GladiatorLibrary/tree/master/SeggerEval_WIN32_MSVC_MinGW_GUI_V532`
 2. 参考百度网盘emwin工程`emwin\SeggerEval_WIN32_MSVC_MinGW_GUI_V548`
+
+# 参考浏览器框架的一点思考
+
+1. 浏览器是采用html文件描述网页，得到对象模型，再对象模型布局，通过浏览器后端渲染render(dtk)
+2.
