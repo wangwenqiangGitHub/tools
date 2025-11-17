@@ -276,3 +276,9 @@ const void* msgp必须首long大于0
 - `free -m` 命令用于显示系统物理内存(RAM) 和交换控件(swap)的使用情况, 包括总量,已用,空闲等
 - Mem行是物理内存:total表示系统总的物理内存,
   used是已使用的内存(包括应用程序和缓冲/缓冲区),free：完全未被使用的内存。shared：被多个进程共享的内存(如共享库)。buff/cache：被内核缓冲区（buffers）和页面缓存（cache）占用的内存。这部分内存可以被应用程序快速回收。available：系统可用内存（估算值，包括空闲内存和可回收的缓存/缓冲区）。这是新进程可用的内存量。
+
+# 查看linux是否收到过kill信号
+```
+dmesg | grep -i kill
+#结果Out of memory: Kill process 662 score or sacrifice child
+```
