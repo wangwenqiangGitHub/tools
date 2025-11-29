@@ -164,3 +164,8 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.3351
 # gui程序,查看库的路径，但是需要注意，对于系统库可能找的不对，对应程序是32位的用32位的，64位用64位的程序
 https://github.com/lucasg/Dependencies
 ```
+
+# windows1分钟自动重启问题
+```
+Shutdown -a
+```
