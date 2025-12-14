@@ -169,3 +169,10 @@ https://github.com/lucasg/Dependencies
 ```
 Shutdown -a
 ```
+
+# install office
+```
+https://github.com/OdysseusYuan/Mocreak
+www.mocreak.com
+```
+
