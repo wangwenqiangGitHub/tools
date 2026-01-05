@@ -123,3 +123,35 @@ frame matches ".*\x30.\x1B.*"
 \x30是匹配十六进制字节0x30
 . 是正则表达式中的通配符
 ```
+
+# wireshark源码编译环境搭建
+
+```
+#github上下载源码
+
+#安装依赖
+choco install -y cmake
+choco install -y asciidoctorj xsltproc doxygen.install
+choco install -y winflexbison
+choco install -y strawberryperl
+# docbook-bundle下载速度较慢，可以根据提示的下载链接使用其他工具下载后放入
+# C:\Users\【用户名】\AppData\Local\Temp\chocolatey\docbook-bundle\1.0.2目录下
+# 再执行：
+choco install -y docbook-bundle
+
+#cmake编译，设置环境变量，需要在Visual Studio 2022下的终端[Developer Command Prompt for vs2022]
+# 当前目录为wsbuild64/
+# 请填入wireshark的源码目录
+set WIRESHARK_BASE_DIR=【你的目录】/wireshark-master
+# 请填入Qt6包含Qt6Config.cmake的目录
+set Qt6_DIR=D:/Qt/6.5.2/msvc2019_64/lib/cmake/Qt6
+# 开始生成
+cmake -G "Visual Studio 17 2022" -A x64 ../wireshark-master
+#编译
+msbuild /m /p:Configuration=RelWithDebInfo Wireshark.sln
+
+# 踩坑
+C:\github_ws\wireshark\build>
+set WIRESHARK_BASE_DIR=C:/github_ws/wireshark
+C:\github_ws\wireshark\wireshark-v4.4.12 #源码仓路径
+```

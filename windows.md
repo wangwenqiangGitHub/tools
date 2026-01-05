@@ -176,3 +176,25 @@ https://github.com/OdysseusYuan/Mocreak
 www.mocreak.com
 ```
 
+# windows打开任务计划程序
+
+```
+按Win + R, 输入taskschd.msc, 回车
+# 需要了解一下python crontab
+```
+
+# scoop历史软件清理
+
+```
+scoop cleanup *
+```
+
+# chono工具安装
+
+```
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+choco install -y xsltproc
+choco install -y winflexbison
+choco install -y strawberryperl
+```

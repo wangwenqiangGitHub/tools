@@ -315,8 +315,8 @@ $ grep -c 'rw-p.*anon' /proc/12345/maps
 
 总结：`free -m` 适用于监控物理内存使用，而要检测线程栈泄露这类虚拟地址空间问题，需要使用 `pmap`、`/proc/<pid>/maps` 等工具监控进程级虚拟内存分配。
 
-
 # 虚拟内存耗尽可以通过dmesg 能看到 kill 进程信息
+
 ```
 1. OOM Killer（内存不足杀手）
 bash
@@ -332,4 +332,3 @@ bash
 $ dmesg | grep -i "traps"
 [ 1234.567893] traps: myapp[12345] general protection fault ip:12345678 sp:12345678 error:0
 ```
-
