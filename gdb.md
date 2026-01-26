@@ -289,3 +289,17 @@ gdb ./your_program
 (gdb) ignore 1 100          # 忽略前100次触发（断点编号1）
 (gdb) run                   # 运行程序，当第101次调用your_function时暂停
 ```
+
+# 查看程序中虚内存(vsz默认3G大小)和物理内存(rss)以及起了多少个线程
+
+```
+ps -T -A -o pid,ppid,pgid,vsz,rss,args
+```
+
+# gdb 反汇编排查strlen问题
+
+```
+打印断点break strlen if $r0 < 0x1000
+让我们从lr地址开始，反汇编一些指令：gdb
+(gdb) disassemble 0xb639ffec-20, 0xb639ffec+20
+```
