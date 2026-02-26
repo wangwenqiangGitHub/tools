@@ -7,9 +7,12 @@ tar xvf valgrind-3.12.0.tar.bz2
 cd valgrind-3.12.0 
 ./autogen.sh
 # 交叉编译
-# 修改configure中的armv7*)改成armv7*|arm)
+# 修改configure中的armv7*)改成armv7*|arm*)
 ./configure --host=arm-linux CC=${GCC_ARM_GCC} CXX=${GCC_ARM_GXX} --prefix=/mnt/d/github_ws/github_ws/valgrind-3.19.0/OUT
 maka -j9 && make install
+
+# valgrind-3.19.0工程放在wsl的home目录下可以编译过
+./configure --host=arm-linux-gnueabi CC=arm-linux-gnueabi-gcc  CXX=arm-linux-gnueabi-g++  AR=arm-linux-gnueabi-ar LD=arm-linux-gnueabi-ld CPP=arm-linux-gnueabi-cpp --prefix=`pwd`/OUT
 ```
 
 # copy文件
