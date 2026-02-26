@@ -70,3 +70,11 @@ uic -o ui.h mainwindow.ui
 ```
 MaintenanceTool.exe
 ```
+
+# qt转vs工程
+
+```
+#选择终端 Develop Powershell for VS2022
+C:\Qt\Qt6.10\6.10.1\msvc2022_64\bin\qmake.exe -tp vc .\Iaito.pro
+#vs打开生成的iaito.vcxproj
+```
