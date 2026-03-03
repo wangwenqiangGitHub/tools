@@ -166,11 +166,13 @@ https://github.com/lucasg/Dependencies
 ```
 
 # windows1分钟自动重启问题
+
 ```
 Shutdown -a
 ```
 
 # install office
+
 ```
 https://github.com/OdysseusYuan/Mocreak
 www.mocreak.com
@@ -197,4 +199,25 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 choco install -y xsltproc
 choco install -y winflexbison
 choco install -y strawberryperl
+```
+
+# windows安装openssh实现两台电脑连接
+
+```
+whoami
+#sxx(域名)\wan1(用户)
+ssh 用户名@192.168.2.2
+scoop install openssh
+C:\scoop\apps\openssh\current\install-sshd.ps1
+net start sshd
+# 启动 SSH 服务
+Start-Service sshd
+
+# 设置开机自动启动 SSH 服务（避免重启后失效）
+Set-Service -Name sshd -StartupType 'Automatic'
+
+# 验证服务是否启动成功
+Get-Service sshd
+# 设置 sshd 服务开机自动启动
+sc config sshd start= auto
 ```
