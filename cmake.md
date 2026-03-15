@@ -216,3 +216,32 @@ sqlite3 xxx/.svn/wc.db  "SELECT changed_version, changed_date FROM nodes WHERE l
 # (http://stackoverflow.com/questions/1904635/warning-c4003-and-errors-c2589-and-c2059-on-x-stdnumeric-limitsintmax).
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /DNOMINMAX")
 ```
+
+# cmake编译多文件
+
+```
+# 指定 CMake 最低版本（适配 VS）
+cmake_minimum_required(VERSION 3.15)
+
+# 工程名称（VS 中显示的工程名）
+project(MyTwoExeProject)
+
+# 设置 C++ 标准（可选，根据你的需求调整）
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# ===================== 第一个 EXE：exe1（开启 EXE1_MACRO 宏） =====================
+# 定义可执行目标 exe1，关联源码 main.cpp
+add_executable(exe1 main.cpp)
+# 为 exe1 单独添加宏定义（相当于 VS 项目属性中的“预处理器定义”）
+target_compile_definitions(exe1 PRIVATE EXE1_MACRO)
+
+# ===================== 第二个 EXE：exe2（开启 EXE2_MACRO 宏） =====================
+# 定义可执行目标 exe2，同样关联 main.cpp（也可以换其他源码）
+add_executable(exe2 main.cpp)
+# 为 exe2 单独添加宏定义
+target_compile_definitions(exe2 PRIVATE EXE2_MACRO)
+PRIVATE：表示宏仅对当前目标生效（不会影响其他目标），是最常用的作用域；
+PUBLIC 适用于库的宏定义需要同时作用于库自身，且需要让使用该库的程序也感知到
+exe2 是可执行目标，且没有其他目标依赖它，此时 PRIVATE 和 PUBLIC 效果完全一样（没有可传递的目标，PUBLIC 的 “传递性” 无法体现）
+```
