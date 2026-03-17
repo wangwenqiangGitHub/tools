@@ -221,3 +221,9 @@ Get-Service sshd
 # 设置 sshd 服务开机自动启动
 sc config sshd start= auto
 ```
+
+# utools技巧
+
+```
+utools在配置快捷键时，如果是完全配置，就是图标所在位置下的名称，那么就少一次回车确定选中
+```
