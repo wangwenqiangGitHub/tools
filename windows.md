@@ -163,6 +163,8 @@ ipconfig.exe /all
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.39.33519\bin\Hostx64\x86\dumpbin.exe /dependents  D:\xxx\xxx.exe 可以查看到程序链接关系，然后通过手动搜索各个库位置, 需要注意的是这个exe是32位的还是64位的
 # gui程序,查看库的路径，但是需要注意，对于系统库可能找的不对，对应程序是32位的用32位的，64位用64位的程序
 https://github.com/lucasg/Dependencies
+# 直接显示依赖的据对路径
+dumpbin /dependents xxx.exe | Select-String '\.dll' | ForEach-Object { (Get-Command $_.ToString().Trim() -ErrorAction SilentlyContinue).Source }
 ```
 
 # windows1分钟自动重启问题
@@ -226,4 +228,20 @@ sc config sshd start= auto
 
 ```
 utools在配置快捷键时，如果是完全配置，就是图标所在位置下的名称，那么就少一次回车确定选中
+```
+
+# 检查v编译的所有库的版本32还是64位
+
+```bat
+# 程序运行出错:0xc000007b 经典错误：64 位程序加载了 32 位 DLL，或者反过来
+# dll库检查, 32位库的位置:C:\Windows\SysWOW64\
+Get-ChildItem *.dll | ForEach-Object {
+    $dump = dumpbin /headers $_.FullName 2>&1
+    $machine = $dump | Select-String 'machine'
+    $bit = if ($machine -like '*8664*') {'64位 x64'} else {'32位 x86'}
+    Write-Host "$($_.Name) - $bit"
+}
+
+# exe检查
+dumpbin /headers .\emsimu.exe.exe   | findstr machine
 ```
