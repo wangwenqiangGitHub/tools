@@ -26,3 +26,32 @@ cat usb.conf
  DENY: class=ef subclass=04  # 此规则不会影响已允许的 ASIX 设备
  ALLOW:
 ```
+
+# mac配置静态ip
+
+````
+# **IP设置**
+# 参考:https://github.com/Curiouserw/gitbooks-devops-roadmap/blob/318d608e92838244428cd7257000ae3a139e41a2/origin/macos-tips.md?plain=1#L386
+
+networksetup -listallhardwareports
+# （Hardware Ports）与其对应的设备名称（如 en0, en1），方便后续使用 networksetup 命令时指定正确的接口
+# 字段
+#   Hardware Port	人类可读的接口名称（用于 networksetup 命令的 <networkservice> 部分，例如 "Wi-Fi"）
+#   Device	BSD 设备名称，例如 en0，用于底层命令如 ifconfig 或 airport
+#   Ethernet Address	网卡的物理 MAC 地址
+
+```bash
+# 设置为静态 IP
+networksetup -setmanual "Wi-Fi" 192.168.1.100 255.255.255.0 192.168.1.1
+
+# 设置为 DHCP
+networksetup -setdhcp "Wi-Fi"
+````
+
+# mac mouse鼠标设置
+
+```bash
+defaults read -g com.apple.mouse.scaling
+
+defaults write -g com.apple.mouse.scaling 8
+```
