@@ -100,7 +100,7 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_rainbow.omp.j
 Install-Module PSReadLine -Force
 ```
 
-- windows terminal 补全
+# windows terminal 补全
 
 ```
 Install-Module PSReadLine -Force
@@ -244,4 +244,29 @@ Get-ChildItem *.dll | ForEach-Object {
 
 # exe检查
 dumpbin /headers .\emsimu.exe.exe   | findstr machine
+```
+
+# windows强制删除U盘
+
+```
+diskpart
+list volume
+select volume 3
+remove noerr
+```
+
+# windows命令行关闭防火墙
+
+```
+#https://learn.microsoft.com/zh-cn/windows/security/operating-system-security/network-security/windows-firewall/configure-with-command-line?tabs=cmd
+netsh.exe advfirewall set allprofiles state off
+```
+
+# windows中pdf工具
+
+```
+scoop install qpdf
+scoop install ghostscript
+gswin64c -o 2.pdf -sDEVICE=pdfwrite "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" -dNOPAUSE -dBATCH -dQUIET .\sci1.pdf
+qpdf li.pdf --pages .\li.pdf 4-11 -- li4-11.pdf
 ```
