@@ -78,3 +78,11 @@ MaintenanceTool.exe
 C:\Qt\Qt6.10\6.10.1\msvc2022_64\bin\qmake.exe -tp vc .\Iaito.pro
 #vs打开生成的iaito.vcxproj
 ```
+
+# 信号槽
+
+```
+QObject::connect(sender, signal, receiver, slot, connectionType)，
+但连接类型是可选参数，默认是Qt::AutoConnection。
+实际上，四个参数的版本不包括连接类型，只包括发送者、信号、接收者、槽。
+```
