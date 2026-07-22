@@ -269,4 +269,5 @@ scoop install qpdf
 scoop install ghostscript
 gswin64c -o 2.pdf -sDEVICE=pdfwrite "-dCompatibilityLevel=1.4" "-dPDFSETTINGS=/ebook" -dNOPAUSE -dBATCH -dQUIET .\sci1.pdf
 qpdf li.pdf --pages .\li.pdf 4-11 -- li4-11.pdf
+qpdf --empty --pages 7221.pdf 6-z -- li6-end.pdf
 ```
